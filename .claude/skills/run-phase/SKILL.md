@@ -43,6 +43,8 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 
 **호출 프롬프트 필수 항목** (`CLAUDE.md` §3): `PROJECT`, 단계·작업 종류, 입력 경로, 템플릿 경로(`templates/docs/…`), 출력 경로(`{PROJECT}/…`), 관련 리뷰·티켓·CR, 라운드 번호.
 
+**각 에이전트 호출(병렬이면 배치)이 끝날 때마다 §6-0에 따라 커밋한다.**
+
 에이전트 완료 보고의 생성/수정 파일에 `{PROJECT}` 밖 경로가 있으면 즉시 중단하고 PM에게 알린다.
 
 ## 3. 교차 검토
@@ -78,7 +80,17 @@ PM 응답 처리:
 
 ## 6. Git (오케스트레이터만 수행)
 
-커밋 전 공통: `git -C {PROJECT} status --short`로 `.env`, 비밀 정보, `node_modules`, 대용량 파일이 포함되지 않았는지 확인한다. 의심 파일이 있으면 커밋하지 말고 PM에게 알린다.
+커밋 전 공통: `git -C {PROJECT} status --short`로 `.env`, 비밀 정보, `node_modules`, `{PROJECT}` 밖 경로가 포함되지 않았는지 확인한다. 의심 파일이 있으면 커밋하지 말고 PM에게 알린다.
+
+### 6-0. 작업 단위마다 커밋 (기본 규칙)
+에이전트 1회 호출(병렬이면 그 배치)이 끝나 결과를 확인한 **직후 커밋**한다. 커밋하지 않은 채 다음 에이전트를 호출하지 않는다. 메시지 형식은 `CLAUDE.md` §9 "프로젝트 저장소 커밋 시점" 표를 따른다.
+
+```bash
+git -C {PROJECT} add -A
+git -C {PROJECT} commit -m "docs(P2): 요구사항 정의서 v0.1 작성 — planner" -m "planning/02_requirements.md · planning/02_information-architecture.md · planning/02_storyboard.md"
+```
+
+원격 push는 **PM이 지시할 때만** 한다 (아래 "원격 저장소").
 
 ### 6-1. 게이트 승인
 ```bash
@@ -105,4 +117,4 @@ git -C {PROJECT} archive --format=zip -o .delivery/<SLUG>-G8.zip G8 <선택 경�
 - `STATUS.md` 프로젝트 상태를 `종료`로 갱신하고 최종 커밋(`chore(close): 프로젝트 종료`)한다.
 
 ### 원격 저장소
-원격 저장소 생성·연결·push는 **PM이 요청·승인한 경우에만** 수행한다.
+원격 저장소 생성·연결·push는 **PM이 지시한 경우에만** 수행한다. 커밋은 작업 단위마다 하되, push는 지시 없이 하지 않는다.
