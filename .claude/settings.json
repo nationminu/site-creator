@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "ask": [
+      "Edit(/CLAUDE.md)",
+      "Edit(/README.md)",
+      "Edit(/.gitignore)",
+      "Edit(/.gitattributes)",
+      "Edit(/.claude/**)",
+      "Edit(/templates/**)"
+    ]
+  }
+}

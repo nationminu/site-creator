@@ -1,0 +1,16 @@
+# 프로젝트는 각자 독립 저장소로 관리한다 (CLAUDE.md §9)
+projects/*
+!projects/.gitkeep
+
+# 로컬 개인 설정
+.claude/settings.local.json
+
+# 틀 루트에 실수로 생긴 의존성
+node_modules/
+
+# OS · 에디터
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
