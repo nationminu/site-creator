@@ -54,7 +54,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 | 링크 | linkinator | `npx --yes linkinator <URL> --recurse --format json` (외부 링크는 결과만 기록, 일시 장애는 재시도) | `links/linkinator.json` |
 | 키보드·포커스·대체 텍스트 의미 | 수동 점검 | Tab 순회, 포커스 표시, 건너뛰기 링크, alt 문구 적절성 | 체크리스트 표 (+ 필요 시 스크린샷) |
 
-- 검증은 STATUS의 **로컬 개발 환경**(native/docker/hybrid)과 같은 방식으로 띄운 환경에서 한다(`environments.md` §2). 운영 환경 명세의 버전 일치표와 다른 점이 있으면 검증 한계로 기록한다.
+- 검증은 STATUS의 **로컬 개발 환경**(기본 `docker` — `compose.yaml`)과 같은 방식으로 띄운 환경에서 한다(`environments.md` §2). qa 도구는 PC의 Node 또는 Playwright 공식 이미지로 실행하고 방식을 테스트 계획에 적는다. 운영 환경 명세의 버전 일치표와 다른 점이 있으면 검증 한계로 기록한다.
 - 대상 서버: `developer/site/README.md`의 **프로덕션 빌드 미리보기 명령**(예: `npm run build && npm run preview`)으로 띄운 로컬 주소를 쓴다. 개발 서버 점수는 성능 판정에 쓰지 않는다.
 - 스택 프리셋(`{PROJECT}/pm/STATUS.md`)별 검증 환경:
   - `kr-shared`: `compose.yaml`의 **운영과 같은 버전** PHP(Apache)·MariaDB 환경에 업로드 묶음과 같은 배치(웹 루트 + 웹 루트 밖 앱)로 올려 검증한다. `.env`·`vendor/`·`app/`이 웹에서 열람되지 않는지(HTTP 403/404) 확인하고, SQL 파일(`database/sql/V*.sql`)만으로 빈 DB가 구성되는지 확인한다.

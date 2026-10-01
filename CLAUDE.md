@@ -8,7 +8,7 @@
 |---|---|---|
 | `.claude/reference/modes.md` | 진행 모드(standard/lite), lite 주 검토자, 간소 게이트 | 오케스트레이터, pmo |
 | `.claude/reference/stack-presets.md` | 스택 프리셋, 기술 카탈로그, 표준 명령 매핑 | developer, devops, qa, pmo |
-| `.claude/reference/environments.md` | 로컬 개발 환경(native/docker/hybrid), 운영 환경(정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스), 운영 서버 확인 질문 | developer, devops, qa, pmo |
+| `.claude/reference/environments.md` | 로컬 개발 환경(docker 기본 / hybrid / native), 운영 환경(정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스), 운영 서버 확인 질문 | developer, devops, qa, pmo |
 | `.claude/reference/design-profile.md` | 디자인 프로필(Tailwind, Claude Design, Design Sync) | designer, developer, 오케스트레이터 |
 | `.claude/reference/kr-web-checklist.md` | 콘텐츠 수급, PM 사전 준비, 법적 고지, 검색엔진 등록 | pmo, planner, devops, qa |
 | `.claude/reference/polish-checklist.md` | 마감 품질(404·메타·상태·예외·문구·반응형) | planner, designer, developer, qa |
@@ -114,7 +114,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 |---|---|---|---|
 | **진행 모드** | `lite`(기본) / `standard` | kickoff (`--standard`), 진행 중 PM 지시 | `.claude/reference/modes.md` |
 | **스택 프리셋** | `static` / `kr-shared` / `react-spring` / `custom` | P1 잠정 → **G2 확정** (이후 CR) | `.claude/reference/stack-presets.md` |
-| **로컬 개발 환경** | `native` / `docker` / `hybrid` | P1 도구 확인 → **G2 확정** | `.claude/reference/environments.md` |
+| **로컬 개발 환경** | **`docker`(기본)** / `hybrid` / `native` | 기본 docker, P1 도구 확인 → G2 확정 | `.claude/reference/environments.md` |
 | **운영 환경** | `static-hosting` / `shared-hosting` / `paas` / `docker-vm` / `k8s` / `linux-native` | P1 잠정 → **G2 확정** → P4 운영 환경 명세 | `.claude/reference/environments.md` |
 | **디자인 프로필** | 스타일 체계 `css-vars`/`tailwind`, Claude Design `off`/`on`, Design Sync `off`/`on` | G2 전 (Design Sync는 G4 이후) | `.claude/reference/design-profile.md` |
 
@@ -272,7 +272,7 @@ planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고
 
 ### 기술·실행 환경
 - **기술 스택**: 스택 프리셋으로 정한다 — `.claude/reference/stack-presets.md`. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
-- **로컬 개발·운영 환경**: `.claude/reference/environments.md` — 로컬은 native/docker/hybrid, 운영은 정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스 직접 설치 중 G2에서 확정한다. 운영 서버 접속 정보는 어디에도 기록하지 않는다.
+- **로컬 개발·운영 환경**: `.claude/reference/environments.md` — 로컬은 **docker가 기본**(hybrid·native는 필요할 때만), 운영은 정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스 직접 설치 중 G2에서 확정한다. 운영 서버 접속 정보는 어디에도 기록하지 않는다.
 - **개발 PC**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Gradle Wrapper·Composer scripts·uv 등)으로 작성하며, 사용한 OS를 보고서에 기록한다.
 
 ---

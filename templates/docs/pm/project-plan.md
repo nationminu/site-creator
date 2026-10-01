@@ -134,7 +134,7 @@ updated: YYYY-MM-DD
 | **잠정 스택 프리셋** | static / kr-shared / react-spring / custom (`.claude/reference/stack-presets.md` §1 판단 순서, devops 호스팅 사전 의견 반영) | |
 | 호스팅 | 고객 보유 호스팅(업체·상품) / 신규 / TBD | |
 | **잠정 운영 환경** | static-hosting / shared-hosting / paas / docker-vm / k8s / linux-native (`.claude/reference/environments.md` §3) | |
-| **로컬 개발 환경 권장** | native / docker / hybrid — 도구 확인 결과: Node · Docker · JDK · PHP · Python 설치 여부 | |
+| **로컬 개발 환경** | docker (기본) / hybrid / native — 도구 확인 결과: Docker · Node · JDK · PHP · Python 설치 여부 (Docker 없으면 설치 안내를 PM 사전 준비에) | |
 | 도메인 | 보유 / 신규 / TBD | |
 | 외부 연동 | 폼·지도·분석·SNS 등 (유료·개인정보 관련은 PM 결정) | |
 
@@ -161,6 +161,7 @@ updated: YYYY-MM-DD
 | 3 | 폼·메일 발송 서비스 | P4 | | |
 | 4 | 분석 도구 (GA4 등 — 사용 여부는 PM 결정) | P7 | | |
 | 5 | 검색엔진 등록 계정 (네이버 서치어드바이저·Google Search Console) | P7 배포 직후 | | |
+| 6 | Docker Desktop 설치 (로컬 개발 환경 기본값, Windows는 WSL2) — 이미 설치돼 있으면 생략 | P4 착수 전 | | |
 
 ## 7-3. 비용 요약 (PM 확인 — 금액은 조사 일자·출처 기재, 모르면 TBD)
 | 구분 | 항목 | 예상 금액 | 지불 주체 | 근거 |

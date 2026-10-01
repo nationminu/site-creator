@@ -6,7 +6,7 @@
 
 | 설정 | 값 | 정하는 시점 | 기록 |
 |---|---|---|---|
-| **로컬 개발 환경** (`local-env`) | `native` / `docker` / `hybrid` | P1에서 도구 설치 현황 확인 → **G2에서 PM 확정** (스택 프리셋과 함께) | STATUS "로컬 개발 환경", ADR |
+| **로컬 개발 환경** (`local-env`) | **`docker`(기본)** / `hybrid` / `native` | 기본 `docker`. P1에서 도구 설치 현황 확인 → G2에서 PM 확정(바꿀 이유가 있을 때만 변경) | STATUS "로컬 개발 환경", ADR |
 | **운영 환경** (`prod-env`) | `static-hosting` / `shared-hosting` / `paas` / `docker-vm` / `k8s` / `linux-native` | P1 잠정(devops 호스팅 사전 의견) → **G2 확정** → P4 devops "운영 환경 명세" 작성 | STATUS "운영 환경", ADR, `devops/04_environment.md` |
 
 - G2 이후 변경은 `CLAUDE.md` §7 CR이다.
@@ -14,18 +14,26 @@
 
 ## 2. 로컬 개발 환경 (`local-env`)
 
-| 값 | 구성 | 장점 | 단점·주의 | 권장 |
+| 값 | 구성 | 장점 | 단점·주의 | 쓰는 경우 |
 |---|---|---|---|---|
-| `native` | 런타임(Node·JDK·PHP·Python)과 DB를 개발 PC에 직접 설치 | 빠르고 IDE 연동이 쉬움, Docker 불필요 | 운영과 버전 차이 위험, PC마다 설정 다름 | `static` (Node만 필요) |
-| `docker` | 런타임·DB·메일 도구를 모두 `compose.yaml` 컨테이너로 실행, 소스는 볼륨 마운트 | **운영과 같은 버전** 재현, PC 설정 최소(Docker만) | Docker Desktop 필요, Windows는 WSL2 권장(파일 감시·속도), 초기 이미지 다운로드 시간 | `kr-shared` (공유 호스팅 PHP·DB 버전 재현) |
-| `hybrid` | 런타임은 직접 설치, **DB·메일 확인 도구 등 서비스만 Docker** | 개발 편의 + 서비스 버전 일치 | 런타임 버전은 수동 관리(`.nvmrc`·Gradle toolchain·`.python-version`) | `react-spring`, 백엔드 있는 `custom` |
+| **`docker` (기본)** | 런타임·DB·메일 도구를 모두 `compose.yaml` 컨테이너로 실행, 소스는 볼륨 마운트 | **운영과 같은 버전** 재현, PC에 필요한 것은 Docker뿐, 팀·qa·PC가 바뀌어도 같은 환경 | Docker Desktop 필요, Windows는 WSL2 권장(파일 감시·속도), 초기 이미지 다운로드 시간 | **모든 프리셋의 기본값** |
+| `hybrid` | 런타임은 직접 설치, **DB·메일 확인 도구 등 서비스만 Docker** | IDE 디버깅·핫 리로드가 빠름 + 서비스 버전 일치 | 런타임 버전은 수동 관리(`.nvmrc`·Gradle toolchain·`.python-version`) | 대형 `react-spring`에서 개발 속도가 문제일 때 (PM 선택) |
+| `native` | 런타임(Node·JDK·PHP·Python)과 DB를 개발 PC에 직접 설치 | Docker 불필요 | 운영과 버전 차이 위험, PC마다 설정 다름 | **Docker를 쓸 수 없을 때만** |
 
 **공통 규칙**
 - 어떤 값이든 `developer/site/README.md`에 **처음 받은 사람이 그대로 따라 하는 설치·실행 절차**와 필요한 도구·버전을 적고, 표준 명령 매핑(`stack-presets.md` §5)이 그 환경에서 동작해야 한다.
 - `docker`·`hybrid`의 `compose.yaml`은 `developer/site/`에 두고, 서비스 버전은 운영 환경 명세와 일치시킨다. 포트 충돌을 피하도록 포트를 `.env`로 바꿀 수 있게 한다.
 - qa도 **같은 로컬 개발 환경**으로 검증한다(qa 도구 자체는 `qa/tools/`의 Node).
 - 필요한 도구가 PC에 없으면 에이전트가 설치하지 않는다 — "PM 조치 필요 사항"으로 설치 안내(도구·버전·공식 설치 페이지)를 보고한다.
-- Docker를 쓸 수 없으면 `native`로 바꾸고, 운영 환경과의 차이(버전·DB 종류)를 기술 설계 "리스크"에 적는다.
+- Docker가 없으면 먼저 PM에게 **Docker Desktop 설치**(Windows는 WSL2 백엔드)를 안내한다. 설치할 수 없을 때만 `native`(또는 `hybrid`)로 바꾸고, 운영 환경과의 차이(버전·DB 종류)를 기술 설계 "리스크"에 적는다.
+
+**`docker` 구성 기준**
+- `developer/site/compose.yaml` 하나로 개발에 필요한 전부를 띄운다: 앱(런타임 공식 이미지, 소스 볼륨 마운트), DB, 메일 확인 도구(Mailpit), 필요 시 백엔드. `docker compose up` 한 번으로 실행되게 한다.
+- 표준 명령(`stack-presets.md` §5)은 컨테이너 안에서 실행되도록 감싼다(예: `docker compose run --rm web npm run build`, `docker compose exec api ./gradlew test`) — `README.md`와 기술 설계 §6.1에 실제 명령을 적는다.
+- 의존성 디렉토리(`node_modules`·`vendor`·`.venv`)는 이름 있는 볼륨에 두어 호스트 OS 차이(Windows·macOS)와 충돌하지 않게 한다.
+- Windows·macOS 바인드 마운트에서 파일 변경 감지가 안 되면 폴링 옵션을 켠다(예: Vite `server.watch.usePolling`).
+- 정적 사이트(`static`)도 Node 공식 이미지로 개발·빌드한다 — PC에 Node를 설치하지 않아도 된다.
+- qa 도구(Playwright·Lighthouse)는 PC의 Node 또는 Playwright 공식 이미지(`mcr.microsoft.com/playwright`)로 실행하고, 사용한 방식을 테스트 계획에 적는다.
 
 **P1 도구 확인** (오케스트레이터 — kickoff 사전 점검 때): `node -v`, `docker --version`, `docker compose version`, `java -version`, `php -v`, `python3 --version`(Windows는 `python --version`)을 실행해 결과를 QNA에 PM 답변(출처: 환경 확인)으로 기록한다. 없는 도구는 "없음"으로 적는다.
 

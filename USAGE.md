@@ -403,10 +403,10 @@ P3 진행 중에 세션이 끊겼어. 기존 산출물이랑 리뷰 확인해서
 
 | 설정 | 선택지 | 권장 |
 |---|---|---|
-| 로컬 개발 환경 | `native`(직접 설치) / `docker`(전부 컨테이너) / `hybrid`(런타임 직접 + DB·메일만 Docker) | static → native · kr-shared → docker(호스팅 PHP·DB 버전 재현) · react-spring → hybrid |
+| 로컬 개발 환경 | **`docker`(기본, 전부 컨테이너)** / `hybrid`(런타임 직접 + DB·메일만 Docker) / `native`(직접 설치) | **모든 프리셋 docker** — PC에는 Docker Desktop만 있으면 됨(Windows는 WSL2). hybrid·native는 개발 속도나 Docker 불가 같은 사유가 있을 때만 |
 | 운영 환경 | 정적 호스팅 / 국내 공유 호스팅 / PaaS / 리눅스 VM + Docker / 쿠버네티스 / 리눅스 직접 설치 | 프리셋과 맞는 것만 선택지로 나옴 |
 
-- kickoff 때 PC에 설치된 도구(Node·Docker·Java·PHP·Python)를 확인해 권장안을 만듭니다. 없는 도구는 설치 안내만 드립니다.
+- kickoff 때 PC에 설치된 도구를 확인합니다. **Docker가 없으면 Docker Desktop 설치가 PM 사전 준비 항목**으로 들어갑니다. 에이전트가 직접 설치하지는 않습니다.
 - 고객이 서버를 직접 운영하면 서버 사양·접근 방식·배포 수행자·TLS·방화벽 등을 질문(QNA)으로 받습니다. **서버 접속 정보는 문서에 남기지 않습니다.**
 - P4에서 devops가 **운영 환경 명세**(`devops/04_environment.md`)와 배포 설정 파일(Docker Compose, 쿠버네티스 매니페스트, systemd·Nginx 등)을 만듭니다. 쿠버네티스처럼 고객 IT가 운영하는 환경은 배포 가이드를 넘기고 고객 담당자가 적용하는 방식이 기본입니다.
 
