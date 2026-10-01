@@ -9,7 +9,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
 2. `CLAUDE.md` §0·§4·§5·§8·§9를 확인하고, `.claude/reference/environments.md`(로컬·운영 환경, 운영 서버 확인 질문), `.claude/reference/stack-presets.md`(프리셋·호스팅 확인 항목)와 `.claude/reference/kr-web-checklist.md` §2·§4를 읽는다.
-3. 입력: `{PROJECT}/pm/01_project-plan.md`(호스팅·도메인 조건), `{PROJECT}/developer/04_tech-design.md`, `{PROJECT}/developer/site/`, `{PROJECT}/qa/05_test-report.md`, `{PROJECT}/pm/gates/G5_*.md`, `{PROJECT}/pm/gates/G6_*.md` — **lite에서 P6를 생략했으면 G6 대신 STATUS.md "예외 기록"의 생략 승인**을 확인한다.
+3. 입력: `{PROJECT}/pm/01_project-plan.md`(호스팅·도메인 조건·PM 사전 준비), `{PROJECT}/devops/04_environment.md`(운영 환경 명세), `{PROJECT}/devops/05_preview.md`(프리뷰), `{PROJECT}/developer/04_tech-design.md`(§5-3 인증·초기 관리자, §5-4 리다이렉트·SEO, §7 보안 헤더), `{PROJECT}/planning/02_information-architecture.md` §7(리다이렉트 맵), `{PROJECT}/developer/site/`, `{PROJECT}/qa/05_test-report.md`, `{PROJECT}/pm/requests/QNA.md`, `{PROJECT}/pm/gates/G5_*.md`, `{PROJECT}/pm/gates/G6_*.md` — **lite에서 P6를 생략했으면 G6 대신 STATUS.md "예외 기록"의 생략 승인**을 확인한다.
 
 ## 담당 산출물
 | 시점 | 산출물 | 템플릿 |
@@ -80,6 +80,35 @@ PM·고객이 실제 기기로 확인할 수 있도록 운영 배포 전에 임�
 - 배포 후 운영 URL에서 기본 확인(주요 페이지 HTTP 200, HTTPS, 보안 헤더, sitemap/robots, 리뉴얼이면 리다이렉트 맵의 주요 기존 URL 301)을 하고, qa 스모크 테스트가 필요하다고 보고한다.
 - **검색엔진 등록**(`kr-web-checklist.md` §4): 네이버 서치어드바이저·Google Search Console 소유 확인과 sitemap 제출 절차를 배포 보고서에 적는다. 계정 로그인·소유 확인은 **PM 조치 필요 사항**, 확인용 메타 태그·파일 반영은 `to-developer` 티켓으로 요청한다.
 - 실행한 명령과 결과를 배포 보고서에 기록한다. 비밀 정보는 마스킹한다.
+
+## 오픈 안전 규칙 (P7)
+**① 테스트한 것 = 배포하는 것**
+- 배포 결과물은 작업 폴더가 아니라 **릴리스 태그에서 깨끗하게 새로 빌드**한다: `git -C {PROJECT} archive release-v{x.y.z} developer/site | tar -x -C devops/release/build-v{x.y.z}`(읽기 전용 git 명령은 허용, 커밋·태그는 금지) → 그 폴더에서 표준 `build`. 업로드 묶음·이미지도 여기서 만든다.
+- 배포 계획에 **G5 이후 변경 목록**(`git -C {PROJECT} diff --stat G5 release-v{x.y.z} -- developer/site`)을 넣는다. 변경이 있으면 qa 회귀 테스트 결과가 있어야 배포 승인을 요청할 수 있다.
+
+**② 검색 노출 설정**
+- 프리뷰용 차단(`noindex`, `robots.txt` `Disallow: /`, `X-Robots-Tag`)은 **환경 변수로 분리**되어 있어야 한다(없으면 `to-developer` 티켓).
+- 배포 전(빌드 결과물)과 배포 후(운영 URL) 모두 확인한다: `<meta name="robots" content="noindex">` 없음, `robots.txt`가 수집 허용 + sitemap 경로 포함, `X-Robots-Tag` 응답 헤더 없음.
+
+**③ DNS 전환 체크리스트** (도메인 연결·네임서버·레코드 변경이 있을 때)
+- 변경 전 **기존 DNS 레코드 전체**(A·CNAME·**MX**·TXT/SPF·DKIM·기타)를 배포 계획에 기록한다 — 고객 회사 메일이 같은 도메인을 쓰면 MX·SPF를 반드시 유지한다. 레코드 조회는 `nslookup`/`dig`, 관리 화면 조작은 PM 조치.
+- 전환 24~48시간 전에 TTL을 낮추고(PM 조치), 바꿀 레코드만 바꾼다. 네임서버 이전이면 모든 레코드를 새 곳에 먼저 복제한다.
+- 전환 후 전파 확인, HTTPS 인증서 발급 확인, **메일 수신 확인**(PM이 테스트 메일 발송).
+- 리뉴얼이면 기존 사이트 처리(병행 기간·종료 시점·리다이렉트·기존 호스팅 해지 시점)를 계획에 적고 PM이 결정한다.
+
+**④ 운영 데이터 오염 방지**
+- 시드 데이터·테스트 계정·테스트 게시물·테스트 폼 접수는 운영에 넣지 않는다(시드 스크립트는 운영 배포에서 제외).
+- 초기 관리자 계정은 기술 설계 §5-3 방법으로 **PM이 직접 생성·비밀번호 설정**한다. 운영 비밀 값(`.env`·플랫폼 환경 변수·Secret)은 PM 조치로 설정하고 이름만 기록한다.
+
+**⑤ 운영 폼 실제 동작**: PM 승인 하에 운영 폼으로 테스트 1건을 실제 제출해 고객 수신함 도착·자동 회신을 확인하고, 생성된 데이터·메일은 삭제한다(qa 스모크와 함께, 결과는 배포 보고서).
+
+**⑥ 롤백 리허설**: 백엔드가 있거나 `docker-vm`·`k8s`·`linux-native`·`paas`면 프리뷰·스테이징에서 롤백 절차를 **1회 실제로 수행**해 결과를 배포 계획에 적는다. 정적·공유 호스팅은 이전 배포 복귀 방법 확인으로 충분하다.
+
+**⑦ 배포 시점·공지**: 방문이 적은 시간대를 정하고, 고객 측 담당자 공지·변경 승인 절차(있으면)를 배포 계획에 적는다(PM이 공지).
+
+**⑧ CI/CD를 쓰면**: 원격 저장소 연결·push는 PM 승인, CI 비밀 값 등록은 PM 조치다. 워크플로 파일은 `{PROJECT}` 안에 두고 developer 리뷰를 받는다. 태그 기준 배포만 허용한다.
+
+**⑨ 오픈 후 관찰 (24~72시간)**: 오류·응답 상태·폼 접수를 확인하고 결과를 배포 보고서 "오픈 후 관찰"에 기록한다(오케스트레이터가 PM에게 확인 시점을 알린다). 가동 상태 모니터링 도구가 외부 서비스면 PM 결정. **SSL 자동 갱신 여부와 만료일**을 확인·기록한다. 프리뷰 환경은 정리(삭제·접근 차단)하고 결과를 기록한다.
 
 ## 운영 가이드 원칙 (P8)
 - 고객 운영 담당자(비개발자 포함)가 따라 할 수 있게 쓴다: 사이트 정보, 콘텐츠 수정, 재배포, 도메인·인증서 갱신, 백업·복구, 장애 대응, 정기 점검.

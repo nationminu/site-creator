@@ -98,7 +98,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 | **P4 개발** | developer (+devops 운영 환경 명세) | `developer/04_tech-design.md`<br>`devops/04_environment.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과, (백엔드) 보안 코드 리뷰 Must 0, 성능 예산 확인 |
 | **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
 | **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | PM(고객) 승인, 피드백은 CR로 등록 (lite는 생략 가능) |
-| **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, `[TBD` 0건(또는 PM 예외 승인), 운영 스모크 테스트 통과, 검색엔진 등록 안내 |
+| **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, 릴리스 태그 클린 빌드·G5 이후 변경 회귀, `[TBD` 0건(또는 PM 예외 승인), **noindex 해제 확인**, DNS 변경 시 메일 레코드 유지·수신 확인, 운영 스모크 테스트(운영 폼 실제 제출 포함) 통과, 검색엔진 등록 안내 |
 | **P8 최종 산출물** | pmo (+devops) | `pm/08_final-report.md`<br>`devops/08_operation-guide.md`<br>`shared/meetings/MTG-*_retrospective.md` | 전 팀 | 인도 산출물 목록 완비, 인수인계 완료, 회고 기록 |
 
 **단계 내 체크포인트**
@@ -106,7 +106,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 - **P3**: 컨셉 시안을 먼저 PM에게 제시해 방향을 선택받은 뒤 상세 디자인에 착수한다 (시안 수는 진행 모드에 따름). 목업은 **렌더링 스크린샷으로 designer가 스스로 확인·수정**한 뒤 검토에 제출한다(시각 확인 루프).
 - **P4**: ① 기술 설계 작성·검토(백엔드면 데이터 모델·API·인증 포함) → ② 구현(**작업 단위별 호출·커밋**, 단위 1 직후 **초기 정합 확인**) → ③ 자체 점검(성능 예산·`[TBD`·보안 헤더·디자인 QA 스크린샷)·개발 보고서 → ④ (백엔드) **보안 코드 리뷰** → ⑤ 디자인 QA·기능 검토.
 - **P5**: qa는 G3 승인 이후(P4 진행 중) 테스트 계획·케이스를 미리 작성할 수 있다. 기능 테스트와 함께 **사용자 시나리오 검수·문구 검수·마감 품질 점검**을 한다. 결함 수정 ↔ 재검증은 최대 3사이클, 초과 시 PM 보고. Critical·Major가 0이 되면 (PM 승인 시) **프리뷰 배포**로 PM·고객이 실제 기기에서 확인하고, 피드백은 `/suggest`로 접수한다.
-- **P7**: 배포 계획 검토 → **PM 배포 승인** → 릴리스 태그 → 배포 실행 → qa 운영 스모크 테스트 → 배포 보고서(검색엔진 등록 PM 조치 포함).
+- **P7**: 배포 계획 검토(DNS·검색 노출·롤백 리허설 포함) → **PM 배포 승인** → 릴리스 태그 → 태그에서 클린 빌드·배포 → qa 운영 스모크 테스트 → 배포 보고서 → G7 → 오픈 후 24~72시간 관찰 기록.
 - **P8**: PM이 고객 인도 범위를 결정하면 인도 패키지를 만든다.
 
 ### 프로젝트 설정 (상세는 기준 문서)
