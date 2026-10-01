@@ -23,13 +23,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 템플릿은 **읽기만** 하고, `{PROJECT}` 안에 새 파일로 작성한다.
 
 ## 기술 선택 원칙
-- 요구사항을 충족하는 **가장 단순한 스택**을 고른다. 선택 순서:
-  1. **외부 서비스로 충분한가** — 문의 폼(폼 서비스), 콘텐츠 수정(헤드리스 CMS), 예약·결제(전문 서비스)는 직접 백엔드보다 먼저 검토한다.
-  2. **고객 제약** — 운영 인력이 다룰 수 있는 언어, 기존 시스템·DB, 호스팅 환경(예: 공유 호스팅이면 PHP). 제약은 planner가 `REQ-N-*`으로 기록한다.
-  3. **요구 기능** — 게시판·회원·관리자·결제 등 동적 기능의 범위.
-  4. **운영 비용·난이도** — 호스팅 비용, 콘텐츠 수정 난이도, 유지보수 인력.
-  5. **틀 기본값** — 아래 카탈로그의 기본 스택.
-- 스택은 **아래 카탈로그 안에서** 고른다. 카탈로그 밖 스택이 필요하면 근거를 기술 설계에 적고 PM 결정(ADR)을 받는다.
+- 스택의 큰 틀은 **스택 프리셋**(`CLAUDE.md` §2 "스택 프리셋")으로 G2에서 확정된다. `{PROJECT}/pm/STATUS.md`의 "스택 프리셋"을 먼저 확인하고, 기술 설계에서는 **프리셋 안의 세부 선택**(버전, CI4/Laravel, SSG/SSR 페이지 구분 등)만 한다.
+- 프리셋을 벗어나야 하면 구현하지 말고 근거를 정리해 `to-pmo` 티켓을 발행한다 → PM 결정 시 CR 절차.
+- 프리셋 안에서도 **가장 단순한 선택**을 우선한다: 외부 서비스(폼·헤드리스 CMS·예약·결제)로 충분한 기능은 직접 구현하지 않는다.
+- `custom` 프리셋은 아래 카탈로그 안에서 프론트·백엔드·DB를 각각 고르며, 카탈로그 밖 스택은 ADR로 PM 결정을 받는다.
 - 선택 근거·대안·트레이드오프를 기술 설계서에 기록한다. **기술 설계 리뷰(devops·qa) 통과 전에는 구현에 착수하지 않는다.**
 
 ## 스택 표준 카탈로그
@@ -37,7 +34,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 ### 프론트엔드
 | 구분 | 표준 | 언어 | 쓰는 경우 |
 |---|---|---|---|
-| **정적 (기본)** | Astro (SSG) | TypeScript `strict` | 회사 소개·랜딩·포트폴리오 등 정보 제공형. 동적 기능이 있어도 콘텐츠 페이지는 Astro로 두고 동적 기능만 백엔드 API로 붙이는 구성을 우선 검토 |
+| **정적** | Astro (SSG) | TypeScript `strict` | 회사 소개·랜딩·포트폴리오 등 정보 제공형. 동적 기능이 있어도 콘텐츠 페이지는 Astro로 두고 동적 기능만 백엔드 API로 붙이는 구성을 우선 검토 |
 | React | Next.js | TypeScript `strict` | 상호작용이 많은 화면, SSR이 필요한 경우 |
 | Vue | Nuxt | TypeScript `strict` | 위와 같으나 고객·운영 인력이 Vue를 선호할 때 |
 | 순수 HTML/CSS/JS | — | JavaScript | **예외** — 1~2페이지이고 고객이 HTML을 직접 수정해야 하는 경우만. 사유를 기술 설계에 기록 |
@@ -48,13 +45,54 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 ### 백엔드 (동적 요구사항이 있을 때만)
 | 스택 | 프레임워크 | 빌드·패키지 | 린트·포맷·정적 분석 | 테스트 | DB 접근·마이그레이션 | 쓰는 경우 |
 |---|---|---|---|---|---|---|
-| **Java (기본)** | Spring Boot (+ Spring Security, Bean Validation, springdoc-openapi) | Gradle Kotlin DSL + Gradle Wrapper | Spotless + Checkstyle | JUnit 5 + Spring Boot Test (+ Testcontainers) | Spring Data JPA + Flyway | 고객 제약이 없을 때 기본. 장기 운영·확장 |
-| **PHP** | Laravel (기본) / CodeIgniter 4 (경량·공유 호스팅) | Composer | Laravel Pint + PHPStan(Larastan) / CI4: PHP-CS-Fixer + PHPStan | Pest(Laravel) / PHPUnit(CI4) | Eloquent 마이그레이션 / CI4 Migrations | 공유 호스팅, 기존 PHP 운영 환경, 낮은 운영 비용 |
+| **Java** | Spring Boot (+ Spring Security, Bean Validation, springdoc-openapi) | Gradle Kotlin DSL + Gradle Wrapper | Spotless + Checkstyle | JUnit 5 + Spring Boot Test (+ Testcontainers) | Spring Data JPA + Flyway | `react-spring` 프리셋. 장기 운영·확장 |
+| **PHP** | CodeIgniter 4 (공유 호스팅 기본) / Laravel (SSH·Composer 가능 시) | Composer | Laravel Pint + PHPStan(Larastan) / CI4: PHP-CS-Fixer + PHPStan | Pest(Laravel) / PHPUnit(CI4) | Eloquent 마이그레이션 / CI4 Migrations | 공유 호스팅, 기존 PHP 운영 환경, 낮은 운영 비용 |
 | **Python** | Django (+ API 필요 시 Django REST framework) | uv (`pyproject.toml` + `uv.lock`) | Ruff (lint + format) | pytest-django | Django ORM 마이그레이션 | 관리자 화면(Django Admin) 중심, 데이터 처리 |
 
-- **DB 기본**: PostgreSQL. 고객 호스팅이 MySQL/MariaDB만 제공하면 그에 맞춘다. 로컬 DB는 `developer/site/compose.yaml`(Docker Compose)로 띄우는 것을 권장하고, Docker를 쓸 수 없으면 대안(SQLite 등)과 운영 DB와의 차이를 기술 설계에 기록한다.
+- **DB**는 프리셋이 정한다(`kr-shared`: 호스팅의 MariaDB/MySQL, `react-spring`: PostgreSQL). **로컬 DB는 운영과 같은 종류·버전**으로 맞춘다. 로컬 DB는 `developer/site/compose.yaml`(Docker Compose)로 띄우는 것을 권장하고, Docker를 쓸 수 없으면 대안(SQLite 등)과 운영 DB와의 차이를 기술 설계에 기록한다.
 - **화면 렌더링 방식**은 기술 설계에서 정한다: ① Astro 등 프론트엔드 + 백엔드 REST API 분리, ② 백엔드 템플릿(Thymeleaf·Blade·Django Template)으로 서버 렌더링. 선택 근거(호스팅 수, SEO, 운영 난이도)를 기록한다.
 - **버전 정책**: 착수 시점에 공식 지원 중인 **LTS 또는 최신 안정 버전**을 고르고(Java LTS, Django LTS 우선, PHP·Laravel은 보안 지원 기간이 남은 버전), 기술 설계 "버전·지원 종료" 표에 정확한 버전과 EOL 일자를 고정한다. 틀은 버전 숫자를 고정하지 않는다.
+
+## 스택 프리셋 상세
+
+### `static` — 정적 사이트
+| 항목 | 내용 |
+|---|---|
+| 구성 | Astro (SSG) + TypeScript strict. 백엔드·DB 없음 |
+| 동적 요소 | 문의 폼은 외부 폼 서비스, 콘텐츠 수정 요구가 있으면 헤드리스 CMS 검토 (개인정보 수집 시 처리방침 고지) |
+| 결과물 | `dist/` 정적 파일 — 정적 호스팅 또는 국내 공유 호스팅 웹 루트에 업로드 가능 |
+| 표준 명령 | 프론트엔드 열만 사용 |
+
+### `kr-shared` — 국내 공유 호스팅 (카페24·가비아 등)
+| 항목 | 내용 |
+|---|---|
+| 구성 | Astro 정적 빌드 + PHP API(**CodeIgniter 4 기본**, SSH·Composer 가능하고 PHP 버전이 맞으면 Laravel 허용) + 호스팅 제공 MariaDB/MySQL |
+| 서버 배치 | 앱 본체·`vendor/`·`.env`는 **웹 루트 밖**(예: `~/app/`), 웹 루트(`~/www/` 등)에는 Astro `dist/` + `api/index.php`(앱 `public/index.php` 사본, 경로 수정) + `.htaccess`(`/api/*` → `api/index.php`). 웹 루트 안 `.htaccess` 차단만으로 비밀 파일을 보호하는 배치는 쓰지 않는다 |
+| API 연결 | **같은 도메인 `/api/*`** — CORS 불필요, 세션 쿠키·CSRF 그대로 사용 |
+| 서버 제약 | 서버에 Node 없음 → 프론트는 로컬/CI에서 빌드 후 업로드. 서버 상주 프로세스 없음 → 큐는 동기 처리 또는 cron(지원 시)으로 대체 |
+| 의존성 | `composer.json`의 `config.platform.php`를 **운영 PHP 버전으로 고정**하고 `composer install --no-dev -o` 결과 `vendor/`를 업로드 묶음에 포함 (SSH·Composer가 있어도 같은 방식 권장) |
+| DB 마이그레이션 | 프레임워크 마이그레이션 + **버전 번호가 붙은 SQL 파일**(`database/sql/V{nnn}__{설명}.sql`)을 함께 유지. SSH가 없으면 SQL 파일을 호스팅 DB 관리도구로 적용 |
+| 로컬·검증 환경 | `compose.yaml`로 **운영과 같은 버전**의 `php:{버전}-apache` + `mariadb:{버전}`(또는 mysql) 구성, 필요한 PHP 확장 동일하게 설치 |
+| 메일 | 호스팅 메일 발송 제한 확인, 부족하면 외부 메일 발송 서비스 |
+| 호스팅 확인 항목 | PHP 버전·확장(mbstring·intl·pdo_mysql·openssl·curl·fileinfo·gd), SSH/SFTP, Composer, cron, DB 종류·버전·용량·외부 접속, 웹 루트 위치·상위 디렉토리 쓰기 권한, `.htaccess`·mod_rewrite, 무료 SSL·자동 갱신, 업로드 용량 제한, 메일 발송 제한, 백업 주기 |
+
+### `react-spring` — Next.js + Spring Boot + PostgreSQL
+| 항목 | 내용 |
+|---|---|
+| 구성 | `web/` Next.js(App Router) + TypeScript strict, `api/` Spring Boot REST API, PostgreSQL |
+| 렌더링 | **페이지별로 SSG/SSR을 정한다.** 콘텐츠 페이지는 SSG(정적 생성) 우선, 개인화·실시간 데이터·요청 시점 SEO가 필요한 페이지만 SSR. 페이지별 렌더링 방식과 근거를 기술 설계에 표로 기록. 전 페이지가 SSG면 static export로 Node 서버 없이 배포 |
+| API 연결 | 운영은 **같은 사이트**로 구성(리버스 프록시 `/api` 또는 `api.<도메인>` 서브도메인). 인증은 세션 쿠키(HttpOnly·Secure·SameSite) 우선, CORS는 프론트 도메인만 허용. Next 서버 기능은 렌더링·BFF 수준으로만 쓰고 업무 로직은 Spring에 둔다 |
+| 백엔드 | Spring Security, Bean Validation, springdoc-openapi, Spring Data JPA + Flyway, Actuator 헬스체크 |
+| 로컬 | `compose.yaml`(PostgreSQL) + `web` `npm run dev` + `api` `./gradlew bootRun`, 개발 시 Next rewrites로 `/api` 프록시 |
+| 운영 비용 | 프론트(정적 또는 Node) + Spring 런타임 + 관리형 PostgreSQL — 월 비용 추정을 기술 설계·배포 계획에 기록 |
+
+### `custom` — 개별 선택
+| 항목 | 내용 |
+|---|---|
+| 구성 | 프론트(Astro / Next.js / Nuxt / 순수 HTML) × 백엔드(없음 / Spring Boot / Laravel / CodeIgniter 4 / Django) × DB(없음 / PostgreSQL / MySQL·MariaDB)를 위 카탈로그에서 각각 선택 |
+| 호환성 확인 | 호스팅과 맞지 않는 조합 금지 — 국내 공유 호스팅에서는 Node SSR·Spring Boot·Django·PostgreSQL 불가 |
+| 근거 | 왜 다른 프리셋이 아닌지(고객 지정 기술, 기존 시스템 등)를 ADR에 기록 |
+| 세부 규칙 | 가장 가까운 프리셋의 규칙(서버 배치·API 연결·로컬 환경)을 준용하고, 다른 부분만 기술 설계에 명시 |
 
 ### 디렉토리 구성
 - 단일 애플리케이션(Astro 단독, 백엔드 서버 렌더링 단독): `developer/site/`가 앱 루트.

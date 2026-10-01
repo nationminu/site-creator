@@ -41,6 +41,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 | 키보드·포커스·대체 텍스트 의미 | 수동 점검 | Tab 순회, 포커스 표시, 건너뛰기 링크, alt 문구 적절성 | 체크리스트 표 (+ 필요 시 스크린샷) |
 
 - 대상 서버: `developer/site/README.md`의 **프로덕션 빌드 미리보기 명령**(예: `npm run build && npm run preview`)으로 띄운 로컬 주소를 쓴다. 개발 서버 점수는 성능 판정에 쓰지 않는다.
+- 스택 프리셋(`{PROJECT}/pm/STATUS.md`)별 검증 환경:
+  - `kr-shared`: `compose.yaml`의 **운영과 같은 버전** PHP(Apache)·MariaDB 환경에 업로드 묶음과 같은 배치(웹 루트 + 웹 루트 밖 앱)로 올려 검증한다. `.env`·`vendor/`·`app/`이 웹에서 열람되지 않는지(HTTP 403/404) 확인하고, SQL 파일(`database/sql/V*.sql`)만으로 빈 DB가 구성되는지 확인한다.
+  - `react-spring`: 페이지별 SSG/SSR 표대로 렌더링되는지(SSR 페이지는 요청 시 데이터 반영) 확인하고, `/api` 연결·세션 쿠키 속성(HttpOnly·Secure·SameSite)·CORS 허용 범위를 확인한다.
+  - `static`: 외부 폼 서비스 전송·완료 화면, 개인정보 처리방침 고지를 확인한다.
 - Playwright 브라우저는 `npx playwright install chromium firefox webkit`로 설치한다(사용자 캐시에 설치됨). 설치가 불가하면 가능한 브라우저만 수행하고 미검증 브라우저를 명시한다.
 - 합격 기준: Lighthouse 각 카테고리 90+(CLAUDE.md §6), axe `critical`·`serious` 위반 0, 깨진 내부 링크 0, 콘솔 에러 0, 360/768/1280 레이아웃 붕괴 0.
 - 자동 도구 통과는 접근성 적합의 **필요조건일 뿐**이다. 수동 점검 결과를 함께 판정한다.

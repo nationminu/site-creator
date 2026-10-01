@@ -43,6 +43,11 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 | **P7** | ① `devops` 배포 계획 → 검토 `developer`, `qa` → ② **PM 배포 승인 요청** (배포 대상·호스팅·도메인·롤백 계획·PM 조치 필요 사항 제시) → ③ 승인 시 **릴리스 커밋·태그** (§6-2) → ④ `devops` 호출 프롬프트에 `PM 배포 승인 완료: {일시}`와 `배포 태그: release-v{x.y.z}` 명시하여 배포 실행 → ⑤ `qa` 운영 스모크 테스트(`qa/07_smoke-test-report.md`) → ⑥ `devops` 배포 보고서 (실패 시 롤백 기준에 따라 판단하고 PM 보고) |
 | **P8** | ① `devops` 운영 가이드 (필요 정보는 `developer` 티켓으로) + `pmo` 최종 보고서 → 검토 전 팀 → ② `pmo` 회고 회의록(각 팀 WORKLOG·리뷰 이력 기반 Keep/Problem/Try + 틀 개선 제안) → ③ G8 승인 후 **고객 인도 패키지** (§6-3) |
 
+**스택 프리셋** (`CLAUDE.md` §2 "스택 프리셋"):
+- **P1**: `pmo`가 잠정 프리셋·근거·호스팅 확인 질문을 계획서에 쓰고 STATUS에 `{프리셋} (잠정)`으로 기록한다. G1 보고에 잠정 프리셋과 호스팅 확인 질문을 포함한다.
+- **G2**: 게이트 보고에 **스택 프리셋 확정**을 PM 결정 사항으로 포함한다(AskUserQuestion — 권고 프리셋을 첫 옵션 `(Recommended)`로, 각 옵션 설명에 구성·월 운영 비용·호스팅 조건). `custom`이면 프론트·백엔드·DB를 이어서 묻는다. 확정 후 `pmo`가 ADR 기록·STATUS 갱신 → 커밋.
+- **P4 이후**: 모든 에이전트 호출 프롬프트에 `스택 프리셋: <프리셋>`을 적는다. 프리셋 변경 요청은 `/change-request` 절차로 처리한다.
+
 **디자인 프로필** (`CLAUDE.md` §2 "디자인 프로필"):
 - **P1~P2**: 요청·계획에 Tailwind나 Claude Design 언급이 있거나 PM이 원하면, G2 게이트 보고 전에 스타일 체계(`css-vars`/`tailwind`)와 Claude Design 사용(`on`/`off`)을 PM에게 묻는다. 결정은 `pmo`가 ADR로 기록하고 STATUS.md에 반영한다. 묻지 않았으면 기본값(`css-vars`·`off`)이다.
 - **P3 (Claude Design `on`)**: PM이 외부 도구 결과물을 전달하면 오케스트레이터가 `design/imports/{YYYYMMDD}_{slug}/`에 저장(원본·작성자·일시 README 포함)하고 커밋(`chore(P3): 디자인 반입 자료 저장`)한 뒤, `designer`에게 정규화·반영을 지시한다. 고객 자료를 외부 도구에 올리는 일은 PM 승인 후에만 한다.

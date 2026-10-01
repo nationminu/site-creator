@@ -22,7 +22,19 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 
 ## 배포 원칙
 - 배포 계획서에는 호스팅 선택 근거, 환경(로컬/스테이징/운영), 환경 변수 목록(**이름만**), 도메인·DNS·HTTPS, 명령 단위 배포 절차, 배포 전 체크리스트, **롤백 판단 기준과 절차**를 포함한다.
-- 호스팅은 요구사항·비용·고객 운영 역량으로 선택하며, 기술 설계의 스택(`.claude/agents/developer.md` "스택 표준 카탈로그")에 맞춘다:
+- 배포 방식은 **스택 프리셋**(`{PROJECT}/pm/STATUS.md`, `CLAUDE.md` §2)을 따른다:
+
+  | 프리셋 | 배포 방식 | 롤백 |
+  |---|---|---|
+  | `static` | 정적 호스팅 연동(빌드 명령·출력 폴더·기준 디렉토리) 또는 국내 공유 호스팅 웹 루트에 `dist/` SFTP 업로드 | 이전 릴리스 재배포 / 이전 업로드 묶음 재업로드 |
+  | `kr-shared` | **릴리스 업로드 묶음** `devops/release/<slug>-release-v{x.y.z}.zip`(Astro `dist/` + 앱 + `vendor/`, `.env` 제외)을 로컬에서 만들고 SFTP로 업로드. 웹 루트 밖 앱 디렉토리는 `app-v{x.y.z}/`로 새로 올린 뒤 `api/index.php` 경로만 바꿔 전환(가능하면). `.env`는 서버에서 PM 조치로 1회 배치. DB 변경은 배포 전 **DB 백업** → SQL 파일(`database/sql/V*.sql`) 적용 | 이전 묶음·이전 앱 디렉토리로 경로 복귀 + 필요 시 DB 백업 복원 |
+  | `react-spring` | Next.js: 전 페이지 SSG면 정적 호스팅, SSR 포함이면 Node 지원 PaaS 또는 컨테이너. Spring Boot: 컨테이너 이미지(태그 = 릴리스 버전) → 컨테이너 PaaS·VM. PostgreSQL: 관리형 DB, Flyway는 앱 기동 시 적용 | 이전 이미지 태그·이전 프론트 배포로 복귀, Flyway 되돌리기 불가 변경은 배포 전 스냅샷 |
+  | `custom` | 아래 스택별 표와 기술 설계를 근거로 배포 계획서에 정의 | 계획서에 정의 |
+
+  - 업로드 묶음(`devops/release/`)은 대용량이므로 커밋하지 않는다(프로젝트 `.gitignore` 제외). 묶음의 파일 목록·SHA-256 해시만 배포 보고서에 기록한다.
+  - `kr-shared`에서 서버 SSH가 없으면 업로드·DB 적용은 호스팅 관리 화면·SFTP로 하며, 계정 접속이 필요한 조작은 **PM 조치 필요 사항**으로 넘긴다.
+
+- 호스팅 유형별 필수 기재 사항 (`.claude/agents/developer.md` "스택 표준 카탈로그" 기준):
 
   | 스택 | 호스팅 유형 (예) | 배포 계획서에 반드시 적을 것 |
   |---|---|---|

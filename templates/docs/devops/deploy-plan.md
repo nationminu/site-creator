@@ -16,6 +16,7 @@ updated: YYYY-MM-DD
 | 항목 | 내용 |
 |---|---|
 | 배포 대상 | `developer/site/` (개발 보고서 버전: ) |
+| 스택 프리셋 | static / kr-shared / react-spring / custom |
 | 배포 유형 | 최초 오픈 / 재배포 (CR-) |
 | 예정 일시 | |
 | 운영 URL (예정) | |
@@ -26,6 +27,14 @@ updated: YYYY-MM-DD
 | 호스팅 | | | |
 | 빌드 방식 | 호스팅 빌드 / CI / 수동 업로드 | | |
 | 폼·외부 서비스 | | | |
+
+### 2.1 서버 배치 (kr-shared · 공유 호스팅)
+| 위치 | 내용 |
+|---|---|
+| 웹 루트 (`~/www/` 등) | Astro `dist/`, `api/index.php`, `.htaccess` |
+| 웹 루트 밖 (`~/app-v{x.y.z}/`) | 앱 본체, `vendor/`, `.env`(서버에서 1회 배치) |
+| 업로드 묶음 | `devops/release/<slug>-release-v{x.y.z}.zip` (SHA-256: ) |
+| DB 적용 | 배포 전 백업 → `database/sql/V*.sql` 적용 순서: |
 
 ## 3. 환경 구성
 | 환경 | URL | 용도 |

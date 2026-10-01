@@ -125,6 +125,24 @@ lite 주 검토자: P1 `developer` · P2 `developer` · P3 `developer` · P4 설
 - 승인 이후 디자인 변경은 외부 도구에서 시작되었더라도 §7 CR 절차를 따른다.
 - 외부 디자인 서비스(claude.ai/design 등)에 고객 자료를 올리거나 게시하는 것은 §8의 **외부 전송**이므로 매번 PM 승인을 받는다.
 
+### 스택 프리셋
+호스팅 환경이 가능한 스택을 결정하므로, 프론트·백엔드·DB·호스팅·배포 방식을 **한 묶음**으로 고른다. 세부 규칙은 `.claude/agents/developer.md` "스택 프리셋 상세".
+
+| 프리셋 | 이런 경우 | 프론트 | 백엔드 | DB | 호스팅·배포 |
+|---|---|---|---|---|---|
+| **`static`** | 동적 기능 없음 (폼·CMS는 외부 서비스로 충분) | Astro | 없음 | 없음 | 정적 호스팅 또는 국내 공유 호스팅 업로드 |
+| **`kr-shared`** | 국내 공유 호스팅(카페24·가비아 등) 사용·희망 + 게시판·관리자 등 동적 기능 | Astro (정적 빌드) | CodeIgniter 4 (SSH·Composer 가능 시 Laravel) | 호스팅의 MariaDB / MySQL | SFTP 업로드 묶음, 앱은 웹 루트 밖, 같은 도메인 `/api` |
+| **`react-spring`** | 회원·결제·외부 연동이 많거나 장기 운영·확장 필요 + 서버 운영 가능 | Next.js (페이지별 SSG/SSR) | Spring Boot | PostgreSQL | 프론트(정적/Node) + 컨테이너·VM + 관리형 DB |
+| **`custom`** | 위 셋에 맞지 않음 (고객 지정 기술·기존 시스템 등) | Astro / Next.js / Nuxt / 순수 HTML | 없음 / Spring Boot / Laravel / CodeIgniter 4 / Django | 없음 / PostgreSQL / MySQL·MariaDB | 기술 설계·배포 계획에서 정의 |
+
+**판단 순서**: ① 동적 기능이 외부 서비스로 충분하면 `static` → ② 국내 공유 호스팅이 정해져 있거나 원하면 `kr-shared` → ③ 고객 지정 기술·기존 시스템이 있으면 `custom` → ④ 그 외에는 규모·운영 비용으로 `kr-shared`와 `react-spring`을 비교해 PM이 고른다.
+
+**결정 시점**
+- **P1**: pmo가 계획서 "기술·환경 초기 방향"에 **잠정 프리셋**과 근거, 호스팅 확인 질문(`developer.md` `kr-shared` "호스팅 확인 항목" 등)을 제시한다. STATUS에는 `{프리셋} (잠정)`으로 기록한다.
+- **G2**: 요구사항으로 동적 기능 범위가 확정되면 PM이 프리셋을 확정하고, pmo가 ADR로 기록하고 STATUS의 "(잠정)"을 지운다. `custom`이면 프론트·백엔드·DB 선택도 함께 기록한다.
+- **P4**: developer는 프리셋 안의 세부(버전, CI4/Laravel, 페이지별 SSG/SSR 등)만 정한다. **G2 이후 프리셋 변경은 §7 CR 절차**를 따른다.
+- 프리셋은 진행 모드(lite)·디자인 프로필과 독립적이다.
+
 ---
 
 ## 3. 단계 실행 표준 루프
@@ -263,15 +281,7 @@ updated: YYYY-MM-DD
 
 planner는 이 기준을 `REQ-N-*` 비기능 요구사항으로 구체화한다.
 qa는 이 기준을 `.claude/agents/qa.md`의 **표준 검증 도구 세트**(Lighthouse CLI · Playwright · axe-core · linkinator)로 측정한다.
-- **기술 스택 표준**: 스택은 P4 기술 설계에서 developer가 정하며, `.claude/agents/developer.md` "스택 표준 카탈로그" 안에서 고른다(밖이면 ADR로 PM 결정).
-
-  | 구분 | 기본 | 카탈로그 |
-  |---|---|---|
-  | 프론트엔드 | **Astro (SSG) + TypeScript strict** | Next.js(React), Nuxt(Vue), 순수 HTML(예외) |
-  | 백엔드 (동적 요구 시만) | **Java · Spring Boot** | PHP · Laravel / CodeIgniter 4, Python · Django |
-  | DB | PostgreSQL | 고객 호스팅에 따라 MySQL/MariaDB |
-
-  선택 순서: 외부 서비스로 충분한지 → 고객 제약(운영 언어·기존 시스템·호스팅) → 요구 기능 → 운영 비용 → 틀 기본값. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
+- **기술 스택**: §2 "스택 프리셋"으로 정하고, 세부 툴체인·명령은 `.claude/agents/developer.md` "스택 표준 카탈로그"·"스택 프리셋 상세"를 따른다. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
 - **실행 환경**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Node 스크립트)으로 작성하며, 사용한 OS를 보고서에 기록한다.
 
 ---
