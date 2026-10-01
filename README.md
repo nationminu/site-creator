@@ -35,9 +35,10 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 | P3 중간 | 디자인 컨셉 시안 선택 |
 | G2 | 요구사항 승인, **스택 프리셋·로컬 개발 환경·운영 환경 확정** |
 | G3 ~ G5 | 단계 산출물 승인 |
-| G6 | 중간보고(고객) 결과 및 피드백 반영 여부 |
+| G5 | (lite) P6 중간보고 생략 여부, 프리뷰 배포 여부 |
+| G6 | 중간보고(고객) 결과 및 피드백 반영 여부 (lite에서 생략하면 없음) |
 | P7 중간 | **운영 배포 실행 승인**, 남은 `[TBD` 예외 승인, 검색엔진 등록(PM 계정) |
-| G8 | 고객 인도 범위, 프로젝트 종료 승인 |
+| G8 | 하자보수·유지보수 범위, 고객 인도 범위·방식, 계정 명의 이전, 프로젝트 종료 승인 |
 | kickoff·G1 | 진행 모드 (기본 lite, 대규모면 standard 전환 권고) |
 | 수시 | 리뷰 라운드 상한 초과·팀 간 충돌 시 결정, 원격 저장소 push |
 
@@ -51,7 +52,7 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
 ├── ACTIVITY.md                    # 틀 변경 진행 요약 (날짜별, 최신이 위)
 ├── .claude/
 │   ├── agents/                    # 팀 에이전트: pmo, planner, designer, developer, qa, devops
-│   ├── skills/                    # PM 명령어: kickoff, run-phase, status, change-request, resume-project
+│   ├── skills/                    # PM 명령어: kickoff, run-phase, status, change-request, resume-project, suggest, answer
 │   ├── reference/                 # 기준 문서: 진행 모드, 스택 프리셋, 실행 환경, 디자인 프로필, 국내 실무·마감 품질 체크리스트, Git 운영
 │   └── settings.json              # 틀 보호 규칙 (보호 영역 Edit·Write 시 확인 요청)
 ├── templates/
@@ -62,12 +63,13 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
     └── <project-slug>/            ← Git ② 프로젝트 저장소 (프로젝트별 독립)
         ├── README.md
         ├── ACTIVITY.md            #   진행 요약 (날짜별, 최신이 위)
-        ├── pm/                    #   STATUS.md(현황판), requests/, gates/, 계획·보고서
+        ├── inbox/                 #   제안 자료(캡처·파일) 넣는 곳 → /suggest
+        ├── pm/                    #   STATUS.md(현황판), requests/(CR·QNA·SUG), gates/, 계획·보고서
         ├── planning/              #   요구사항, IA, 화면정의서
         ├── design/                #   컨셉, 디자인 시스템, mockups/, assets/
         ├── developer/site/        #   ★ 홈페이지 소스코드
         ├── qa/                    #   테스트 계획·케이스·결과
-        ├── devops/                #   배포 계획·결과, 운영 가이드
+        ├── devops/                #   운영 환경 명세, 프리뷰, 배포 계획·결과, 운영 가이드
         └── shared/                #   tickets/, reviews/, decisions/, meetings/
 ```
 
@@ -76,5 +78,5 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
 | | 틀 (`./`) | 프로젝트 (`projects/<slug>/`) |
 |---|---|---|
 | 수정 시점 | 사용자가 에이전트·스킬·규칙·템플릿 변경을 **명시적으로 요청**할 때만 | 프로젝트 작업 중 상시 |
-| Git | 틀 변경 시 커밋 | kickoff·게이트 승인·CR 결정·릴리스 시 자동 커밋·태그 |
+| Git | 틀 변경 시 커밋 | **작업 단위(에이전트 호출)마다** 자동 커밋, 게이트 승인·릴리스 시 태그 |
 | 템플릿 | 한 곳에서 관리 | 복사하지 않음 — 작성된 산출물만 저장. kickoff 시 틀 커밋 번호 기록 |

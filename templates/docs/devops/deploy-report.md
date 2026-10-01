@@ -5,7 +5,7 @@ phase: P7
 owner: devops
 version: 0.1
 status: draft
-reviewers: [developer, qa]
+reviewers: []                # 교차 검토 없음 — PM이 G7에서 확인
 inputs: [devops/07_deploy-plan.md, qa/07_smoke-test-report.md]
 updated: YYYY-MM-DD
 ---

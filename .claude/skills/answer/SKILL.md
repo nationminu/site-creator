@@ -21,7 +21,7 @@ argument-hint: "[project-slug] [Q-xxx] <답변 내용>"
 ## 2. 기록
 - 해당 행의 "답변 (원문)"에 PM이 전달한 내용을 **수정 없이** 적고, 답변일·출처(고객 이름/PM), 상태 `answered`를 기록한다.
 - 답변에 파일이 있으면 `/suggest`의 첨부 규칙대로 `pm/requests/attachments/Q-xxx/`에 보관한다.
-- STATUS.md "TBD·콘텐츠 수급"의 미답변 질문 수를 갱신하고, ACTIVITY에 `* 결정: Q-xxx 고객 답변 — {요약} (PM)`을 추가해 커밋한다 (`chore: Q-xxx 고객 답변 기록`).
+- STATUS.md "TBD·콘텐츠 수급"의 미답변 질문 수를 갱신하고, ACTIVITY에 `* 결정: Q-xxx 고객 답변 — {요약} (PM)`을 추가해 커밋한다 (`qna(Q-xxx): 답변 기록`).
 
 ## 3. 반영
 1. 산출물에서 `[TBD: Q-xxx]`를 Grep으로 찾아 영향 문서를 정한다(계획서 §2.4·§7·§8, 요구사항, 화면정의서, 디자인, 기술 설계 등).
@@ -34,7 +34,7 @@ argument-hint: "[project-slug] [Q-xxx] <답변 내용>"
 | 승인됨 — 답변 때문에 범위·기능·디자인·스택이 **바뀜** | 반영하지 않고 `.claude/skills/change-request/SKILL.md` 절차로 CR 생성(요청 원문에 Q ID·답변 인용) |
 | 스택 프리셋·진행 모드·디자인 프로필 판단에 영향 | PM에게 보고하고 결정을 받는다(G2 전이면 프리셋 잠정값 갱신, 후면 CR) |
 
-3. 반영이 끝나면 QNA 행의 "반영 위치"를 채우고 상태를 `applied`로 바꿔 커밋한다(ACTIVITY `수정` 항목).
+3. 반영이 끝나면 QNA 행의 "반영 위치"를 채우고 상태를 `applied`로 바꿔 커밋한다(ACTIVITY `수정` 항목, `qna(Q-xxx): 반영 — {문서}`).
 
 ## 4. PM 보고
 ```

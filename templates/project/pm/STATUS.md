@@ -13,7 +13,12 @@
 | 로컬 개발 환경 | `docker` (기본 — hybrid / native는 PM 결정, `.claude/reference/environments.md`, G2 확정) |
 | 운영 환경 | `TBD` (static-hosting / shared-hosting / paas / docker-vm / k8s / linux-native — P1 잠정 → G2 확정) |
 | 스타일 체계 | `css-vars` (css-vars / tailwind — CLAUDE.md §2 "디자인 프로필", G2 전 결정) |
-| Claude Design | `off` (반입 사용 on/off · Design Sync on/off) |
+| Claude Design | `off` (반입 사용 on/off) |
+| Design Sync | `off` (G4 이후 PM 결정) |
+| 프리뷰 | 없음 (URL · 만료일 — `devops/05_preview.md`) |
+| 운영 URL · 릴리스 | 미배포 (URL · `release-v…`) |
+| 오픈 후 관찰 | — (대기: YYYY-MM-DD 확인 예정 / 기록 완료) |
+| 보류 사유 | — |
 | 현재 단계 | **P1 계획** — 착수 |
 | 틀 버전 | `{framework-commit}` |
 | 최종 갱신 | YYYY-MM-DD |
@@ -57,14 +62,14 @@
 | - | 없음 | | | |
 
 ## 4-1. 제안 (SUG)
-| SUG ID | 제목 | 제안자 | 유형 | 상태 | 처리 (반영 위치 / CR / DEF) |
-|---|---|---|---|---|---|
-| - | 없음 | | | | |
+| SUG ID | 제목 | 제안자 | 유형 | 상태 | 처리 (반영 위치 / CR / DEF) | 사유·재검토 시점 (보류·미반영) |
+|---|---|---|---|---|---|---|
+| - | 없음 | | | | | |
 
 ## 5. 변경 요청 (CR)
-| CR ID | 제목 | 상태 | 회귀 단계 |
-|---|---|---|---|
-| - | 없음 | | |
+| CR ID | 제목 | 상태 | 회귀 단계 | 사유·재검토 시점 (보류·거절) |
+|---|---|---|---|---|
+| - | 없음 | | | |
 
 ## 6. 다음 할 일
 - [ ] P1 계획 단계 실행 (kickoff에서 자동 진행)

@@ -6,7 +6,7 @@ owner: qa
 version: 0.1
 status: draft
 reviewers: [developer, planner]
-inputs: [planning/02_requirements.md, developer/04_tech-design.md]
+inputs: [planning/02_requirements.md, planning/02_information-architecture.md, developer/04_tech-design.md, developer/04_dev-report.md, devops/04_environment.md]
 updated: YYYY-MM-DD
 ---
 

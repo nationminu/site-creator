@@ -76,7 +76,7 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 > 따라서 팀 간 소통은 **파일(산출물·리뷰·티켓)** 로만 이루어지고, 에이전트 호출과 순서 조율은 **오케스트레이터**가 담당한다.
 >
 > **오케스트레이터는 팀 산출물을 직접 작성하지 않는다.** 반드시 해당 팀 에이전트에게 위임한다.
-> (예외: 프로젝트 골격 생성, kickoff 사전 질문, `pm/STATUS.md` 갱신, CR·SUG 요청 원문과 첨부 기록, QNA 질문 옮겨 등록·고객 답변 원문 기록, 목업·화면 스크린샷 캡처(도구 실행 결과 저장), 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
+> (예외: 프로젝트 골격 생성, kickoff 사전 질문, `pm/STATUS.md` 갱신, CR·SUG 요청 원문과 첨부 기록, CR·SUG·QNA의 PM 결정·상태·반영 결과 기입, QNA 질문 옮겨 등록·고객 답변 원문 기록, 목업·화면 스크린샷 캡처(도구 실행 결과 저장)와 컨셉 문서 스크린샷 삽입, 프로젝트 README 운영 URL 기입, 인도 패키지(`.delivery/`) 목차 README, 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
 
 ---
 
@@ -95,11 +95,11 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 | **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md`<br>`shared/meetings/MTG-*_kickoff-agenda.md`<br>`pm/requests/QNA.md` | planner, developer | 범위·**규모 초안**(페이지·기능)·**오픈일 역산 일정**·리스크 확정, 이해관계자·피드백 정책, 잠정 스택 프리셋, 비용 요약, 콘텐츠 수급·PM 사전 준비 계획, 고객 질문 등록 |
 | **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | **요청 추적표 빈칸 0**(고객 요청 → REQ), 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 폼·콘텐츠 유형·법적 고지 정의, (리뉴얼) 리다이렉트 맵, **팀 제안 기능 PM 개별 결정(검토 전)**, P1 규모 대비 변화 보고, **스택 프리셋·로컬 개발 환경·운영 환경 확정** |
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
-| **P4 개발** | developer (+devops 운영 환경 명세) | `developer/04_tech-design.md`<br>`devops/04_environment.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과, (백엔드) 보안 코드 리뷰 Must 0, 성능 예산 확인 |
-| **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
+| **P4 개발** | developer (+devops 운영 환경 명세) | `developer/04_tech-design.md`<br>`devops/04_environment.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>운영 환경 명세: developer, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과, (백엔드) 보안 코드 리뷰 Must 0, 성능 예산 확인 |
+| **P5 검증(로컬)** | qa (+devops 프리뷰) | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*`<br>`devops/05_preview.md`(PM 승인 시) | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
 | **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | 고객 전달용(프리뷰 주소·스크린샷·고객 할 일), PM(고객) 승인, 피드백은 `/suggest`로 접수(승인된 내용 변경은 CR) (lite는 생략 가능) |
-| **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, 릴리스 태그 클린 빌드·G5 이후 변경 회귀, `[TBD` 0건(또는 PM 예외 승인), **noindex 해제 확인**, DNS 변경 시 메일 레코드 유지·수신 확인, 운영 스모크 테스트(운영 폼 실제 제출 포함) 통과, 검색엔진 등록 안내 |
-| **P8 최종 산출물** | pmo (+devops) | `pm/08_final-report.md`<br>`devops/08_operation-guide.md`<br>`shared/meetings/MTG-*_retrospective.md` | 전 팀 | 인도 산출물 목록 완비, **계정·자산 인계표**, 관리자 매뉴얼(해당 시)·운영 절차 실습, 하자보수·유지보수 범위(PM 결정), 실측 소요 기록, 회고, **종료 체크리스트** |
+| **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | 배포 계획: developer, qa<br>(스모크·배포 보고서는 교차 검토 없이 PM이 G7에서 확인) | **배포 전 PM 명시 승인**, 릴리스 태그 클린 빌드·G5 이후 변경 회귀, `[TBD` 0건(또는 PM 예외 승인), **noindex 해제 확인**, DNS 변경 시 메일 레코드 유지·수신 확인, 운영 스모크 테스트(운영 폼 실제 제출 포함) 통과, 검색엔진 등록 안내 |
+| **P8 최종 산출물** | pmo (+devops) | `shared/meetings/MTG-*_retrospective.md`(먼저)<br>`devops/08_operation-guide.md`<br>`pm/08_final-report.md` | 전 팀 | 인도 산출물 목록 완비, **계정·자산 인계표**, 관리자 매뉴얼(해당 시)·운영 절차 실습, 하자보수·유지보수 범위(PM 결정), 실측 소요 기록, 회고, **종료 체크리스트** |
 
 **단계 내 체크포인트**
 - **P1**: 동적 기능이 있거나 호스팅이 미정이면 devops가 호스팅·운영 비용 사전 의견을 먼저 내고, pmo가 계획서에 반영한다.
@@ -132,7 +132,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 
 1. **착수 점검** — `{PROJECT}/pm/STATUS.md`에서 이전 게이트 승인 확인, 입력 산출물이 `approved`인지 확인, 관련 open 티켓·CR 확인.
 2. **작성** — Owner 에이전트 호출. 산출물은 `status: in-review`로 제출.
-3. **교차 검토** — 검토자 에이전트를 **한 번에 병렬 호출**(lite는 주 검토자 1명, `sonnet`). 각자 `{PROJECT}/shared/reviews/`에 리뷰를 작성.
+3. **교차 검토** — 검토자 에이전트를 **한 번에 병렬 호출**(lite는 주 검토자 1명, `sonnet` — 품질 핵심 검토는 기본 모델, `.claude/reference/modes.md`). 각자 `{PROJECT}/shared/reviews/`에 리뷰를 작성.
 4. **반영** — `수정 요청` 판정이 있으면 Owner 재호출. Owner는 리뷰 문서의 모든 지적에 처리 결과(반영/부분 반영/미반영+사유)를 기입하고 버전을 올린다. Must를 지적한 검토자만 다음 라운드 재검토.
 5. **수렴** — 라운드 상한 후에도 Must가 남거나 팀 간 의견이 충돌하면, pmo가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고를 정리하고 PM 결정을 요청.
 6. **게이트 준비** — pmo 호출: `{PROJECT}/pm/gates/G{n}_{slug}.md` 작성(lite는 간소판), `STATUS.md` 갱신(`승인 대기`).
@@ -199,6 +199,8 @@ updated: YYYY-MM-DD
 | 고객 요청·변경 요청 | `CR-000`(최초 요청), `CR-001` … | 오케스트레이터 |
 | 제안 (시안·기능·자료·불편) | `SUG-001` … | 오케스트레이터 |
 | 고객 질문 | `Q-001` … (`pm/requests/QNA.md`) | pmo · planner · 오케스트레이터 |
+| 팀 제안 기능 | `P-001` … (요구사항 §3.1) | planner |
+| 사용자 시나리오 | `S-001` … (테스트 케이스 §3-1) | qa |
 | 요구사항 | `REQ-F-001`(기능) / `REQ-N-001`(비기능) / `REQ-C-001`(콘텐츠) | planner |
 | 화면 | `SCR-001` | planner |
 | 컴포넌트 | `CMP-001` | designer |
@@ -220,7 +222,7 @@ updated: YYYY-MM-DD
 
 | 수단 | 위치 · 파일명 | 템플릿 | 언제 |
 |---|---|---|---|
-| 리뷰 | `shared/reviews/{단계}_{대상}_{검토자}_r{라운드}.md` | `templates/docs/shared/review.md` | 교차 검토 (대상 문서가 여러 개면 한 파일로 묶어도 됨) |
+| 리뷰 | `shared/reviews/{단계}_{대상}_{검토자}_r{라운드}.md` — `{검토자}`는 에이전트 이름. 특수 리뷰: `P1_hosting-input_devops.md`, `P4_early-alignment_designer.md`, `P4_code_security-review_r{n}.md`, `SUG-{nnn}_review_{에이전트}.md`, `CR-{nnn}_impact_{에이전트}.md` | `templates/docs/shared/review.md` | 교차 검토 (대상 문서가 여러 개면 한 파일로 묶어도 됨) |
 | 티켓 | `shared/tickets/TKT-{발행팀}-{nnn}_to-{수신팀}_{slug}.md` | `templates/docs/shared/ticket.md` | 리뷰 주기 밖의 요청·질의·자료 요청 (수신팀: `pmo`·`planning`·`design`·`developer`·`qa`·`devops`) |
 | 결함 | `shared/tickets/DEF-{nnn}_{slug}.md` | `templates/docs/shared/defect.md` | 검증 중 발견된 결함 |
 | 결정 기록 | `shared/decisions/ADR-{nnn}_{slug}.md` | `templates/docs/shared/decision.md` | PM 결정, 팀 간 합의, 되돌리기 어려운 선택 |
@@ -230,7 +232,7 @@ updated: YYYY-MM-DD
 
 ### 쓰기 권한
 - 모든 에이전트는 틀과 프로젝트 전체를 **읽을 수 있다.**
-- **쓰기는 `{PROJECT}/{자기 팀}/` + `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`** 로 제한한다. (`shared/decisions/`, `shared/meetings/`는 pmo, `ACTIVITY.md`·`design/imports/`·`design/evidence/mockups/`·`pm/requests/attachments/`는 오케스트레이터)
+- **쓰기는 `{PROJECT}/{자기 팀}/` + `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`** 로 제한한다. (`shared/decisions/`, `shared/meetings/`는 pmo, `ACTIVITY.md`·`design/imports/`·`design/evidence/mockups/`·`pm/requests/attachments/`는 오케스트레이터, `pm/requests/QNA.md` 질문 행 추가는 pmo·planner)
 - **타 팀 산출물을 직접 수정하지 않는다.** 수정이 필요하면 리뷰 지적 또는 티켓으로 요청한다.
 - 티켓의 "처리 결과"는 수신 팀이, 리뷰의 "처리 결과" 열은 산출물 Owner가 기입한다.
 - 예외: devops는 배포 설정 파일(`vercel.json`, `netlify.toml`, CI 워크플로 등)을 `{PROJECT}` 안에 작성할 수 있다. 변경 내역을 배포 계획서에 기록하고 developer 리뷰를 받는다.
@@ -280,7 +282,7 @@ planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고
 ## 7. 변경 관리 (CR)
 1. PM이 변경 요청 전달 → 오케스트레이터가 `{PROJECT}/pm/requests/CR-{nnn}_{slug}.md`에 원문 기록
 2. 영향도 분석 — planner·developer(필요 시 designer)가 영향 의견 제출 → pmo가 종합(영향 REQ/SCR/산출물, 회귀 단계, 일정, 리스크, 권고)
-3. PM 결정 → 커밋 (`cr(CR-nnn): …`)
+3. PM 결정 → 커밋 (`cr(CR-{nnn}): …`)
 4. 승인 시 영향 받는 **가장 앞 단계부터 회귀**하여 영향 부분만 개정 (버전 증가, 변경 이력에 CR ID 기록)
 5. 이후 단계는 영향 범위 중심으로 재검토·재검증, 재승인 시 태그 `G{n}-CR-{nnn}`
 
@@ -325,7 +327,7 @@ devops는 `release-v*` 태그 기준으로 배포하고, 롤백은 이전 릴리
 ## 10. PM 명령어 (`.claude/skills/`)
 | 명령 | 용도 |
 |---|---|
-| `/kickoff <project-slug> [--standard] <고객 요청>` | 프로젝트 생성(`projects/<slug>`) + git init → P1 계획 → G1 승인 요청 (기본 lite 모드) |
+| `/kickoff <project-slug> [--standard \| --lite] <고객 요청>` | 프로젝트 생성(`projects/<slug>`) + git init → P1 계획 → G1 승인 요청 (기본 lite 모드) |
 | `/run-phase [project-slug] <P1~P8 \| next>` | 지정 단계를 표준 루프로 실행 → 게이트 승인 요청 → 커밋·태그 |
 | `/status [project-slug]` | 프로젝트 목록 또는 특정 프로젝트 현황 보고 |
 | `/change-request [project-slug] <변경 내용>` | 변경 요청 접수 → 영향도 분석 → 승인 시 회귀 |

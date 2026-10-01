@@ -6,7 +6,7 @@ owner: designer
 version: 0.1
 status: draft
 reviewers: [planner, developer]
-inputs: [planning/02_requirements.md, planning/02_storyboard.md, pm/requests/CR-000_initial-request.md, pm/requests/QNA.md]
+inputs: [planning/02_requirements.md, planning/02_storyboard.md, pm/01_project-plan.md, pm/requests/CR-000_initial-request.md, pm/requests/QNA.md]
 updated: YYYY-MM-DD
 ---
 

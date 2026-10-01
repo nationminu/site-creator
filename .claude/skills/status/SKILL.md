@@ -16,7 +16,7 @@ argument-hint: "[project-slug]"
 - 인자가 `projects/<인자>/`로 존재하면 → **§3 상세 현황**
 - 인자가 없으면 `projects/*/pm/STATUS.md`를 모두 읽는다:
   - 프로젝트가 없으면: "진행 중인 프로젝트가 없습니다. `/kickoff <project-slug> <고객 요청>`으로 시작하세요."
-  - `진행 중` 프로젝트가 하나면 → **§3 상세 현황**
+  - 상태가 `진행 중`·`유지보수`인 프로젝트가 하나면 → **§3 상세 현황** (`CLAUDE.md` §10)
   - 그 외 → **§2 프로젝트 목록**
 
 ## 2. 프로젝트 목록
@@ -42,13 +42,15 @@ argument-hint: "[project-slug]"
    - `{PROJECT}` 전체 산출물 — `[TBD` 잔존 건수, 그리고 사이트 소스(`developer/site/`)의 `[TBD` 잔존 건수(배포 전 0건이어야 함)
    - STATUS.md "TBD·콘텐츠 수급" 표 — 미수급 자료와 기한 경과 여부
    - `{PROJECT}/pm/requests/QNA.md` — `open` 질문 수, 기한 지난 질문, `answered`인데 반영 안 된 질문
+   - STATUS 헤더(설정·프리뷰·운영 URL·릴리스·오픈 후 관찰·보류 사유), `git -C {PROJECT} tag -l 'release-v*'`, `devops/05_preview.md`
 3. `{PROJECT}/ACTIVITY.md`의 최근 항목(최대 10개)과 각 팀 `{PROJECT}/{팀}/WORKLOG.md`의 최신 항목
 4. Git: `git -C {PROJECT} log --oneline -5`, `git -C {PROJECT} tag --sort=-creatordate | head -5`, `git -C {PROJECT} status --short | wc -l`
 
 ### 보고 형식
 ```
 ## [<slug>] 프로젝트 현황 (기준: YYYY-MM-DD)
-**프로젝트**: {이름} · **고객**: {고객} · **진행 모드**: {standard|lite} · **스택 프리셋**: {preset} · **틀 버전**: {commit}
+**프로젝트**: {이름} · **고객**: {고객} · **상태**: {진행 중|보류|종료|유지보수} · **틀 버전**: {commit}
+**설정**: 진행 모드 {lite|standard} · 스택 프리셋 {preset} · 로컬 {docker|hybrid|native} · 운영 {prod-env} · 스타일 {css-vars|tailwind} · Claude Design {on|off} · Design Sync {on|off}
 **현재 단계**: P{n} {단계명} — {상태}
 **진행률**: P1 ✅ · P2 ✅ · P3 🔄 · P4 ⬜ · P5 ⬜ · P6 ⬜ · P7 ⬜ · P8 ⬜
 
@@ -57,6 +59,9 @@ argument-hint: "[project-slug]"
 | ID | 제목 | From→To | 우선순위/심각도 | 상태 |
 ### 리스크·이슈 (상위 3개)
 ### 고객 확인 필요 [TBD] — N건
+### 고객 질문 (QNA) — open N건 · 기한 경과 N건 · 답변 받았으나 미반영 N건
+### 변경 요청(CR)·제안(SUG) — 진행 중 목록과 상태 (보류는 사유·재검토 시점)
+### 배포·프리뷰 — 프리뷰 URL·만료일, 최근 `release-v*` 태그·운영 URL, 오픈 후 관찰(대기 예정일 / 기록 완료)
 ### 최근 진행 (ACTIVITY.md 최근 항목, 날짜별)
 ### 최근 팀 활동
 ### Git — 최근 태그 · 미커밋 변경 N건

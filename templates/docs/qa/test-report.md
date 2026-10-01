@@ -5,7 +5,7 @@ phase: P5                    # P7
 owner: qa
 version: 0.1
 status: draft
-reviewers: [developer, planner]   # P7: [devops]
+reviewers: [developer, planner]   # P7 스모크: [] (교차 검토 없음 — PM이 G7에서 확인)
 inputs: [qa/05_test-plan.md, qa/05_test-cases.md]
 updated: YYYY-MM-DD
 ---

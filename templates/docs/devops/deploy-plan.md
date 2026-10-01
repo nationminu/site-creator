@@ -6,7 +6,7 @@ owner: devops
 version: 0.1
 status: draft
 reviewers: [developer, qa]
-inputs: [developer/04_tech-design.md, qa/05_test-report.md, pm/gates/G6_interim-report.md]   # lite에서 P6 생략 시 G6 대신 G5 + STATUS 예외 기록
+inputs: [devops/04_environment.md, devops/05_preview.md, developer/04_tech-design.md, planning/02_information-architecture.md, qa/05_test-report.md, pm/requests/QNA.md, pm/gates/G5_verification.md, pm/gates/G6_interim-report.md]   # lite에서 P6 생략 시 G6 대신 STATUS 예외 기록, 프리뷰는 있을 때만
 updated: YYYY-MM-DD
 ---
 

@@ -32,7 +32,7 @@ source_sug:                  # /suggest에서 넘어온 경우 SUG-xxx
 | 회귀 시작 단계 | |
 | 일정 영향 | |
 | 리스크 | |
-| 팀 의견 | `shared/reviews/CR-000_impact_*.md` |
+| 팀 의견 | `shared/reviews/CR-{nnn}_impact_*.md` |
 
 **pmo 권고**: 수용 / 부분 수용 / 보류 / 거절
 사유:

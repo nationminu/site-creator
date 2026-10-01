@@ -6,7 +6,7 @@ owner: pmo
 version: 0.1
 status: draft
 reviewers: [planner, designer, developer, qa, devops]
-inputs: [pm/01_project-plan.md, pm/06_interim-report.md, devops/07_deploy-report.md, qa/05_test-report.md]
+inputs: [pm/01_project-plan.md, pm/06_interim-report.md, devops/07_deploy-report.md, qa/05_test-report.md, devops/08_operation-guide.md, shared/meetings/MTG-*_retrospective.md, ACTIVITY.md]   # lite에서 P6 생략 시 중간보고서 없음
 updated: YYYY-MM-DD
 ---
 
@@ -74,7 +74,9 @@ updated: YYYY-MM-DD
 | 개발 | 기술 설계서 / 개발 보고서 | `developer/04_*.md` | |
 | 검증 | 테스트 계획·케이스·결과 | `qa/05_*.md` | |
 | 배포 | 배포 계획·보고서 | `devops/07_*.md` | |
-| 운영 | 운영·유지보수 가이드 | `devops/08_operation-guide.md` | |
+| 운영 | 운영 환경 명세 | `devops/04_environment.md` | |
+| 운영 | 운영·유지보수 가이드 (관리자 매뉴얼 포함) | `devops/08_operation-guide.md` | |
+| 회고 | 회고 회의록 (내부 — 인도 여부 PM 결정) | `shared/meetings/MTG-*_retrospective.md` | |
 
 ## 8. 인수인계
 - 운영 가이드(관리자 매뉴얼 포함): `devops/08_operation-guide.md`
@@ -112,13 +114,17 @@ updated: YYYY-MM-DD
 | Try (다음 프로젝트 개선) | |
 
 ## 9-1. 종료 체크리스트
+**G8 전 (게이트 조건)**
 - [ ] 오픈 후 관찰(24~72시간) 기록 완료 (`devops/07_deploy-report.md` §4-1)
 - [ ] 프리뷰·스테이징 환경 삭제 또는 접근 차단
-- [ ] 프로젝트 중 임시로 받은 접근 권한·토큰 회수, CI 비밀 값 정리 (PM 조치)
-- [ ] 계정·자산 인계표 완료
+- [ ] 계정·자산 인계표 작성 (명의 이전 필요 항목 식별)
 - [ ] 열린 티켓·결함·질문(QNA)·제안(SUG) 마감 또는 이월 기록
 - [ ] 운영 가이드 절차 실습 결과 기록
-- [ ] 인도 범위·방식 PM 결정
+
+**G8 승인 후 (종료 전)**
+- [ ] 인도 범위·방식(G8에서 PM 결정)대로 인도 패키지 생성
+- [ ] 계정 명의 고객 이전 완료 (PM 조치)
+- [ ] 프로젝트 중 임시로 받은 접근 권한·토큰 회수, CI 비밀 값 정리 (PM 조치)
 
 ## 10. 향후 제언
 - 고도화:

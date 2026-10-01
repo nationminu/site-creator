@@ -6,7 +6,7 @@ owner: devops
 version: 0.1
 status: draft
 reviewers: [developer, planner, designer, qa, pmo]
-inputs: [devops/07_deploy-report.md, developer/04_tech-design.md, developer/site/README.md]
+inputs: [devops/04_environment.md, devops/07_deploy-report.md, developer/04_tech-design.md, developer/site/README.md, design/03_page-design.md, pm/08_final-report.md]   # 최종 보고서는 계정·자산 인계표 대조용
 updated: YYYY-MM-DD
 ---
 

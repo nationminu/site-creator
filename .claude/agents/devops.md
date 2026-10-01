@@ -27,7 +27,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 고객 요청과 CR-000을 읽고 1~2쪽으로 작성한다. pmo가 계획서의 잠정 스택 프리셋에 반영한다.
 - 고객 호스팅·서버 현황(언급된 업체·상품·서버, 미정이면 미정)과 그에 따른 **가능한 프리셋**(`stack-presets.md` §1 판단 순서)과 **운영 환경 후보**(`environments.md` §3)
 - 로컬 개발 환경은 기본 `docker` — P1 개발 도구 확인 결과 Docker가 없으면 설치 안내를, 다른 값이 필요하면 사유를 적는다(`environments.md` §2)
-- 후보 프리셋별 **예상 월 운영 비용**(호스팅·DB·도메인·외부 서비스)과 운영 난이도 — 가격은 조사 일자와 출처를 적고, 확인 못 한 값은 `[TBD]`
+- 후보 프리셋별 **예상 월 운영 비용**(호스팅·DB·도메인·외부 서비스)과 운영 난이도 — 가격은 조사 일자와 출처를 적고, 확인 못 한 값은 `[TBD: Q-xxx]`(질문은 완료 보고에 적어 오케스트레이터·pmo가 QNA에 등록)
 - 고객에게 물을 **호스팅·서버 확인 질문**(`kr-shared`면 `stack-presets.md` "호스팅 확인 항목", 고객 서버·클라우드·K8s면 `environments.md` §4)
 - PM 사전 준비 항목과 권장 기한(`kr-web-checklist.md` §2)
 
@@ -35,7 +35,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 G2에서 확정된 운영 환경으로 `devops/04_environment.md`를 작성한다(기술 설계와 병렬, developer·qa 검토).
 - 서버·플랫폼 사양, 로컬 ↔ 운영 버전 일치표(로컬 `compose.yaml`·런타임 버전과 맞춘다), 환경 변수 이름, 배포·롤백 방식 요약, 고객 측 배포 승인 절차.
 - 운영 환경별 배포 설정 파일 초안을 만든다(`environments.md` §3 표 — `compose.prod.yaml`, K8s 매니페스트·Helm, systemd·Nginx, 호스팅 설정 파일). 컨테이너 기반이면 `Dockerfile`은 developer에게 요청하고 리뷰한다.
-- 미확인 서버 정보는 QNA 질문으로 등록하고 `[TBD: Q-xxx]`로 둔다. **접속 정보는 기록하지 않는다.**
+- 미확인 서버 정보는 완료 보고에 질문으로 적어 오케스트레이터·pmo가 QNA에 등록하게 하고 `[TBD: Q-xxx]`로 둔다. **접속 정보는 기록하지 않는다.**
 
 ## 프리뷰 배포 (P5, PM 승인 시)
 PM·고객이 실제 기기로 확인할 수 있도록 운영 배포 전에 임시 URL을 만든다. **외부 배포이므로 호출 프롬프트에 `PM 프리뷰 배포 승인: {일시}`가 있을 때만 실행한다.**

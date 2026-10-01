@@ -6,7 +6,7 @@ owner: pmo
 version: 0.1
 status: draft
 reviewers: [planner, developer]
-inputs: [pm/requests/CR-000_initial-request.md, pm/requests/QNA.md]
+inputs: [pm/requests/CR-000_initial-request.md, pm/requests/QNA.md, shared/reviews/P1_hosting-input_devops.md]   # 호스팅 의견은 있을 때만
 updated: YYYY-MM-DD
 ---
 
@@ -62,14 +62,14 @@ updated: YYYY-MM-DD
 ## 3. 산출물 목록
 | 단계 | 산출물 | Owner | 검토자 |
 |---|---|---|---|
-| P1 | `pm/01_project-plan.md`, `shared/meetings/MTG-*_kickoff-agenda.md` | pmo (+devops 호스팅 의견) | planner, developer |
+| P1 | `pm/01_project-plan.md`, `shared/meetings/MTG-*_kickoff-agenda.md`, `pm/requests/QNA.md` | pmo (+devops 호스팅 의견) | planner, developer |
 | P2 | `planning/02_requirements.md`, `02_information-architecture.md`, `02_storyboard.md` | planner | designer, developer, qa |
 | P3 | `design/03_design-concept.md`, `03_design-system.md`, `03_page-design.md`, `mockups/` | designer | planner, developer |
-| P4 | `developer/04_tech-design.md`, `site/`, `04_dev-report.md` | developer | devops, qa / designer, planner |
-| P5 | `qa/05_test-plan.md`, `05_test-cases.md`, `05_test-report.md` | qa | developer, planner |
+| P4 | `developer/04_tech-design.md`, `site/`, `04_dev-report.md`, `devops/04_environment.md` | developer (+devops 운영 환경 명세) | 설계 devops, qa / 운영 환경 명세 developer, qa / 구현 designer, planner |
+| P5 | `qa/05_test-plan.md`, `05_test-cases.md`, `05_test-report.md`, `devops/05_preview.md`(PM 승인 시) | qa (+devops 프리뷰) | developer, planner |
 | P6 | `pm/06_interim-report.md` | pmo | 전 팀 |
 | P7 | `devops/07_deploy-plan.md`, `07_deploy-report.md`, `qa/07_smoke-test-report.md` | devops | developer, qa |
-| P8 | `pm/08_final-report.md`, `devops/08_operation-guide.md` | pmo, devops | 전 팀 |
+| P8 | `shared/meetings/MTG-*_retrospective.md`, `devops/08_operation-guide.md`, `pm/08_final-report.md` | pmo, devops | 전 팀 |
 
 검토자는 standard 기준이며, lite는 산출물별 주 검토자 1명(`.claude/reference/modes.md`). lite에서 P6는 G5 시점에 생략 여부를 결정한다.
 

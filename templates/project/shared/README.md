@@ -6,13 +6,13 @@
 ## 구성
 | 디렉토리 | 용도 | 파일명 규칙 | 템플릿 | 작성 |
 |---|---|---|---|---|
-| `reviews/` | 교차 검토 기록 | `{단계}_{대상}_{검토자}_r{n}.md`<br>CR 영향 의견: `CR-{nnn}_impact_{팀}.md` | `templates/docs/shared/review.md` | 검토자 (처리 결과 열은 Owner) |
+| `reviews/` | 교차 검토 기록 | `{단계}_{대상}_{검토자}_r{n}.md`<br>특수: `P1_hosting-input_devops.md` · `P4_early-alignment_designer.md` · `P4_code_security-review_r{n}.md` · `SUG-{nnn}_review_{에이전트}.md` · `CR-{nnn}_impact_{에이전트}.md` | `templates/docs/shared/review.md` | 검토자 (처리 결과 열은 Owner) |
 | `tickets/` | 팀 간 요청·질의·자료 요청 | `TKT-{발행팀}-{nnn}_to-{수신팀}_{slug}.md` | `templates/docs/shared/ticket.md` | 발행 팀 (처리 결과는 수신 팀) |
 | `tickets/` | 결함 | `DEF-{nnn}_{slug}.md` | `templates/docs/shared/defect.md` | qa (조치 절은 developer) |
 | `decisions/` | 결정 기록 | `ADR-{nnn}_{slug}.md` | `templates/docs/shared/decision.md` | pmo |
 | `meetings/` | 회의록 (킥오프·조율·회고) | `MTG-{YYYYMMDD}_{slug}.md` | `templates/docs/shared/meeting.md` | pmo |
 
-팀 코드(파일명용): `pm` · `planning` · `design` · `developer` · `qa` · `devops`
+팀 코드 — **티켓**(`TKT-{발행팀}`, `to-{수신팀}`): `pmo` · `planning` · `design` · `developer` · `qa` · `devops` / **리뷰 파일**의 검토자 자리는 에이전트 이름(`pmo` · `planner` · `designer` · `developer` · `qa` · `devops`)
 
 ## 언제 무엇을 쓰나
 | 상황 | 수단 |

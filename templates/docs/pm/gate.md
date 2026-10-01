@@ -3,13 +3,13 @@ doc_id: PM-G{n}
 title: G{n} {단계명} 게이트
 phase: P{n}
 owner: pmo
-status: pending              # pending | approved | conditional | rejected | on-hold
+status: pending              # pending | approved(조건 있으면 §7에 기록) | rejected(수정 지시) | on-hold — 오케스트레이터가 PM 응답에 따라 갱신
 updated: YYYY-MM-DD
 ---
 
 # G{n} {단계명} 게이트
 
-> **lite 간소판**: §1 산출물 점검 · §3 체크리스트 · §6 권고 · §7 PM 결정만 작성하고, §2·§4·§5는 해당 사항이 있을 때만 한 줄로 적는다 (`.claude/reference/modes.md`).
+> **lite 간소판**: §1 산출물 점검 · §3 체크리스트 · §3-1 품질 지표 · §6 권고 · §7 PM 결정만 작성하고, §2·§4·§5는 해당 사항이 있을 때만 한 줄로 적는다 (`.claude/reference/modes.md`).
 
 ## 1. 산출물 점검
 | 산출물 | 버전 | 상태 | 비고 |

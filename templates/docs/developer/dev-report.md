@@ -52,16 +52,6 @@ updated: YYYY-MM-DD
 | migrate (빈 DB) + seed | | | |
 | audit | | High 이상 n건 | |
 
-## 5. 자체 테스트
-| 항목 | 방법 | 결과 |
-|---|---|---|
-| 주요 페이지 렌더링 | | |
-| 반응형 (360/768/1280) | | |
-| 링크 · 폼 동작 | | |
-| 콘솔 에러 | | 0건이어야 전달 |
-| Lighthouse (주요 페이지 1회, 모바일) | | 성능 / 접근성 / 권장사항 / SEO |
-| 주요 API · 폼 흐름 (백엔드 시) | | |
-
 ## 4-1. 초기 정합 확인 (작업 단위 1 직후)
 > 토큰·폰트·그리드·헤더·푸터가 디자인과 맞는지 일찍 확인한다. 스크린샷: `evidence/design-qa/early-{화면}-{360|1280}-impl.jpg` · `-mock.jpg`
 
@@ -80,6 +70,16 @@ updated: YYYY-MM-DD
 | 리뷰 파일 | 라운드 | Must / Should | 처리 결과 |
 |---|---|---|---|
 | `shared/reviews/P4_code_security-review_r1.md` | | | |
+
+## 5. 자체 테스트
+| 항목 | 방법 | 결과 |
+|---|---|---|
+| 주요 페이지 렌더링 | | |
+| 반응형 (360/768/1280) | | |
+| 링크 · 폼 동작 | | |
+| 콘솔 에러 | | 0건이어야 전달 |
+| Lighthouse (주요 페이지 1회, 모바일) | | 성능 / 접근성 / 권장사항 / SEO |
+| 주요 API · 폼 흐름 (백엔드 시) | | |
 
 ## 5-1. 디자인 QA 스크린샷
 > `npx --yes playwright screenshot --viewport-size=<폭>,900 --full-page <URL> <파일>` — 구현(미리보기 URL)과 목업(`design/mockups/*.html`)을 같은 조건으로 캡처.

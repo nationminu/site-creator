@@ -6,7 +6,7 @@ owner: qa
 version: 0.1
 status: draft
 reviewers: [developer, planner]
-inputs: [planning/02_requirements.md, planning/02_storyboard.md, design/03_page-design.md]
+inputs: [planning/02_requirements.md, planning/02_information-architecture.md, planning/02_storyboard.md, design/03_page-design.md, design/03_design-system.md, developer/04_tech-design.md]
 updated: YYYY-MM-DD
 ---
 
@@ -59,7 +59,7 @@ updated: YYYY-MM-DD
 ## 3-1. 사용자 시나리오 검수
 | # | 시나리오 (대상 사용자 · 목표) | 폭 | 결과 (완료 / 막힘) | 혼란 지점 | 조치 (DEF / 티켓) |
 |---|---|---|---|---|---|
-| S-01 | 처음 방문한 잠재 고객이 서비스를 이해하고 문의를 남긴다 | 360 / 1280 | | | |
+| S-001 | 처음 방문한 잠재 고객이 서비스를 이해하고 문의를 남긴다 | 360 / 1280 | | | |
 
 ## 4. 화면 회귀 비교 (chromium · 360/768/1280)
 | 사이클 | 비교 페이지 수 | 차이 발견 | 의도된 변경 (기준 갱신·사유) | 의도치 않은 변경 (DEF) |

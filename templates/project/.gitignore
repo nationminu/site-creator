@@ -25,6 +25,13 @@ application-local.*
 .env
 .env.*
 !.env.example
+!.env.*.example
+
+# 제안 첨부 중 대용량 영상·압축 파일 (보관 위치는 PM에게 확인)
+pm/requests/attachments/**/*.mp4
+pm/requests/attachments/**/*.mov
+pm/requests/attachments/**/*.webm
+pm/requests/attachments/**/*.zip
 
 # 제안 자료 투입함 — 접수(/suggest) 시 pm/requests/attachments/로 옮겨 커밋
 inbox/*

@@ -25,8 +25,8 @@ argument-hint: "[project-slug] <제안 설명> [파일 경로·URL …]"
    - **비밀번호·계정·개인정보가 보이는 파일은 저장하지 않고** PM에게 알린다.
    - 채팅에 붙여 넣은 이미지는 파일로 저장할 수 없다. 본 내용을 텍스트로 자세히 적고, 원본이 필요하면 `inbox/`에 저장해 달라고 요청한다.
    - URL(참고 사이트)은 표에 기록한다. 화면 캡처가 필요하면 `npx --yes playwright screenshot --full-page <URL> <첨부 폴더>/ref-<n>.jpg`로 저장할 수 있다(외부 사이트 화면은 **참고용**이며 그대로 복제하지 않는다).
-3. `templates/docs/pm/suggestion.md`로 `{PROJECT}/pm/requests/SUG-{nnn}_{slug}.md`를 만든다. "제안 원문"에 PM이 전달한 말을 **수정 없이** 기록하고, `type`(design·feature·content·issue·other)과 `phase_at_receipt`를 적는다(`status: analyzing`).
-4. `{PROJECT}/pm/STATUS.md` "제안(SUG)" 표에 추가 → `ACTIVITY.md`에 `* 이슈: SUG-{nnn} 접수 — {요약} ({제안자})` → 커밋 `chore: SUG-{nnn} 접수`.
+3. `templates/docs/pm/suggestion.md`로 `{PROJECT}/pm/requests/SUG-{nnn}_{slug}.md`를 만든다. "제안 원문"에 PM이 전달한 말을 **수정 없이** 기록하고, `type`(design·feature·content·issue·other)과 `phase_at_receipt`를 적는다(`status: received`). §2 검토 호출을 시작할 때 `analyzing`으로 바꾼다.
+4. `{PROJECT}/pm/STATUS.md` "제안(SUG)" 표에 추가 → `ACTIVITY.md`에 `* 이슈: SUG-{nnn} 접수 — {요약} ({제안자})` → 커밋 `sug(SUG-{nnn}): 접수`.
 
 ## 2. 검토 (유형별 병렬 호출)
 각 프롬프트에 `PROJECT`, 진행 모드, (확정 시) 스택 프리셋, SUG 문서·첨부 경로, 현재 단계와 관련 산출물 경로, 출력 경로 `{PROJECT}/shared/reviews/SUG-{nnn}_review_{팀}.md`를 넣는다. 이미지 첨부는 Read로 열어 보라고 명시한다.
@@ -39,10 +39,10 @@ argument-hint: "[project-slug] <제안 설명> [파일 경로·URL …]"
 | `issue` (문제·불편) | `qa` (+ 원인 파악이 필요하면 `developer`) | 재현 여부, 결함(DEF)인지 / 요구사항 밖 변경인지 판정 |
 
 lite 모드에서는 검토자를 표의 첫 팀 1명으로 하고 `model: sonnet`으로 호출한다(`.claude/reference/modes.md`). 단 `design` 유형의 이미지 비교 검토는 기본 모델로 한다.
-호출이 끝나면 커밋 `review: SUG-{nnn} 검토 — {팀들}` (ACTIVITY `검토` 항목).
+호출이 끝나면 커밋 `sug(SUG-{nnn}): 검토 — {팀들}` (ACTIVITY `검토` 항목).
 
 ## 3. 종합과 PM 결정
-1. `pmo`를 호출해 SUG 문서 "검토 의견"·"종합"을 작성하게 한다 — 분류(진행 중 산출물 반영 / 승인된 산출물 변경 → CR / 콘텐츠 수급 처리 / 결함 → DEF), 영향 산출물, 일정·비용·리스크, 권고 (`status: pending-approval`). 커밋.
+1. `pmo`를 호출해 SUG 문서 "검토 의견"·"종합"을 작성하게 한다 — 분류(진행 중 산출물 반영 / 승인된 산출물 변경 → CR / 콘텐츠 수급 처리 / 결함 → DEF), 영향 산출물, 일정·비용·리스크, 권고 (`status: pending-approval`). 커밋 `sug(SUG-{nnn}): 종합 — pmo`.
 2. PM에게 보고하고 AskUserQuestion으로 결정을 받는다 — 옵션: 반영 / 부분 반영 / 보류 / 미반영. 디자인 제안은 반영 방식 2~3안을 옵션으로 제시하고, 가능하면 첨부 캡처와 관련 목업 스크린샷 경로를 함께 보여 준다.
 ```
 ## [<SLUG>] SUG-{nnn} 제안 검토 결과
@@ -52,7 +52,7 @@ lite 모드에서는 검토자를 표의 첫 팀 1명으로 하고 `model: sonne
 **pmo 권고**:
 → 반영 / 부분 반영 / 보류 / 미반영 중 선택해 주세요.
 ```
-3. 결정을 SUG 문서 "PM 결정"에 기록하고 `status`(accepted·partially-accepted·rejected·on-hold)를 갱신 → ACTIVITY `결정` 항목 → 커밋 `docs: SUG-{nnn} PM 결정 — {결정}`.
+3. 결정을 SUG 문서 "PM 결정"에 기록하고 `status`(accepted·partially-accepted·rejected·on-hold)를 갱신 → ACTIVITY `결정` 항목 → 커밋 `sug(SUG-{nnn}): PM 결정 — {결정}`.
 
 ## 4. 반영 (분류별)
 | 분류 | 처리 |
@@ -60,8 +60,8 @@ lite 모드에서는 검토자를 표의 첫 팀 1명으로 하고 `model: sonne
 | **진행 중 산출물에 반영** (영향 산출물이 아직 `approved`가 아님) | Owner 에이전트를 호출해 반영 지시(SUG 경로·결정 범위 전달) → 버전 증가, 변경 이력에 SUG ID → 이후 현재 단계의 표준 루프(검토·게이트)에 포함 |
 | **승인된 산출물 변경** | `.claude/skills/change-request/SKILL.md` 절차로 CR 생성 — CR "요청 원문"에 SUG 결정 내용을 인용하고 SUG `cr_ref`에 CR ID 기록 (영향도 분석은 SUG 검토 의견을 재사용) |
 | **기능 제안** | `CLAUDE.md` §8 — G2 전이면 요구사항 "제안 기능" 표에 PM 결정을 기록하고 planner가 REQ-F로 반영, G2 후면 CR |
-| **콘텐츠 수급** | 승인된 자료를 `planner`(원고) / `designer`(이미지·로고 → `design/assets/` + `SOURCES.md`)가 반영하고 REQ-C 확보 상태·STATUS "TBD·콘텐츠 수급" 갱신 |
+| **콘텐츠 수급** | 승인된 자료를 `planner`(원고) / `designer`(이미지·로고 → `design/assets/` + `SOURCES.md`)가 반영하고 REQ-C 확보 상태를 갱신하고, STATUS "TBD·콘텐츠 수급"은 오케스트레이터(또는 pmo)가 갱신 |
 | **결함** | `qa`가 `DEF-*` 발행 → P5 결함 사이클 |
 | **보류·미반영** | 사유를 SUG 문서와 STATUS에 기록하고 종료(보류는 재검토 시점 명시) |
 
-반영이 끝나면 SUG 문서 "반영 결과"와 `status: applied`를 기록하고 ACTIVITY `수정` 항목과 함께 커밋한다.
+반영이 끝나면 SUG 문서 "반영 결과"와 `status: applied`를 기록하고 ACTIVITY `수정` 항목과 함께 커밋한다(`sug(SUG-{nnn}): 반영`).

@@ -118,7 +118,7 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 | `SCR-001` | 화면 | `SCR-002` 병원 소개 |
 | `CMP-001` | 디자인 컴포넌트 | `CMP-001` Button |
 | `TC-001` | 테스트 케이스 | |
-| `TKT-{팀}-001` | 팀 간 요청·질의 티켓 | `TKT-design-001` |
+| `TKT-{발행팀}-001` | 팀 간 요청·질의 티켓 | `TKT-design-001` |
 | `DEF-001` | 결함 | |
 | `ADR-001` | 결정 기록 | 디자인 시안 선택 결과 |
 | `G1`~`G8` | 게이트 (git 태그 이름과 동일) | |
@@ -143,7 +143,7 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 
 ### 5.1 최소 정보
 
-**목적, 페이지 구성, 일정**만 있으면 시작할 수 있습니다. 나머지는 계획서에 `[TBD: 고객 확인 필요]`로 표시되고, PM이 고객에게 바로 물어볼 수 있는 질문 목록으로 정리됩니다.
+**목적, 페이지 구성, 일정**만 있으면 시작할 수 있습니다. 나머지는 질문 목록(`pm/requests/QNA.md`, `Q-001`…)에 등록되고 문서에는 `[TBD: Q-xxx]`로 표시되며, PM이 고객에게 바로 물어볼 수 있는 질문 목록으로 정리됩니다.
 
 | 항목 | 필수 | 영향 단계 |
 |---|---|---|
@@ -220,7 +220,7 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 > 프로젝트가 **하나만 진행 중**이면 `project-slug`는 생략할 수 있습니다. 여러 개면 붙이거나, 생략 시 어느 프로젝트인지 질문을 받습니다.
 > ⚠️ Claude Code 기본 명령 `/init`은 `CLAUDE.md`를 덮어쓰므로 **사용하지 마세요.**
 
-### `/kickoff <project-slug> [--standard] <고객 요청 | 요청 파일 경로>`
+### `/kickoff <project-slug> [--standard | --lite] <고객 요청 | 요청 파일 경로>`
 
 새 프로젝트를 만들고 P1 계획까지 진행합니다.
 
@@ -395,7 +395,7 @@ P3 진행 중에 세션이 끊겼어. 기존 산출물이랑 리뷰 확인해서
 |---|---|
 | 작성 | developer — ① 기술 설계(작업 단위 분할, 백엔드면 데이터 모델·API·인증·폼/메일·리다이렉트 설계) → (devops·qa 검토) → ② 구현: **작업 단위마다 호출·커밋**, 첫 단위 후 designer **초기 정합 확인** → ③ 자체 점검(성능 예산·`[TBD`·보안 헤더)·디자인 QA 스크린샷·개발 보고서 → ④ (백엔드) **보안 코드 리뷰** |
 | 검토 | 설계: devops, qa / 구현: designer(스크린샷으로 디자인 일치 확인), planner(기능 부합) — lite는 설계 devops, 구현 designer |
-| 산출물 | `developer/04_tech-design.md`, `developer/site/`, `developer/04_dev-report.md` |
+| 산출물 | `developer/04_tech-design.md`, `devops/04_environment.md`(운영 환경 명세 — devops, 검토 developer·qa), `developer/site/`, `developer/04_dev-report.md` |
 | **PM 확인** | 기술 스택 선택 이유(고객이 운영할 수 있는가, 비용) · **로컬에서 사이트 직접 확인** · 요구사항별 구현 현황 |
 | **PM 결정** | G4 승인 (스택 프리셋은 G2에서 이미 확정) |
 
@@ -438,7 +438,7 @@ npm run dev       # 표시되는 http://localhost:xxxx 주소를 브라우저로
 | 작성 | qa — 테스트 계획·케이스 → 실행(기능 + **사용자 시나리오·문구·마감 품질**) → 결함(DEF) 발행 → developer 수정 → qa 재검증 (최대 3사이클) → **프리뷰 배포**(PM 승인 시) → PM·고객 실기기 확인 → 피드백은 `/suggest` |
 | 검토 | developer(결함 판정 동의), planner(요구사항 충족) |
 | 검증 도구 | Lighthouse CLI(점수) · Playwright(기능·반응형 360/768/1280·크로스브라우저·콘솔 에러) · axe-core(접근성) · linkinator(링크) + 키보드 수동 점검. 증거는 `qa/evidence/` |
-| 산출물 | `qa/05_test-plan.md`, `05_test-cases.md`(요구사항 추적표), `05_test-report.md`, `shared/tickets/DEF-*` |
+| 산출물 | `qa/05_test-plan.md`, `05_test-cases.md`(요구사항 추적표), `05_test-report.md`, `shared/tickets/DEF-*`, `devops/05_preview.md`(프리뷰 — PM 승인 시) |
 | **PM 확인** | 결론(합격/조건부/불합격) · Critical·Major 결함 0건 · **잔존 Minor 결함과 이월 사유** · 검증하지 못한 항목 |
 | **PM 할 일** | 프리뷰 URL에서 **실기기 간단 점검표**(아이폰 Safari·안드로이드, 메뉴, 폼, 전화·지도, 카카오톡 공유 미리보기 등 5분) 확인 → 이상은 `/suggest` |
 | **PM 결정** | 프리뷰 배포 여부, G5 승인, 잔존 결함 이월 여부, Lighthouse 90 미만 예외(외부 스크립트 원인 등) 승인 (lite는 P6 생략 여부) |
@@ -525,17 +525,19 @@ projects/<slug>/
 ├── pm/
 │   ├── STATUS.md                      # ★ 현황판 — 가장 먼저 볼 문서
 │   ├── WORKLOG.md
-│   ├── requests/CR-000_initial-request.md, CR-001_…
+│   ├── requests/CR-000_initial-request.md, CR-001_…, QNA.md(고객 질문), SUG-001_…(제안), attachments/
 │   ├── 01_project-plan.md
 │   ├── gates/G1_plan.md … G8_closing.md
 │   ├── 06_interim-report.md
 │   └── 08_final-report.md
 ├── planning/  02_requirements.md · 02_information-architecture.md · 02_storyboard.md
-├── design/    03_design-concept.md · 03_design-system.md · 03_page-design.md · mockups/ · assets/
-├── developer/ 04_tech-design.md · 04_dev-report.md · site/ (★ 소스코드)
+├── design/    03_design-concept.md · 03_design-system.md · 03_page-design.md · mockups/ · assets/ · evidence/
+├── developer/ 04_tech-design.md · 04_dev-report.md · site/ (★ 소스코드) · evidence/
 ├── qa/        05_test-plan.md · 05_test-cases.md · 05_test-report.md · 07_smoke-test-report.md · evidence/
-├── devops/    07_deploy-plan.md · 07_deploy-report.md · 08_operation-guide.md
-└── shared/    tickets/ · reviews/ · decisions/ · meetings/
+├── devops/    04_environment.md · 05_preview.md · 07_deploy-plan.md · 07_deploy-report.md · 08_operation-guide.md
+├── shared/    tickets/ · reviews/ · decisions/ · meetings/
+├── inbox/     제안 자료 넣는 곳 → /suggest
+└── ACTIVITY.md  진행 요약 (날짜별, 최신이 위)
 ```
 
 **모든 산출물 공통 헤더** — 문서 상단에서 상태를 바로 확인할 수 있습니다.
@@ -822,7 +824,7 @@ Claude Code 세션을 재시작하세요. 틀 폴더(`site-creator`)를 작업 �
 라운드 상한(standard 3 · lite 2)을 넘으면 자동으로 멈추고 ADR로 쟁점을 정리해 PM 결정을 요청합니다. 그 전에 끊고 싶다면 "현재 Must 지적은 이렇게 결정: …"처럼 직접 결정해 주세요.
 
 **Q. 에이전트가 고객 정보(연혁, 전화번호 등)를 임의로 채웠어요.**
-규칙 위반입니다. 확인되지 않은 사실은 `[TBD: 고객 확인 필요]`로 표시해야 합니다. 해당 문서와 위치를 알려 수정을 지시하세요. 반복된다면 회고의 틀 개선 제안으로 남기세요.
+규칙 위반입니다. 확인되지 않은 사실은 QNA에 질문을 등록하고 `[TBD: Q-xxx]`로 표시해야 합니다(등록 전 임시 표시는 `[TBD: 고객 확인 필요]`). 해당 문서와 위치를 알려 수정을 지시하세요. 반복된다면 회고의 틀 개선 제안으로 남기세요.
 
 **Q. 틀 루트에 `package.json`이나 `node_modules`가 생겼어요.**
 규칙 위반입니다(명령은 프로젝트 폴더 안에서만 실행). 틀 저장소 `git status`로 확인하고 정리를 지시하세요. `node_modules/`는 틀 `.gitignore`에 들어 있어 커밋되지는 않습니다.

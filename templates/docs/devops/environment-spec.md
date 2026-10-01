@@ -6,7 +6,7 @@ owner: devops
 version: 0.1
 status: draft
 reviewers: [developer, qa]
-inputs: [pm/01_project-plan.md, pm/requests/QNA.md, developer/04_tech-design.md]
+inputs: [pm/01_project-plan.md, pm/requests/QNA.md, shared/decisions/ADR-*]   # 기술 설계와 병렬 작성 — Dockerfile 등 기술 설계 연동 항목은 검토 시 대조
 updated: YYYY-MM-DD
 ---
 
