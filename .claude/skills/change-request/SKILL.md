@@ -20,6 +20,7 @@ argument-hint: "[project-slug] <변경 요청 내용>"
 ## 1. 접수
 - `{PROJECT}/pm/requests/`에서 기존 CR 번호를 확인하고 다음 번호를 부여한다 (`CR-001`부터).
 - `templates/docs/pm/change-request.md`를 읽어 `{PROJECT}/pm/requests/CR-{nnn}_{slug}.md`를 만들고 (`type: change`, `status: analyzing`) "요청 원문" 절에 **수정 없이** 기록한다.
+- `/suggest`에서 넘어온 경우: 요청 원문에 SUG ID와 PM 결정 내용을 인용하고, 첨부는 `pm/requests/attachments/SUG-{nnn}/`를 참조한다. SUG 검토 의견이 영향도 분석을 충분히 다루면 §2의 팀 의견 호출을 생략하고 pmo 종합만 한다.
 - `{PROJECT}/pm/STATUS.md`의 "변경 요청" 표에 추가한다.
 
 ## 2. 영향도 분석

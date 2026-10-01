@@ -26,6 +26,10 @@ application-local.*
 .env.*
 !.env.example
 
+# 제안 자료 투입함 — 접수(/suggest) 시 pm/requests/attachments/로 옮겨 커밋
+inbox/*
+!inbox/README.md
+
 # 고객 인도 패키지 (git archive 결과물)
 .delivery/
 

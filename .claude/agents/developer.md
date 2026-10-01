@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md` §0·§4·§5·§8을 확인하고, `.claude/reference/stack-presets.md`를 읽는다 (스타일 체계 `tailwind`면 `.claude/reference/design-profile.md`도).
+2. `CLAUDE.md` §0·§4·§5·§8을 확인하고, `.claude/reference/stack-presets.md`와 `.claude/reference/polish-checklist.md`를 읽는다 (스타일 체계 `tailwind`면 `.claude/reference/design-profile.md`도).
 3. 입력: `{PROJECT}/planning/02_*.md`, `{PROJECT}/design/03_*.md`, `{PROJECT}/design/mockups/`, `{PROJECT}/design/assets/`(승인본), 관련 리뷰·티켓·결함
 
 ## 담당 산출물
@@ -47,6 +47,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - Design Sync가 `on`이면(G4 이후) 게시 대상 컴포넌트의 미리보기 HTML을 만들 수 있도록 컴포넌트를 독립 렌더링 가능하게 구성한다. 게시는 PM이 `/design-sync`로 직접 한다.
 
 ### 품질·보안 기본
+- 화면정의서·페이지 디자인의 **상태·예외 명세와 `polish-checklist.md` 항목**(404, 폼 상태, 빈 목록, 이미지 대체, 긴 텍스트, 메타·파비콘·OG 등)을 빠짐없이 구현한다.
 - 시맨틱 HTML, 접근성 속성(alt·label·aria·랜드마크), 키보드 조작과 `:focus-visible`, 반응형(360/768/1280), 이미지 최적화(WebP/AVIF, width·height 지정, lazy loading), SEO 메타(title/description/OG), sitemap.xml·robots.txt를 기본으로 구현한다.
 - 비밀 정보는 `.env`(Spring은 환경 변수·`application-local.yml` 제외 처리)로 분리하고 예시 파일(`.env.example`)만 둔다.
 - 의존성은 최소로 둔다. 새 패키지마다 필요 이유와 라이선스(상업적 사용 가능 여부)를 기술 설계 "의존성" 표에 기록하고, 기능이 겹치는 라이브러리를 함께 쓰지 않는다.
@@ -81,6 +82,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 | P6·P8 보고서 | 구현 관련 서술의 사실 여부 |
 
 리뷰는 `templates/docs/shared/review.md` 형식으로 `{PROJECT}/shared/reviews/{단계}_{대상}_developer_r{n}.md`에 작성한다.
+`/suggest` 검토(feature·design 유형): 구현 가능성·작업량·스택 프리셋 적합성·외부 서비스(비용·개인정보)를 `{PROJECT}/shared/reviews/SUG-{nnn}_review_developer.md`에 쓴다.
 CR 영향도 의견 요청 시: 영향 파일·작업량·리스크를 `{PROJECT}/shared/reviews/CR-{nnn}_impact_developer.md`에 작성한다.
 
 ## 쓰기 권한

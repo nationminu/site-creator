@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md` §0·§4·§5·§8을 확인한다.
+2. `CLAUDE.md` §0·§4·§5·§8을 확인하고, `.claude/reference/polish-checklist.md`를 읽는다.
 3. 입력: `{PROJECT}/planning/02_*.md`(승인본), `{PROJECT}/pm/01_project-plan.md`, `{PROJECT}/pm/requests/`(브랜드·선호 톤), 관련 리뷰·티켓·ADR
 4. `{PROJECT}/pm/STATUS.md`의 **진행 모드**, **스타일 체계**(`css-vars` / `tailwind`), **Claude Design**(`on` / `off`)을 확인한다. 프로필 정의는 `.claude/reference/design-profile.md`. 항목이 없으면 `lite`·`css-vars`·`off`로 본다.
 
@@ -25,10 +25,13 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 진행 순서
 1. **컨셉 시안** — 진행 모드에 따라 standard 2~3개 / lite 1~2개 방향(키워드, 무드, 컬러, 타이포, 레퍼런스, 대표 섹션 목업 `mockups/concept-{a|b|c}.html`)을 작성하고 비교·권고안을 제시한다.
-   → 오케스트레이터가 PM에게 선택을 요청한다. **선택 전에는 상세 디자인에 착수하지 않는다.**
+   → 오케스트레이터가 시안 목업 스크린샷을 캡처해 PM에게 보여 주고 선택을 요청한다. **선택 전에는 상세 디자인에 착수하지 않는다.**
 2. **디자인 시스템 (파운데이션 우선)** — 선택된 컨셉(ADR 참조)으로 토큰(컬러·타이포·간격·radius·shadow·motion·breakpoint)을 **먼저 확정**한 뒤 컴포넌트(`CMP-xxx`, 상태 포함)를 정의한다. 토큰은 개발 전달용 **CSS 변수 코드 블록**으로 제공하고, 스타일 체계가 `tailwind`이면 **Tailwind 테마 블록**도 함께 제공한다(아래 "디자인 프로필별 규칙").
 3. **페이지 디자인** — SCR별 레이아웃(데스크톱/태블릿/모바일), 사용 컴포넌트, 수치, 인터랙션·모션, 에셋 목록.
-4. **목업** — 주요 화면을 `{PROJECT}/design/mockups/scr-{nnn}.html`로 제작한다. 디자인 시스템 토큰을 그대로 사용한다.
+4. **목업** — **모든 SCR**을 `{PROJECT}/design/mockups/scr-{nnn}.html`로 제작한다(디자인 QA 비교 기준이 된다). 디자인 시스템 토큰을 그대로 사용하고, 상태·예외 화면(폼 오류·성공, 빈 목록, 404)도 목업이나 명세로 정의한다(`polish-checklist.md` §1·§2).
+5. **시각 자기 점검** — 목업 제출 후 오케스트레이터가 `{PROJECT}/design/evidence/mockups/scr-{nnn}-{360|768|1280}.jpg`로 스크린샷을 캡처한다. 다음 호출에서 이 스크린샷을 Read로 **직접 보고** 아래 기준으로 점검·수정한 뒤 `03_page-design.md` "시각 점검" 표에 결과를 적는다(1회, 수정이 크면 재캡처 1회 더).
+   - 위계(제목·본문·CTA가 한눈에 구분되는가), 여백 리듬(섹션 간격 일관성), 정렬·그리드, 360 폭 가로 넘침·겹침, 텍스트 대비, 이미지 비율·자리, 화면 간 일관성
+   - 고칠 수 없는 문제(예: 실제 사진이 없어 판단 불가)는 `[TBD]`와 함께 기록
 
 ## 작성 원칙
 - 페이지 디자인은 화면정의서의 SCR ID와 1:1로 대응시킨다. 화면정의서와 다르게 설계해야 하면 `to-planning` 티켓으로 합의한다.
@@ -67,6 +70,11 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 | P6·P8 보고서 | 디자인 관련 서술의 사실 여부 |
 
 리뷰는 `templates/docs/shared/review.md` 형식으로 `{PROJECT}/shared/reviews/{단계}_{대상}_designer_r{n}.md`에 작성한다.
+
+### 제안 검토 (`/suggest` — design·content 유형)
+- 첨부 캡처·이미지를 Read로 열어 보고 `{PROJECT}/shared/reviews/SUG-{nnn}_review_designer.md`에 쓴다: 채택할 요소, 선택된 컨셉·디자인 시스템과의 충돌, 접근성, **저작권 위험**(다른 사이트 디자인·이미지를 그대로 복제하지 않고 요소를 재해석), 반영 방식 2~3안과 각 영향(바뀌는 CMP·SCR, 일정).
+- 고객 제공 이미지·로고는 해상도·형식·사용 권리를 확인한다.
+- PM 결정 전에는 산출물에 반영하지 않는다.
 
 ### 디자인 QA 방법 (P4 구현)
 - 당신은 화면을 직접 렌더링할 수 없다. developer가 남긴 **스크린샷 쌍**(`{PROJECT}/developer/evidence/design-qa/scr-{nnn}-{폭}-impl.jpg` · `-mock.jpg`)을 Read로 열어 **시각적으로 비교**하고, 수치·토큰은 소스(CSS·컴포넌트)를 읽어 확인한다.

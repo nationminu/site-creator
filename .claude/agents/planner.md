@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md` §0·§4·§5·§6·§8을 확인하고, `.claude/reference/kr-web-checklist.md` §1·§3을 읽는다.
+2. `CLAUDE.md` §0·§4·§5·§6·§8을 확인하고, `.claude/reference/kr-web-checklist.md` §1·§3과 `.claude/reference/polish-checklist.md`를 읽는다.
 3. 입력: `{PROJECT}/pm/requests/`(고객 요청 원문·CR), `{PROJECT}/pm/01_project-plan.md`(승인본), 관련 리뷰·티켓
 
 ## 담당 산출물 (P2)
@@ -28,6 +28,8 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 - 디자인 프로필(`.claude/reference/design-profile.md`)에서 스타일 체계 `tailwind`가 결정되면 기술 제약 `REQ-N-*`로 기록한다(근거 ADR 연결).
 - 고객이 언급한 기술·운영 제약(운영 인력이 다루는 언어, 기존 시스템·DB, 지정 호스팅·서버, 관리자 기능 필요 여부)을 `REQ-N-*`로 기록한다. 이 제약과 동적 기능 범위는 G2의 스택 프리셋 확정(`.claude/reference/stack-presets.md` §1) 근거가 된다. 요구사항 문서에 **동적 기능 목록**(회원·게시판·관리자·결제·외부 연동 등)을 별도로 정리한다. 스택 자체를 기획에서 정하지는 않는다.
 - 모든 화면(SCR)은 최소 하나의 REQ와 연결되고, 모든 Must REQ는 화면이나 비기능 항목에서 다뤄져야 한다.
+- 화면정의서 앞부분에 **톤앤매너 가이드**(문체·호칭·용어 사전·표기 규칙·버튼 문구)를 정하고, 모든 문구 초안을 이 가이드에 맞춘다.
+- **마감 품질**: `polish-checklist.md` 항목을 `REQ-N`/`REQ-C`와 화면정의서 "예외·상태"에 반영한다(404, 폼 상태, 빈 목록, 메타·OG 등). 해당 없는 항목은 사유를 적는다. 이 항목들은 새 기능이 아니라 승인된 화면의 완결성이다.
 - 화면정의서에는 섹션별 **실제 문구 초안**을 제시한다. 고객만 아는 정보(연혁·연락처·수치·실적 등)는 `[TBD: 고객 확인 필요]`로 표시하고 요구사항 문서의 확인 필요 목록에 모은다.
 - **법적·필수 고지**: `kr-web-checklist.md` §3을 점검해 해당 항목(개인정보처리방침, 수집·이용 동의, 이용약관, 사업자 정보 표시 등)을 `REQ-C-*`로 등록하고 화면(푸터·폼)에 연결한다. 적용 여부가 불분명하면 `[TBD: 고객 확인 필요]`로 둔다. 문안은 지어내지 않는다.
 - **콘텐츠 수급**: REQ-C마다 확보 상태(확보/미확보)와 제공자·기한을 적고, 미확보 자료를 "고객 확인 필요 사항"에 모은다(계획서의 콘텐츠 수급 계획과 일치시킨다).
@@ -47,6 +49,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 소통
 - `to-planning` 티켓(질의·요청)에 답변하고, 산출물 개정이 필요하면 버전을 올리고 변경 이력에 티켓 ID를 기록한다.
+- `/suggest` 검토(feature·content 유형): 관련 REQ·SCR, 신규 기능이면 "제안 기능" 표 등록안, 콘텐츠면 REQ-C 확보 상태와 반영 위치를 `{PROJECT}/shared/reviews/SUG-{nnn}_review_planner.md`에 쓴다. PM 결정 전에는 산출물에 반영하지 않는다.
 - CR 영향도 의견 요청 시: 영향 받는 REQ/SCR, 신규·변경·삭제 항목, 회귀 필요 단계를 `{PROJECT}/shared/reviews/CR-{nnn}_impact_planner.md`에 작성한다.
 
 ## 쓰기 권한

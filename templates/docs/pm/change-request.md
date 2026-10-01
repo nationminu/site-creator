@@ -6,6 +6,7 @@ requested_by: 총괄 PM
 received: YYYY-MM-DD
 status: received             # received | analyzing | pending-approval | approved | rejected | on-hold | done
 decision_ref:                # ADR-xxx
+source_sug:                  # /suggest에서 넘어온 경우 SUG-xxx
 ---
 
 # CR-000 (요청 제목)

@@ -10,6 +10,7 @@
 | `.claude/reference/stack-presets.md` | 스택 프리셋, 기술 카탈로그, 표준 명령 매핑 | developer, devops, qa, pmo |
 | `.claude/reference/design-profile.md` | 디자인 프로필(Tailwind, Claude Design, Design Sync) | designer, developer, 오케스트레이터 |
 | `.claude/reference/kr-web-checklist.md` | 콘텐츠 수급, PM 사전 준비, 법적 고지, 검색엔진 등록 | pmo, planner, devops, qa |
+| `.claude/reference/polish-checklist.md` | 마감 품질(404·메타·상태·예외·문구·반응형) | planner, designer, developer, qa |
 | `.claude/reference/git-ops.md` | 커밋·태그, 진행 요약(`ACTIVITY.md`), 인도 패키지 | 오케스트레이터 |
 
 **에이전트는** 작업 전에 이 문서의 §0·§4·§5·§8과, 호출 프롬프트·자기 정의 파일이 가리키는 기준 문서만 읽는다(전체를 매번 다시 읽지 않는다).
@@ -74,7 +75,7 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 > 따라서 팀 간 소통은 **파일(산출물·리뷰·티켓)** 로만 이루어지고, 에이전트 호출과 순서 조율은 **오케스트레이터**가 담당한다.
 >
 > **오케스트레이터는 팀 산출물을 직접 작성하지 않는다.** 반드시 해당 팀 에이전트에게 위임한다.
-> (예외: 프로젝트 골격 생성, `pm/STATUS.md` 갱신, CR 요청 원문 기록, 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
+> (예외: 프로젝트 골격 생성, `pm/STATUS.md` 갱신, CR·SUG 요청 원문과 첨부 기록, 목업·화면 스크린샷 캡처(도구 실행 결과 저장), 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
 
 ---
 
@@ -101,9 +102,9 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 
 **단계 내 체크포인트**
 - **P1**: 동적 기능이 있거나 호스팅이 미정이면 devops가 호스팅·운영 비용 사전 의견을 먼저 내고, pmo가 계획서에 반영한다.
-- **P3**: 컨셉 시안을 먼저 PM에게 제시해 방향을 선택받은 뒤 상세 디자인에 착수한다 (시안 수는 진행 모드에 따름).
+- **P3**: 컨셉 시안을 먼저 PM에게 제시해 방향을 선택받은 뒤 상세 디자인에 착수한다 (시안 수는 진행 모드에 따름). 목업은 **렌더링 스크린샷으로 designer가 스스로 확인·수정**한 뒤 검토에 제출한다(시각 확인 루프).
 - **P4**: ① 기술 설계 작성·검토 → ② 구현(기술 설계 "구현 순서"의 **작업 단위별로 나눠 호출·커밋**) → ③ 자체 점검(디자인 QA용 스크린샷 포함)·개발 보고서 → ④ 디자인 QA·기능 검토.
-- **P5**: qa는 G3 승인 이후(P4 진행 중) 테스트 계획·케이스를 미리 작성할 수 있다. 결함 수정 ↔ 재검증은 최대 3사이클, 초과 시 PM 보고.
+- **P5**: qa는 G3 승인 이후(P4 진행 중) 테스트 계획·케이스를 미리 작성할 수 있다. 기능 테스트와 함께 **사용자 시나리오 검수·문구 검수·마감 품질 점검**을 한다. 결함 수정 ↔ 재검증은 최대 3사이클, 초과 시 PM 보고. Critical·Major가 0이 되면 (PM 승인 시) **프리뷰 배포**로 PM·고객이 실제 기기에서 확인하고, 피드백은 `/suggest`로 접수한다.
 - **P7**: 배포 계획 검토 → **PM 배포 승인** → 릴리스 태그 → 배포 실행 → qa 운영 스모크 테스트 → 배포 보고서(검색엔진 등록 PM 조치 포함).
 - **P8**: PM이 고객 인도 범위를 결정하면 인도 패키지를 만든다.
 
@@ -193,6 +194,7 @@ updated: YYYY-MM-DD
 | 대상 | 형식 | 부여 주체 |
 |---|---|---|
 | 고객 요청·변경 요청 | `CR-000`(최초 요청), `CR-001` … | 오케스트레이터 |
+| 제안 (시안·기능·자료·불편) | `SUG-001` … | 오케스트레이터 |
 | 요구사항 | `REQ-F-001`(기능) / `REQ-N-001`(비기능) / `REQ-C-001`(콘텐츠) | planner |
 | 화면 | `SCR-001` | planner |
 | 컴포넌트 | `CMP-001` | designer |
@@ -218,11 +220,12 @@ updated: YYYY-MM-DD
 | 티켓 | `shared/tickets/TKT-{발행팀}-{nnn}_to-{수신팀}_{slug}.md` | `templates/docs/shared/ticket.md` | 리뷰 주기 밖의 요청·질의·자료 요청 (수신팀: `pmo`·`planning`·`design`·`developer`·`qa`·`devops`) |
 | 결함 | `shared/tickets/DEF-{nnn}_{slug}.md` | `templates/docs/shared/defect.md` | 검증 중 발견된 결함 |
 | 결정 기록 | `shared/decisions/ADR-{nnn}_{slug}.md` | `templates/docs/shared/decision.md` | PM 결정, 팀 간 합의, 되돌리기 어려운 선택 |
+| 제안 (PM·고객) | `pm/requests/SUG-{nnn}_{slug}.md` + `pm/requests/attachments/SUG-{nnn}/` | `templates/docs/pm/suggestion.md` | PM·고객의 시안·기능·자료·불편 제안 — `/suggest`로 접수 → 팀 검토 → PM 결정 → 반영/CR |
 | 회의록 | `shared/meetings/MTG-{YYYYMMDD}_{slug}.md` | `templates/docs/shared/meeting.md` | 킥오프, 이슈 조율, 회고 |
 
 ### 쓰기 권한
 - 모든 에이전트는 틀과 프로젝트 전체를 **읽을 수 있다.**
-- **쓰기는 `{PROJECT}/{자기 팀}/` + `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`** 로 제한한다. (`shared/decisions/`, `shared/meetings/`는 pmo, `ACTIVITY.md`·`design/imports/`는 오케스트레이터)
+- **쓰기는 `{PROJECT}/{자기 팀}/` + `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`** 로 제한한다. (`shared/decisions/`, `shared/meetings/`는 pmo, `ACTIVITY.md`·`design/imports/`·`design/evidence/mockups/`·`pm/requests/attachments/`는 오케스트레이터)
 - **타 팀 산출물을 직접 수정하지 않는다.** 수정이 필요하면 리뷰 지적 또는 티켓으로 요청한다.
 - 티켓의 "처리 결과"는 수신 팀이, 리뷰의 "처리 결과" 열은 산출물 Owner가 기입한다.
 - 예외: devops는 배포 설정 파일(`vercel.json`, `netlify.toml`, CI 워크플로 등)을 `{PROJECT}` 안에 작성할 수 있다. 변경 내역을 배포 계획서에 기록하고 developer 리뷰를 받는다.
@@ -255,7 +258,8 @@ updated: YYYY-MM-DD
 - **성능·SEO**: Lighthouse 성능·접근성·권장사항·SEO 각 90점 이상 목표
 - **SEO 기본**: title/description, OG 태그, sitemap.xml, robots.txt, 시맨틱 마크업, 검색엔진 등록(네이버 서치어드바이저 등)
 - **보안**: HTTPS, 비밀 정보 저장소 커밋 금지, 폼 입력 검증, 개인정보 수집 시 처리방침 고지
-- **콘텐츠**: 배포 전 `[TBD` 0건(또는 PM 예외 승인), 법적·필수 고지 점검 — `.claude/reference/kr-web-checklist.md`
+- **콘텐츠**: 배포 전 `[TBD` 0건(또는 PM 예외 승인), 법적·필수 고지 점검 — `.claude/reference/kr-web-checklist.md`. 문구는 화면정의서의 톤앤매너 가이드를 따르고 맞춤법·용어를 검수한다.
+- **마감 품질**: 404·메타·파비콘·OG, 폼·목록·이미지의 상태·예외, 긴 텍스트, 반응형 경계 — `.claude/reference/polish-checklist.md`
 
 planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고, qa는 `.claude/agents/qa.md`의 표준 검증 도구 세트로 측정한다.
 
@@ -318,6 +322,7 @@ devops는 `release-v*` 태그 기준으로 배포하고, 롤백은 이전 릴리
 | `/status [project-slug]` | 프로젝트 목록 또는 특정 프로젝트 현황 보고 |
 | `/change-request [project-slug] <변경 내용>` | 변경 요청 접수 → 영향도 분석 → 승인 시 회귀 |
 | `/resume-project [project-slug]` | 세션 중단 후 파일·git 상태로 재개 지점을 판정해 이어서 진행 |
+| `/suggest [project-slug] <제안> [파일·URL]` | PM·고객 제안(캡처·파일·설명) 접수 → 팀 검토 → PM 결정 → 반영 또는 CR (자료는 `{PROJECT}/inbox/`에 넣어도 됨) |
 
 - `project-slug`를 생략하면: `projects/*/pm/STATUS.md` 중 프로젝트 상태가 `진행 중`인 것이 하나면 그 프로젝트, 여러 개면 PM에게 묻는다.
 - ⚠️ Claude Code 기본 명령 `/init`은 CLAUDE.md를 생성·덮어쓰므로 **사용하지 않는다.** 프로젝트 시작은 `/kickoff`.

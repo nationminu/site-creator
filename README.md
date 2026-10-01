@@ -13,6 +13,7 @@
 | 3 | `/run-phase next` | 다음 단계 실행 (작성 → 교차 검토 → 반영 → 게이트) |
 | 4 | `/status` | 프로젝트 목록 / 현황 확인 |
 | 5 | `/change-request <변경 내용>` | 고객 요구 변경 시 영향도 분석 후 회귀 |
+| 6 | `/suggest <제안> [파일·URL]` | PM·고객의 시안 캡처·기능·자료 제안 접수 → 팀 검토 → PM 결정 → 반영 (파일은 `projects/<slug>/inbox/`에) |
 
 프로젝트가 여러 개 진행 중이면 명령에 `project-slug`를 붙입니다. 예: `/run-phase acme-homepage next`
 
@@ -50,7 +51,7 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
 ├── .claude/
 │   ├── agents/                    # 팀 에이전트: pmo, planner, designer, developer, qa, devops
 │   ├── skills/                    # PM 명령어: kickoff, run-phase, status, change-request, resume-project
-│   ├── reference/                 # 기준 문서: 진행 모드, 스택 프리셋, 디자인 프로필, 국내 실무 체크리스트, Git 운영
+│   ├── reference/                 # 기준 문서: 진행 모드, 스택 프리셋, 디자인 프로필, 국내 실무·마감 품질 체크리스트, Git 운영
 │   └── settings.json              # 틀 보호 규칙 (보호 영역 Edit·Write 시 확인 요청)
 ├── templates/
 │   ├── project/                   # /kickoff 때 복사되는 프로젝트 골격

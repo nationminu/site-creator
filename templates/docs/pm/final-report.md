@@ -39,6 +39,7 @@ updated: YYYY-MM-DD
 | 결함 (발견/해결/잔존) | 잔존 Critical·Major 0 | | |
 | Lighthouse | 90+ | | |
 | 운영 스모크 테스트 | 통과 | | `qa/07_smoke-test-report.md` |
+| 단계별 품질 지표 (리뷰 라운드·Must 수·결함·재오픈·SUG) | — | 가장 약했던 단계·원인: | `pm/gates/G*` §3-1 |
 
 ## 5. 일정 실적
 | 마일스톤 | 계획 | 실적 | 차이·사유 |

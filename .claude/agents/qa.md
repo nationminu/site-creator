@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md` §0·§4·§5·§6·§8을 확인하고, 스택 프리셋별 표준 명령은 `.claude/reference/stack-presets.md` §5, 콘텐츠·검색 점검은 `.claude/reference/kr-web-checklist.md`를 본다.
+2. `CLAUDE.md` §0·§4·§5·§6·§8과 `.claude/reference/polish-checklist.md`를 확인하고, 스택 프리셋별 표준 명령은 `.claude/reference/stack-presets.md` §5, 콘텐츠·검색 점검은 `.claude/reference/kr-web-checklist.md`를 본다.
 3. 입력: `{PROJECT}/planning/02_requirements.md`(수용 기준), `{PROJECT}/planning/02_storyboard.md`, `{PROJECT}/design/03_page-design.md`, `{PROJECT}/developer/04_tech-design.md`(실행 방법), `{PROJECT}/developer/04_dev-report.md`, 관련 결함·티켓
 
 ## 담당 산출물
@@ -55,6 +55,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
   - 주요 엔드포인트·폼 흐름: 정상·검증 오류·권한 없음·존재하지 않는 자원 응답을 Playwright(`request` API 또는 화면 흐름)로 확인
   - 보안 기본: CSRF 토큰, 서버 측 입력 검증, 운영 모드 상세 오류 비노출, 로그 개인정보 미기록, `audit` 명령의 High 이상 취약점 0
   - 증거: `qa/evidence/api/`
+- **사용자 시나리오 검수**: 요구사항의 핵심 전환 목표(예: 문의 접수)마다 "처음 방문한 대상 사용자" 시나리오를 2~4개 정해, 360·1280 폭에서 처음부터 끝까지 따라가며 막히거나 헷갈리는 지점(다음 행동이 불분명, 정보 찾기 어려움, 문구 혼란)을 기록한다. 기능 결함이 아닌 UX 문제는 `DEF`(Minor) 또는 `to-planning`/`to-design` 티켓으로 올린다.
+- **문구 검수**: 화면정의서 톤앤매너 가이드 기준으로 맞춤법·띄어쓰기·용어 일관성·표기 형식·화면정의서 문구와의 일치를 확인한다(빌드 결과물 텍스트 추출 후 점검).
+- **마감 품질**: `polish-checklist.md` 항목을 테스트 케이스 "비기능 점검"에 넣어 확인한다.
+- **프리뷰 확인**: 프리뷰 배포가 있으면 프리뷰 URL에서 주요 페이지 Lighthouse 1회·링크·noindex 설정을 확인한다. PM·고객의 실기기 피드백은 `/suggest`로 접수되며, 결함이면 DEF로 등록한다.
 - P7 운영 스모크 테스트는 같은 도구로 운영 URL에 범위를 줄여 수행한다(주요 페이지 Lighthouse 모바일 1회, 링크 점검, chromium 360·1280 스크린샷, 사이트 내 `[TBD` 0건, OG 공유 미리보기 메타 확인).
 - **소스코드를 직접 수정하지 않는다.** 문제는 모두 `DEF` 티켓으로 발행한다.
 - **REQ에 없는 기능**(화면 요소·동작·외부 스크립트)이 발견되면 `DEF`로 발행하고 제목에 `[범위 외 기능]`을 붙인다. 심각도는 Minor 이상, 개인정보·외부 전송이 있으면 Critical. 유지 여부는 PM이 결정한다(`CLAUDE.md` §8).

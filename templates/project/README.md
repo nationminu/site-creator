@@ -19,6 +19,7 @@
 {project-slug}/
 ├── README.md                # 이 문서
 ├── ACTIVITY.md              # ★ 진행 요약 — 날짜별, 최신이 위
+├── inbox/                   # 제안 자료(캡처·파일) 넣는 곳 → /suggest
 ├── pm/                      # PMO — STATUS.md(현황판), requests/(CR), gates/, 계획·보고서
 ├── planning/                # 기획 — 요구사항, IA, 화면정의서
 ├── design/                  # 디자인 — 컨셉, 디자인 시스템, 페이지 디자인, mockups/, assets/

@@ -5,6 +5,8 @@
 
 ### 2026-10-01
 
+* 추가: 제안 접수 `/suggest` — PM·고객의 시안 캡처·참고 사이트·기능·원고·불편을 `SUG` 문서와 첨부(`inbox/` → `pm/requests/attachments/`)로 접수, 유형별 팀 검토 → pmo 종합 → PM 결정 → 진행 중 반영 / CR / 콘텐츠 / 결함으로 처리.
+* 추가: 완성도 개선 — P3 목업 스크린샷 시각 자기 점검과 PM 화면 확인, 마감 품질 체크리스트(`polish-checklist.md`), P5 사용자 시나리오·문구 검수, PM 승인 시 프리뷰 배포(noindex)로 실기기 확인, lite에서도 품질 핵심 검토는 기본 모델, 게이트별 품질 지표.
 * 추가: 기능 결정권은 PM에게만 — 팀 제안 기능은 요구사항 "제안 기능" 표에서 G2에 PM이 개별 승인(미승인은 범위 제외), G2 이후 기능 변경은 `to-pmo` 티켓·CR, 유료·개인정보 관련 외부 서비스 선택은 PM 결정(ADR), 검토자는 REQ에 없는 기능을 Must로 지적, qa는 `[범위 외 기능]` 결함 발행.
 * 수정: 전체 구조 리팩터링 — 규칙을 기준 문서 `.claude/reference/`(modes · stack-presets · design-profile · kr-web-checklist · git-ops)로 분리하고 CLAUDE.md를 원칙 중심으로 축소, 에이전트는 필요한 절·기준 문서만 읽도록 변경.
 * 수정: lite 주 검토자를 산출물 단위로 재정의(P8 최종 보고서 devops · 운영 가이드 developer)해 자기 검토 제거, lite P6 생략 시 G6 의존 제거, 시안 수 모드 연동, lite 게이트 문서 간소판.

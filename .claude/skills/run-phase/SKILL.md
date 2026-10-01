@@ -37,9 +37,9 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 |---|---|
 | **P1** | ① (동적 기능이 있거나 호스팅이 미정이면) `devops` 호스팅 사전 의견 → `shared/reviews/P1_hosting-input_devops.md` → ② `pmo` 계획서·킥오프 회의록(잠정 프리셋, 콘텐츠 수급 계획, PM 사전 준비 항목 포함) → 검토 `planner`, `developer` |
 | **P2** | `planner`가 요구사항 → IA → 화면정의서를 작성(법적 고지 REQ-C, 동적 기능 목록 포함) → 검토 `designer`, `developer`, `qa` |
-| **P3** | ① `designer` 컨셉 시안(standard 2~3안 / lite 1~2안) → **PM에게 시안 선택 요청** (AskUserQuestion, 시안별 요약을 옵션 설명에) → ② `pmo`가 선택 결과를 `shared/decisions/ADR-*`로 기록 → ③ `designer` 디자인 시스템·페이지 디자인·목업 → 검토 `planner`, `developer` |
+| **P3** | ① `designer` 컨셉 시안(standard 2~3안 / lite 1~2안) → 오케스트레이터가 시안 목업 스크린샷 캡처(아래 "스크린샷 캡처") → **PM에게 시안 선택 요청** (스크린샷을 보여 주고 AskUserQuestion, 시안별 요약을 옵션 설명에) → ② `pmo`가 선택 결과를 `shared/decisions/ADR-*`로 기록 → ③ `designer` 디자인 시스템·페이지 디자인·전 SCR 목업 → ④ 오케스트레이터 스크린샷 캡처 → ⑤ `designer` **시각 자기 점검·수정**(스크린샷을 보고 수정, 큰 수정이면 재캡처 후 1회 더) → 검토 `planner`, `developer` (스크린샷 경로 전달) |
 | **P4** | ① `developer` 기술 설계(구현 순서를 작업 단위로 분할) → 검토 `devops`, `qa` (루프) → ② **구현: 기술 설계 "구현 순서"의 작업 단위마다 `developer`를 순차 호출**하고 단위마다 커밋(`feat(P4): {단위} — developer`). 프롬프트에 이번 단위 범위와 이전 단위의 개발 보고서 "진행 현황"을 넘긴다 → ③ 마지막 호출에서 자체 점검·디자인 QA 스크린샷(`developer/evidence/design-qa/`)·개발 보고서 완성 → 검토 `designer`(스크린샷 기반 디자인 QA), `planner`(기능 부합) (루프). 이 기간에 `qa`의 테스트 계획·케이스 선작성을 병렬로 지시할 수 있다 |
-| **P5** | ① `qa` 테스트 계획·케이스(미작성 시) → 테스트 실행 → DEF 발행 → ② `developer` 결함 수정 → ③ `qa` 재검증·회귀 테스트 → Critical·Major 0건까지 ②③ 반복(최대 3사이클, 초과 시 PM 보고) → ④ `qa` 결과 보고서 → 검토 `developer`, `planner` |
+| **P5** | ① `qa` 테스트 계획·케이스(미작성 시 — 시나리오·문구·마감 품질 포함) → 테스트 실행 → DEF 발행 → ② `developer` 결함 수정 → ③ `qa` 재검증·회귀 테스트 → Critical·Major 0건까지 ②③ 반복(최대 3사이클, 초과 시 PM 보고) → ④ **프리뷰 배포 여부를 PM에게 묻는다**(외부 배포 — 기본 권장). 승인 시 `devops`에 `PM 프리뷰 배포 승인: {일시}`를 넣어 호출 → PM에게 프리뷰 URL을 주고 실제 휴대폰·PC 확인을 요청 → 피드백은 `/suggest`로 접수·처리(결함은 ②③ 사이클) → ⑤ `qa` 결과 보고서 → 검토 `developer`, `planner` |
 | **P6** | `pmo` 중간보고서 → 검토(사실 확인) `planner`, `designer`, `developer`, `qa`, `devops` → PM 보고. PM이 고객 피드백을 전달하면 `pmo`가 보고서 "고객 피드백 기록"에 정리하고, 변경이 필요한 항목은 `/change-request` 절차로 처리. lite는 G5에서 생략 여부를 먼저 결정 |
 | **P7** | ① `devops` 배포 계획(`[TBD` 0건 확인, 검색엔진 등록 계획 포함) → 검토 `developer`, `qa` → ② **PM 배포 승인 요청** (배포 대상·호스팅·도메인·롤백 계획·`[TBD` 잔여와 예외 승인 필요 항목·PM 조치 필요 사항 제시) → ③ 승인 시 **릴리스 커밋·태그** (§6-2) → ④ `devops` 호출 프롬프트에 `PM 배포 승인 완료: {일시}`와 `배포 태그: release-v{x.y.z}` 명시하여 배포 실행 → ⑤ `qa` 운영 스모크 테스트(`qa/07_smoke-test-report.md`) → ⑥ `devops` 배포 보고서(검색엔진 등록 PM 조치 포함, 실패 시 롤백 기준에 따라 판단하고 PM 보고) |
 | **P8** | ① `devops` 운영 가이드 (필요 정보는 `developer` 티켓으로) + `pmo` 최종 보고서 → 검토(standard: 전 팀 / lite: 최종 보고서 `devops`, 운영 가이드 `developer`) → ② `pmo` 회고 회의록(ACTIVITY·WORKLOG·리뷰 이력 기반 Keep/Problem/Try + 틀 개선 제안) → ③ G8 승인 후 **고객 인도 패키지** (§6-3) |
@@ -58,6 +58,13 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 - **G4 이후 (Design Sync)**: PM이 원하면 `designer`에게 게시 대상 컴포넌트 목록을 정리시키고, PM이 직접 `/design-sync`를 실행하도록 안내한다. 오케스트레이터는 PM 승인 없이 게시하지 않는다.
 
 **lite의 P6 생략**: G5 게이트 보고에 "P6 중간보고 생략 여부"를 PM 결정 사항으로 포함한다. PM이 생략을 승인하면 STATUS.md P6 행을 `➖ 생략`으로, "예외 기록"에 승인 일시를 남기고 커밋(`chore: P6 중간보고 생략 — PM 승인`)한 뒤 P7로 진행한다. 거절하면 P6를 수행한다.
+
+**스크린샷 캡처** (오케스트레이터 — 도구 실행 결과 저장, `CLAUDE.md` §1 예외):
+- 목업: `{PROJECT}` 안에서 `npx --yes playwright screenshot --viewport-size=<폭>,900 --full-page "file://<목업 절대경로>" design/evidence/mockups/<목업명>-<폭>.jpg` — 폭 360·768·1280 (브라우저가 없으면 `npx playwright install chromium`).
+- 시안 비교(P3 ①)는 1280·360 두 폭이면 충분하다. 캡처 결과를 커밋한다(`chore(P3): 목업 스크린샷 캡처`).
+- 캡처가 불가능하면 PM에게 알리고, 목업 HTML 경로를 브라우저로 열어 보도록 안내한다.
+
+**PM에게 화면 보여 주기**: G3·G4·G5 게이트 보고와 P3 시안 선택 때 대표 스크린샷 경로(시안·주요 SCR 360/1280)를 보고에 넣고, 가능하면 브라우저 패널(미리보기)로 목업이나 로컬 사이트를 직접 띄워 PM이 화면을 보고 판단하게 한다.
 
 **호출 프롬프트 필수 항목** (`CLAUDE.md` §3): `PROJECT`, `진행 모드`, `스택 프리셋`(G2 이후), 단계·작업 종류, 입력 경로, 템플릿 경로(`templates/docs/…`), 출력 경로(`{PROJECT}/…`), 필요한 기준 문서, 관련 리뷰·티켓·CR, 라운드 번호.
 
@@ -84,7 +91,9 @@ PM에게 보고:
 ## [<SLUG>] G{n} {단계명} 게이트 보고
 **pmo 권고**: 승인 권고 / 조건부 승인 권고 / 보류 권고
 **산출물**: (클릭 가능한 경로 목록)
+**화면**: (G3~G5 — 대표 스크린샷 경로, 브라우저로 띄운 경우 그 안내)
 **핵심 결과**: (3~5줄)
+**품질 지표**: 리뷰 라운드 · Must/Should 수 · (P5 이후) 심각도별 결함·재오픈 · 처리한 SUG
 **리뷰 요약**: 라운드 수 · Must/Should 처리 현황
 **미해결·이월 사항**:
 **PM 결정 필요 사항**:

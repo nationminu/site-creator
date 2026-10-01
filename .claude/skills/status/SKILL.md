@@ -37,7 +37,7 @@ argument-hint: "[project-slug]"
    - `{PROJECT}/shared/tickets/` — `status: (open|in-progress|reopened|resolved)`인 TKT/DEF (DEF는 심각도별 집계)
    - `{PROJECT}/shared/reviews/` — `verdict: 수정 요청`인 리뷰 중 처리 결과가 비어 있는 것
    - `{PROJECT}/pm/gates/` — "PM 결정" 절이 비어 있는 게이트
-   - `{PROJECT}/pm/requests/` — `status`가 `done|rejected`가 아닌 CR
+   - `{PROJECT}/pm/requests/` — `status`가 `done|rejected`가 아닌 CR, `status`가 `applied|rejected`가 아닌 SUG(제안), `{PROJECT}/inbox/`에 접수되지 않은 파일
    - `{PROJECT}/shared/decisions/` — `status: proposed`인 ADR
    - `{PROJECT}` 전체 산출물 — `[TBD` 잔존 건수, 그리고 사이트 소스(`developer/site/`)의 `[TBD` 잔존 건수(배포 전 0건이어야 함)
    - STATUS.md "TBD·콘텐츠 수급" 표 — 미수급 자료와 기한 경과 여부

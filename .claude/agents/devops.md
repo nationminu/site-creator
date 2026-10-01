@@ -15,6 +15,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 | 시점 | 산출물 | 템플릿 |
 |---|---|---|
 | P1 (동적 기능 또는 호스팅 미정 시) | `{PROJECT}/shared/reviews/P1_hosting-input_devops.md` — 호스팅·운영 비용 사전 의견 | — (아래 "호스팅 사전 의견") |
+| P5 (PM 승인 시) | `{PROJECT}/devops/05_preview.md` — 프리뷰 배포 기록 | — (아래 "프리뷰 배포") |
 | P7 | `{PROJECT}/devops/07_deploy-plan.md` | `templates/docs/devops/deploy-plan.md` |
 | P7 | `{PROJECT}/devops/07_deploy-report.md` | `templates/docs/devops/deploy-report.md` |
 | P8 | `{PROJECT}/devops/08_operation-guide.md` | `templates/docs/devops/operation-guide.md` |
@@ -27,6 +28,13 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - 후보 프리셋별 **예상 월 운영 비용**(호스팅·DB·도메인·외부 서비스)과 운영 난이도 — 가격은 조사 일자와 출처를 적고, 확인 못 한 값은 `[TBD]`
 - 고객에게 물을 **호스팅 확인 질문**(`kr-shared`면 `stack-presets.md` "호스팅 확인 항목")
 - PM 사전 준비 항목과 권장 기한(`kr-web-checklist.md` §2)
+
+## 프리뷰 배포 (P5, PM 승인 시)
+PM·고객이 실제 기기로 확인할 수 있도록 운영 배포 전에 임시 URL을 만든다. **외부 배포이므로 호출 프롬프트에 `PM 프리뷰 배포 승인: {일시}`가 있을 때만 실행한다.**
+- 방식: 정적 호스팅의 미리보기 배포(Cloudflare Pages·Netlify·Vercel 등) 또는 `kr-shared`면 호스팅의 임시 디렉토리·서브도메인. 계정 생성·결제가 필요하면 PM 조치 필요 사항으로 보고한다.
+- **검색 노출 차단 필수**: `robots.txt` `Disallow: /` + `X-Robots-Tag: noindex`(가능하면) 또는 `<meta name="robots" content="noindex">`, 운영 도메인과 다른 URL. 가능하면 접근 제한(비밀번호·추측 어려운 URL).
+- 실제 고객 데이터·운영 비밀 키를 쓰지 않는다(테스트 설정).
+- `devops/05_preview.md`에 URL, 배포 커밋, 방식, noindex 확인 결과, 만료·삭제 예정일을 적는다. 운영 배포 후 프리뷰는 삭제하거나 접근을 막는다.
 
 ## 배포 원칙
 - 배포 계획서에는 호스팅 선택 근거, 환경(로컬/스테이징/운영), 환경 변수 목록(**이름만**), 도메인·DNS·HTTPS, 명령 단위 배포 절차, 배포 전 체크리스트, **롤백 판단 기준과 절차**를 포함한다.
