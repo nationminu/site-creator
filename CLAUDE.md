@@ -74,7 +74,7 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 > 따라서 팀 간 소통은 **파일(산출물·리뷰·티켓)** 로만 이루어지고, 에이전트 호출과 순서 조율은 **오케스트레이터**가 담당한다.
 >
 > **오케스트레이터는 팀 산출물을 직접 작성하지 않는다.** 반드시 해당 팀 에이전트에게 위임한다.
-> (예외: 프로젝트 골격 생성, `pm/STATUS.md` 갱신, CR 요청 원문 기록, 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
+> (예외: 프로젝트 골격 생성, `pm/STATUS.md` 갱신, CR 요청 원문 기록, 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
 
 ---
 
@@ -91,7 +91,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 | 단계 | Owner | 산출물 | 교차 검토자 (standard) | 게이트 통과 기준(요약) |
 |---|---|---|---|---|
 | **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md` | planner, developer | 범위·일정·산출물·리스크 확정, 잠정 스택 프리셋, 콘텐츠 수급·PM 사전 준비 계획 |
-| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 법적 고지 REQ-C 점검, **스택 프리셋 확정** |
+| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 법적 고지 REQ-C 점검, **팀 제안 기능 PM 개별 결정**, **스택 프리셋 확정** |
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
 | **P4 개발** | developer | `developer/04_tech-design.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과 |
 | **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
@@ -279,7 +279,12 @@ planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고
 ## 8. 안전 규칙 (반드시 준수)
 - **운영 배포, 도메인·DNS 변경, 외부 서비스 계정 생성·유료 결제, 원격 저장소 생성·push, 고객 데이터 외부 전송(외부 디자인 도구 업로드·`/design-sync` 게시 포함)**은 PM의 명시적 승인 후에만 수행한다. 이전 승인은 다음 작업으로 이월되지 않는다.
 - API 키·비밀번호 등 비밀 정보는 `.env` 등으로 분리하고 문서·소스·로그·커밋에 기록하지 않는다.
-- 고객 요청에 없는 기능을 임의로 추가하지 않는다. 제안은 `Could` 우선순위나 티켓으로 올린다.
+- **기능 결정권은 PM에게만 있다.** 에이전트는 기능을 제안·구현할 뿐 정하지 않는다.
+  - 판단 기준: **승인된 요구사항(REQ)에 없는 동작·화면 요소가 생기거나, 있는 동작이 바뀌거나 빠지는가.** 크기와 상관없다(검색창, 슬라이더 자동 재생, 챗봇·SNS 위젯, 분석·추적 스크립트, 쿠키 배너, 팝업 등 포함).
+  - G2 전: 팀 제안 기능은 요구사항 "제안 기능" 표에 올리고, G2에서 PM이 **하나씩** 승인한다. 승인되지 않은 제안은 `Won't`(이번 범위 제외)다. G2 일괄 승인으로 제안 기능이 승인된 것으로 보지 않는다.
+  - G2 후: 기능 추가·변경·삭제가 필요하면 구현하지 말고 `to-pmo` 티켓을 발행한다 → PM 결정, 승인된 산출물에 영향이 있으면 §7 CR.
+  - **외부 서비스**(폼·CMS·지도·분석·메일·결제·예약 등) 중 유료이거나 개인정보·고객 데이터가 전달되는 것은 기술 설계에서 후보 비교까지만 하고, **선택은 PM이 한다**(ADR 기록).
+  - 검토자는 대상 산출물에 REQ에 없는 기능이 있으면 **Must**로 지적한다.
 - 확인되지 않은 사실(고객 정보, 연락처, 수치, 연혁 등)은 지어내지 않고 `[TBD: 고객 확인 필요]`로 표시한다.
 - 외부 이미지·폰트·코드는 상업적 사용 가능 라이선스만 사용하고 출처를 기록한다.
 - 확인하지 않은 것을 "완료"·"통과"로 보고하지 않는다. 실행 증거(명령·결과)를 남긴다.

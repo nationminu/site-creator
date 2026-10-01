@@ -5,6 +5,7 @@
 
 ### 2026-10-01
 
+* 추가: 기능 결정권은 PM에게만 — 팀 제안 기능은 요구사항 "제안 기능" 표에서 G2에 PM이 개별 승인(미승인은 범위 제외), G2 이후 기능 변경은 `to-pmo` 티켓·CR, 유료·개인정보 관련 외부 서비스 선택은 PM 결정(ADR), 검토자는 REQ에 없는 기능을 Must로 지적, qa는 `[범위 외 기능]` 결함 발행.
 * 수정: 전체 구조 리팩터링 — 규칙을 기준 문서 `.claude/reference/`(modes · stack-presets · design-profile · kr-web-checklist · git-ops)로 분리하고 CLAUDE.md를 원칙 중심으로 축소, 에이전트는 필요한 절·기준 문서만 읽도록 변경.
 * 수정: lite 주 검토자를 산출물 단위로 재정의(P8 최종 보고서 devops · 운영 가이드 developer)해 자기 검토 제거, lite P6 생략 시 G6 의존 제거, 시안 수 모드 연동, lite 게이트 문서 간소판.
 * 추가: P1 devops 호스팅·운영 비용 사전 의견, P4 구현 작업 단위별 호출·커밋, designer 디자인 QA용 스크린샷(구현·목업 쌍) 절차.
