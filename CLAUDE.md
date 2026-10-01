@@ -97,9 +97,9 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
 | **P4 개발** | developer (+devops 운영 환경 명세) | `developer/04_tech-design.md`<br>`devops/04_environment.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과, (백엔드) 보안 코드 리뷰 Must 0, 성능 예산 확인 |
 | **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
-| **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | PM(고객) 승인, 피드백은 CR로 등록 (lite는 생략 가능) |
+| **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | 고객 전달용(프리뷰 주소·스크린샷·고객 할 일), PM(고객) 승인, 피드백은 `/suggest`로 접수(승인된 내용 변경은 CR) (lite는 생략 가능) |
 | **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, 릴리스 태그 클린 빌드·G5 이후 변경 회귀, `[TBD` 0건(또는 PM 예외 승인), **noindex 해제 확인**, DNS 변경 시 메일 레코드 유지·수신 확인, 운영 스모크 테스트(운영 폼 실제 제출 포함) 통과, 검색엔진 등록 안내 |
-| **P8 최종 산출물** | pmo (+devops) | `pm/08_final-report.md`<br>`devops/08_operation-guide.md`<br>`shared/meetings/MTG-*_retrospective.md` | 전 팀 | 인도 산출물 목록 완비, 인수인계 완료, 회고 기록 |
+| **P8 최종 산출물** | pmo (+devops) | `pm/08_final-report.md`<br>`devops/08_operation-guide.md`<br>`shared/meetings/MTG-*_retrospective.md` | 전 팀 | 인도 산출물 목록 완비, **계정·자산 인계표**, 관리자 매뉴얼(해당 시)·운영 절차 실습, 하자보수·유지보수 범위(PM 결정), 실측 소요 기록, 회고, **종료 체크리스트** |
 
 **단계 내 체크포인트**
 - **P1**: 동적 기능이 있거나 호스팅이 미정이면 devops가 호스팅·운영 비용 사전 의견을 먼저 내고, pmo가 계획서에 반영한다.
@@ -333,6 +333,6 @@ devops는 `release-v*` 태그 기준으로 배포하고, 롤백은 이전 릴리
 | `/answer [project-slug] [Q-xxx] <답변>` | 고객 질문 답변을 QNA에 원문 기록 → 영향 산출물 반영(승인된 내용이 바뀌면 CR) |
 | `/suggest [project-slug] <제안> [파일·URL]` | PM·고객 제안(캡처·파일·설명) 접수 → 팀 검토 → PM 결정 → 반영 또는 CR (자료는 `{PROJECT}/inbox/`에 넣어도 됨) |
 
-- `project-slug`를 생략하면: `projects/*/pm/STATUS.md` 중 프로젝트 상태가 `진행 중`인 것이 하나면 그 프로젝트, 여러 개면 PM에게 묻는다.
+- `project-slug`를 생략하면: `projects/*/pm/STATUS.md` 중 프로젝트 상태가 `진행 중`·`유지보수`인 것이 하나면 그 프로젝트, 여러 개면 PM에게 묻는다. 종료된 프로젝트의 변경은 `/change-request`로 `유지보수` 상태로 재개한다.
 - ⚠️ Claude Code 기본 명령 `/init`은 CLAUDE.md를 생성·덮어쓰므로 **사용하지 않는다.** 프로젝트 시작은 `/kickoff`.
 - PM은 명령어 없이 자연어로 지시해도 되며, 오케스트레이터는 이 문서의 프로세스에 맞춰 해석한다.

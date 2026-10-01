@@ -40,9 +40,9 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 | **P3** | ① `designer` 컨셉 시안(standard 2~3안 / lite 1~2안) → 오케스트레이터가 시안 목업 스크린샷 캡처(아래 "스크린샷 캡처", 컨셉 문서에 삽입 — 고객 공유용) → **PM에게 시안 선택 요청** (스크린샷을 보여 주고 AskUserQuestion, 시안별 요약을 옵션 설명에. 시안이 1개면 "승인 / 수정 요청". 고객 의견은 `/suggest`로 받는다. 수정은 컨셉 문서 §5 회차로 기록하고, 피드백 정책 허용 횟수를 넘으면 일정 영향을 알리고 PM 결정) → ② `pmo`가 선택 결과를 `shared/decisions/ADR-*`로 기록 → ③ `designer` 디자인 시스템·페이지 디자인·전 SCR 목업 → ④ 오케스트레이터 스크린샷 캡처 → ⑤ `designer` **시각 자기 점검·수정**(스크린샷을 보고 수정, 큰 수정이면 재캡처 후 1회 더) → 검토 `planner`, `developer`(스크린샷 경로 전달, developer는 **명도 대비 스크립트 검증** 포함) |
 | **P4** | ① `developer` 기술 설계(구현 순서를 작업 단위로 분할, 로컬 개발 환경 구성, 백엔드면 데이터 모델·API·인증·P2 구현 설계 포함) + `devops` **운영 환경 명세**(`devops/04_environment.md`, 병렬 작성) → 검토 `devops`·`qa`(기술 설계), `developer`·`qa`(운영 환경 명세) (루프) → (외부 서비스 PM 선택) → ② **구현: 작업 단위마다 `developer`를 순차 호출**하고 단위마다 커밋(`feat(P4): {단위} — developer`). 프롬프트에 이번 단위 범위와 이전 단위의 개발 보고서 "진행 현황"을 넘긴다. **작업 단위 1 직후 초기 정합 확인**: `designer`를 `model: sonnet`으로 1회 호출(`early-*` 스크린샷) → 지적은 다음 단위 프롬프트에 포함 → ③ 마지막 호출에서 자체 점검(성능 예산·`[TBD` 건수·보안 헤더)·디자인 QA 스크린샷·개발 보고서 완성 → ④ **(백엔드가 있는 프리셋) 보안 코드 리뷰**: 새 `developer` 호출(검토 전용, 기본 모델, **모드 무관**) → Must가 있으면 구현 `developer`가 수정 → 재검토(최대 2라운드) → ⑤ 검토 `designer`(스크린샷 기반 디자인 QA), `planner`(기능 부합) (루프). 이 기간에 `qa`의 테스트 계획·케이스 선작성을 병렬로 지시할 수 있다 |
 | **P5** | ① `qa` 테스트 계획·케이스(미작성 시 — 시나리오·문구·마감 품질·권한·콘텐츠 유형 포함) → **화면 회귀 기준 스크린샷 생성** → 테스트 실행(자동 회귀 테스트 작성, 모드별 브라우저 범위) → DEF 발행 → ② `developer` 결함 수정 → ③ `qa` 재검증·회귀 테스트 → Critical·Major 0건까지 ②③ 반복(최대 3사이클, 초과 시 PM 보고) → ④ **프리뷰 배포 여부를 PM에게 묻는다**(외부 배포 — 기본 권장). 승인 시 `devops`에 `PM 프리뷰 배포 승인: {일시}`를 넣어 호출 → PM에게 프리뷰 URL과 **실기기 간단 점검표**(qa 보고서 부록)를 주고 실제 휴대폰·PC 확인을 요청 → 피드백은 `/suggest`로 접수·처리(결함은 ②③ 사이클) → ⑤ `qa` 결과 보고서 → 검토 `developer`, `planner` |
-| **P6** | `pmo` 중간보고서 → 검토(사실 확인) `planner`, `designer`, `developer`, `qa`, `devops` → PM 보고. PM이 고객 피드백을 전달하면 `pmo`가 보고서 "고객 피드백 기록"에 정리하고, 변경이 필요한 항목은 `/change-request` 절차로 처리. lite는 G5에서 생략 여부를 먼저 결정 |
+| **P6** | `pmo` 중간보고서(고객 전달용 — 프리뷰 주소·스크린샷·고객 할 일) → 검토(사실 확인) `planner`, `designer`, `developer`, `qa`, `devops` → PM 보고. PM이 고객 피드백을 전달하면 `/suggest`로 접수·처리하고 `pmo`가 보고서 §9에 SUG 처리 결과를 정리한다(승인된 내용 변경은 CR). lite는 G5에서 생략 여부를 먼저 결정 |
 | **P7** | ① `devops` 배포 계획(G5 이후 변경 목록, DNS 전환·기존 레코드, 검색 노출 설정, 운영 데이터, 롤백 리허설, 배포 시점, `[TBD` 0건, 검색엔진 등록) → 검토 `developer`, `qa` → (G5 이후 변경이 있으면 `qa` 회귀 테스트) → ② **PM 배포 승인 요청** (배포 대상·호스팅·도메인·**DNS 변경과 메일 레코드 유지**·롤백 계획과 리허설 결과·`[TBD` 잔여와 예외 승인 항목·**운영 폼 실제 제출 승인**·배포 시점·PM 조치 필요 사항 — TTL 낮춤, 운영 비밀 값, 초기 관리자 생성) → ③ 승인 시 **릴리스 커밋·태그** (§6-2) → ④ `devops` 호출 프롬프트에 `PM 배포 승인 완료: {일시}`와 `배포 태그: release-v{x.y.z}` 명시 → 태그에서 클린 빌드 후 배포 → ⑤ `qa` 운영 스모크 테스트(noindex·운영 폼 포함) → ⑥ `devops` 배포 보고서(실패 시 롤백 기준에 따라 판단하고 PM 보고) → G7 → ⑦ **오픈 후 관찰**: STATUS "다음 할 일"에 24~72시간 뒤 확인을 등록하고 PM에게 알린다. 확인 시 `devops`를 호출해 배포 보고서 "오픈 후 관찰"·SSL·프리뷰 정리를 기록(P8 착수 점검에서 기록 여부 확인) |
-| **P8** | ① `devops` 운영 가이드 (필요 정보는 `developer` 티켓으로) + `pmo` 최종 보고서 → 검토(standard: 전 팀 / lite: 최종 보고서 `devops`, 운영 가이드 `developer`) → ② `pmo` 회고 회의록(ACTIVITY·WORKLOG·리뷰 이력 기반 Keep/Problem/Try + 틀 개선 제안) → ③ G8 승인 후 **고객 인도 패키지** (§6-3) |
+| **P8** | (착수 점검: 오픈 후 관찰 기록 확인) ① `devops` 운영 가이드(운영 환경별 명령, 관리자 매뉴얼, 절차 실습 기록 — 필요 정보는 `developer` 티켓) + `pmo` 최종 보고서(실측 소요·비용 실적·계정·자산 인계표·하자보수/유지보수·종료 체크리스트) → 검토(standard: 전 팀 / lite: 최종 보고서 `devops`, 운영 가이드 `developer`) → ② `pmo` 회고 회의록(ACTIVITY·WORKLOG·리뷰 이력 기반 Keep/Problem/Try + 실측 지표 + 틀 개선 제안) → G8 보고에 **PM 결정**: 하자보수·유지보수 범위, 인도 범위·방식, 계정 명의 이전(PM 조치) → ③ 종료 체크리스트 확인 → **고객 인도 패키지** (§6-3) |
 
 **스택 프리셋·기능 결정** (`.claude/reference/stack-presets.md` §1, `CLAUDE.md` §8 "기능 결정권"):
 - **P1**: 잠정 프리셋을 STATUS에 `{프리셋} (잠정)`으로 기록한다. G1 보고에 잠정 프리셋·예상 월 운영 비용·호스팅 확인 질문·PM 사전 준비 항목을 포함한다.
@@ -141,10 +141,15 @@ git -C {PROJECT} tag -a release-v{x.y.z} -m "PM 배포 승인 {일시} — devop
 ```
 
 ### 6-3. 고객 인도 패키지 (P8, G8 승인 후)
-- PM에게 인도 범위를 확인한다 (예: `developer/site devops/08_operation-guide.md pm/08_final-report.md` / 전체 / 내부 리뷰·티켓·WORKLOG·ACTIVITY 제외 여부).
-```bash
-mkdir -p {PROJECT}/.delivery
-git -C {PROJECT} archive --format=zip -o .delivery/<SLUG>-G8.zip G8 <선택 경로...>
-```
-- `STATUS.md` 프로젝트 상태를 `종료`로 갱신하고 최종 커밋(`chore(close): 프로젝트 종료`)한다.
+- PM에게 **인도 범위**(예: `developer/site devops/08_operation-guide.md pm/08_final-report.md design/assets/SOURCES.md` / 전체 / 내부 리뷰·티켓·WORKLOG·ACTIVITY 제외 여부)와 **인도 방식**을 확인한다.
+
+| 방식 | 명령 | 쓰는 경우 |
+|---|---|---|
+| ① 선택 경로 zip (기본) | `git -C {PROJECT} archive --format=zip -o .delivery/<SLUG>-G8.zip G8 <선택 경로...>` | 결과물만 전달 |
+| ② 전체 이력 번들 | `git -C {PROJECT} bundle create .delivery/<SLUG>-G8.bundle --all` | 고객 개발팀이 이력까지 이어받을 때 |
+| ③ 고객 저장소로 push | PM 승인 후 원격 연결·push | 고객이 저장소를 제공할 때 |
+
+- 인도 패키지 루트에 **목차 README**(구성·실행 방법·운영 가이드 위치·라이선스 목록 위치)를 넣는다(오케스트레이터가 `.delivery/` 안에 작성 — 저장소에는 커밋하지 않음). `.env`·비밀 정보가 포함되지 않았는지 압축 목록으로 확인한다.
+- 최종 보고서 §9-1 **종료 체크리스트**가 모두 완료됐는지 확인하고, `STATUS.md` 프로젝트 상태를 `종료`로 갱신해 최종 커밋(`chore(close): 프로젝트 종료`)한다.
+- **종료 후 변경 요청**: `/change-request`로 접수하면 프로젝트 상태를 `유지보수`로 바꾸고 CR 절차대로 회귀·재배포한다(하자보수 범위 안인지 최종 보고서 §8-2로 확인).
 

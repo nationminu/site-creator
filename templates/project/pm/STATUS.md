@@ -7,7 +7,7 @@
 | 프로젝트 ID | `{project-slug}` |
 | 프로젝트명 | {프로젝트 표시명} |
 | 고객 | {고객명} |
-| 프로젝트 상태 | **진행 중** (진행 중 / 보류 / 종료) |
+| 프로젝트 상태 | **진행 중** (진행 중 / 보류 / 종료 / 유지보수) |
 | 진행 모드 | `{mode}` (lite 기본 / standard — CLAUDE.md §2 "진행 모드") |
 | 스택 프리셋 | `TBD` (static / kr-shared / react-spring / custom — CLAUDE.md §2 "스택 프리셋", P1 잠정 → G2 확정) |
 | 로컬 개발 환경 | `docker` (기본 — hybrid / native는 PM 결정, `.claude/reference/environments.md`, G2 확정) |

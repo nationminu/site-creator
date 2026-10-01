@@ -52,7 +52,7 @@
 
 ## 4. 고객 인도 패키지 (P8, G8 승인 후)
 - 인도 범위(예: 소스·운영 가이드·최종 보고서만 / 전체)는 PM이 결정한다. 내부 리뷰·티켓·WORKLOG·ACTIVITY 포함 여부를 반드시 확인받는다.
-- `git archive`로 승인된 태그 기준 선택 경로만 묶어 `{PROJECT}/.delivery/<slug>-<tag>.zip`에 만든다 (`.delivery/`는 git 제외).
+- 방식: ① `git archive`로 승인된 태그 기준 선택 경로 zip(기본) ② `git bundle`로 전체 이력 ③ PM 승인 후 고객 저장소 push — 결과는 `{PROJECT}/.delivery/`(git 제외). 패키지에는 목차 README와 라이선스·출처 목록을 넣고 `.env`·비밀 정보가 없는지 확인한다.
 
 ## 5. 원격 저장소
 원격 저장소 생성·연결·push는 **PM이 지시한 경우에만** 수행한다. 커밋은 작업 단위마다 하되, push는 지시 없이 하지 않는다.
