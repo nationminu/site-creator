@@ -44,6 +44,7 @@ git -C "projects/<SLUG>" init -b main
   단, 사이트의 목적 자체를 알 수 없을 만큼 모호하면 AskUserQuestion으로 **최소한만** 질문한다 (사이트 유형, 핵심 목적, 희망 일정).
 
 ## 4. 최초 커밋
+`projects/<SLUG>/ACTIVITY.md`의 날짜 자리표시자를 오늘로 바꾸고 첫 항목을 적는다: `* 추가: 프로젝트 생성, 고객 요청 CR-000 기록 — 진행 모드 {MODE} (오케스트레이터)`
 ```bash
 git -C "projects/<SLUG>" add -A
 git -C "projects/<SLUG>" commit -m "chore(kickoff): 프로젝트 생성 및 고객 요청 기록" -m "framework: <FRAMEWORK>"

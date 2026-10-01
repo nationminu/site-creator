@@ -103,6 +103,8 @@ PM 응답 처리:
 ### 6-0. 작업 단위마다 커밋 (기본 규칙)
 에이전트 1회 호출(병렬이면 그 배치)이 끝나 결과를 확인한 **직후 커밋**한다. 커밋하지 않은 채 다음 에이전트를 호출하지 않는다. 메시지 형식은 `CLAUDE.md` §9 "프로젝트 저장소 커밋 시점" 표를 따른다.
 
+커밋 직전에 `{PROJECT}/ACTIVITY.md`에 요약 항목을 추가한다 (`CLAUDE.md` §4 "진행 요약"): 오늘 날짜(`### YYYY-MM-DD`) 묶음이 없으면 맨 위(안내문 아래)에 새로 만들고, 그 묶음의 **맨 위**에 `* {구분}: {요약 1~2줄} ({팀})`을 넣는다. 에이전트 완료 보고의 "핵심 내용 요약"에서 결과 수치·ID를 뽑아 쓴다. 게이트 승인(§6-1)·릴리스(§6-2)·종료(§6-3)도 `결정`·`배포` 항목으로 남긴다.
+
 ```bash
 git -C {PROJECT} add -A
 git -C {PROJECT} commit -m "docs(P2): 요구사항 정의서 v0.1 작성 — planner" -m "planning/02_requirements.md · planning/02_information-architecture.md · planning/02_storyboard.md"

@@ -33,6 +33,7 @@ argument-hint: "[project-slug]"
 | 티켓·결함 | `{PROJECT}/shared/tickets/` | `status: open\|in-progress\|reopened\|resolved` |
 | 변경 요청 | `{PROJECT}/pm/requests/CR-*` | `status`가 `done\|rejected`가 아닌 것 |
 | 결정 기록 | `{PROJECT}/shared/decisions/ADR-*` | `status: proposed` |
+| 진행 요약 | `{PROJECT}/ACTIVITY.md` 상단 항목 | 마지막으로 기록된 작업 단위 (git 로그와 대조 — 커밋에 없는 항목·항목 없는 커밋은 불일치로 보고) |
 | 작업 로그 | `{PROJECT}/{팀}/WORKLOG.md` 각 최신 항목 | 마지막 작업, "이슈·다음 할 일" |
 | 틀 저장소 | `git status --short` (틀 루트) | 틀에 의도치 않은 변경이 있으면 보고 |
 

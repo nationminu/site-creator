@@ -40,7 +40,7 @@ argument-hint: "[project-slug]"
    - `{PROJECT}/pm/requests/` — `status`가 `done|rejected`가 아닌 CR
    - `{PROJECT}/shared/decisions/` — `status: proposed`인 ADR
    - `{PROJECT}` 전체 산출물 — `[TBD` 잔존 건수
-3. 각 팀 `{PROJECT}/{팀}/WORKLOG.md`의 최신 항목
+3. `{PROJECT}/ACTIVITY.md`의 최근 항목(최대 10개)과 각 팀 `{PROJECT}/{팀}/WORKLOG.md`의 최신 항목
 4. Git: `git -C {PROJECT} log --oneline -5`, `git -C {PROJECT} tag --sort=-creatordate | head -5`, `git -C {PROJECT} status --short | wc -l`
 
 ### 보고 형식
@@ -55,6 +55,7 @@ argument-hint: "[project-slug]"
 | ID | 제목 | From→To | 우선순위/심각도 | 상태 |
 ### 리스크·이슈 (상위 3개)
 ### 고객 확인 필요 [TBD] — N건
+### 최근 진행 (ACTIVITY.md 최근 항목, 날짜별)
 ### 최근 팀 활동
 ### Git — 최근 태그 · 미커밋 변경 N건
 ### 다음 할 일

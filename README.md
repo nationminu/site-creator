@@ -46,6 +46,7 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
 ├── CLAUDE.md                      # 프레임워크 헌장 (조직·프로세스·규칙)
 ├── README.md                      # 이 문서
 ├── USAGE.md                       # PM용 상세 사용 가이드
+├── ACTIVITY.md                    # 틀 변경 진행 요약 (날짜별, 최신이 위)
 ├── .claude/
 │   ├── agents/                    # 팀 에이전트: pmo, planner, designer, developer, qa, devops
 │   ├── skills/                    # PM 명령어: kickoff, run-phase, status, change-request, resume-project
@@ -57,6 +58,7 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
 └── projects/                      # (틀 저장소에서 git 제외)
     └── <project-slug>/            ← Git ② 프로젝트 저장소 (프로젝트별 독립)
         ├── README.md
+        ├── ACTIVITY.md            #   진행 요약 (날짜별, 최신이 위)
         ├── pm/                    #   STATUS.md(현황판), requests/, gates/, 계획·보고서
         ├── planning/              #   요구사항, IA, 화면정의서
         ├── design/                #   컨셉, 디자인 시스템, mockups/, assets/

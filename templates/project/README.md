@@ -8,6 +8,7 @@
 | 틀 버전 | site-creator `{framework-commit}` — 이 프로젝트가 따른 규칙·템플릿의 커밋 |
 | 운영 URL | (P7 배포 후 기입) |
 | 현재 상태 | [pm/STATUS.md](pm/STATUS.md) 참조 |
+| 진행 내역 | [ACTIVITY.md](ACTIVITY.md) — 날짜별 작업 요약 |
 
 이 저장소는 site-creator 틀로 진행한 홈페이지 제작 프로젝트의 **독립 저장소**입니다.
 진행 규칙은 틀 저장소의 `CLAUDE.md`를, 문서 양식은 틀 저장소의 `templates/docs/`를 따릅니다.
@@ -17,6 +18,7 @@
 ```
 {project-slug}/
 ├── README.md                # 이 문서
+├── ACTIVITY.md              # ★ 진행 요약 — 날짜별, 최신이 위
 ├── pm/                      # PMO — STATUS.md(현황판), requests/(CR), gates/, 계획·보고서
 ├── planning/                # 기획 — 요구사항, IA, 화면정의서
 ├── design/                  # 디자인 — 컨셉, 디자인 시스템, 페이지 디자인, mockups/, assets/

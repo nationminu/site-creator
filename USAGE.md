@@ -508,6 +508,7 @@ projects/<slug>/
 | 작업 중 팀끼리 무엇을 요청했나 | `shared/tickets/TKT-*` |
 | 어떤 결함이 있었고 어떻게 고쳤나 | `shared/tickets/DEF-*` — 재현 절차, 원인, 조치, 재검증 결과 |
 | 무엇을 왜 그렇게 결정했나 | `shared/decisions/ADR-*` — 선택지, 팀 의견, 결정자 |
+| **지금까지 무슨 작업을 했나 (한눈에)** | `ACTIVITY.md` — 날짜별, 최신이 위, 작업 단위마다 1~2줄 |
 | 각 팀이 실제로 어떤 과정을 거쳤나 | `<팀>/WORKLOG.md` |
 
 **리뷰 지적 등급**: `Must` 반드시 수정(게이트 차단) · `Should` 권장(미반영 시 사유 필수) · `Could` 제안
@@ -722,7 +723,7 @@ G8 승인 후 PM이 범위를 정하면 승인 시점(`G8` 태그) 기준으로 
 
 ### 16.1 보호 영역
 
-`CLAUDE.md`, `README.md`, `USAGE.md`, `.gitignore`, `.gitattributes`, `.claude/**`, `templates/**`
+`CLAUDE.md`, `README.md`, `USAGE.md`, `ACTIVITY.md`, `.gitignore`, `.gitattributes`, `.claude/**`, `templates/**`
 
 - 프로젝트 작업 중에는 수정·삭제하지 않습니다.
 - 보호 영역을 편집하려고 하면 Claude Code가 **확인을 요청**합니다(`.claude/settings.json`).
