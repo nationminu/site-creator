@@ -12,6 +12,8 @@
 | **`react-spring`** | 회원·결제·외부 연동이 많거나 장기 운영·확장 필요 + 서버 운영 가능 | Next.js (페이지별 SSG/SSR) | Spring Boot | PostgreSQL | 프론트(정적/Node) + 컨테이너·VM + 관리형 DB |
 | **`custom`** | 위 셋에 맞지 않음 (고객 지정 기술·기존 시스템 등) | Astro / Next.js / Nuxt / 순수 HTML | 없음 / Spring Boot / Laravel / CodeIgniter 4 / Django | 없음 / PostgreSQL / MySQL·MariaDB | 기술 설계·배포 계획에서 정의 |
 
+프리셋의 "호스팅·배포"는 대표 예다. 실제 **운영 환경**(정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스 직접 설치)과 **로컬 개발 환경**(native·docker·hybrid)은 `.claude/reference/environments.md`에서 프리셋과 함께 G2에 확정한다.
+
 **판단 순서**: ① 동적 기능이 외부 서비스로 충분하면 `static` → ② 국내 공유 호스팅이 정해져 있거나 원하면 `kr-shared` → ③ 고객 지정 기술·기존 시스템이 있으면 `custom` → ④ 그 외에는 규모·운영 비용으로 `kr-shared`와 `react-spring`을 비교해 PM이 고른다.
 
 **결정 시점**

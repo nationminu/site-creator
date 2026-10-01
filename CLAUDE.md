@@ -8,6 +8,7 @@
 |---|---|---|
 | `.claude/reference/modes.md` | 진행 모드(standard/lite), lite 주 검토자, 간소 게이트 | 오케스트레이터, pmo |
 | `.claude/reference/stack-presets.md` | 스택 프리셋, 기술 카탈로그, 표준 명령 매핑 | developer, devops, qa, pmo |
+| `.claude/reference/environments.md` | 로컬 개발 환경(native/docker/hybrid), 운영 환경(정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스), 운영 서버 확인 질문 | developer, devops, qa, pmo |
 | `.claude/reference/design-profile.md` | 디자인 프로필(Tailwind, Claude Design, Design Sync) | designer, developer, 오케스트레이터 |
 | `.claude/reference/kr-web-checklist.md` | 콘텐츠 수급, PM 사전 준비, 법적 고지, 검색엔진 등록 | pmo, planner, devops, qa |
 | `.claude/reference/polish-checklist.md` | 마감 품질(404·메타·상태·예외·문구·반응형) | planner, designer, developer, qa |
@@ -92,9 +93,9 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 | 단계 | Owner | 산출물 | 교차 검토자 (standard) | 게이트 통과 기준(요약) |
 |---|---|---|---|---|
 | **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md`<br>`shared/meetings/MTG-*_kickoff-agenda.md`<br>`pm/requests/QNA.md` | planner, developer | 범위·**규모 초안**(페이지·기능)·**오픈일 역산 일정**·리스크 확정, 이해관계자·피드백 정책, 잠정 스택 프리셋, 비용 요약, 콘텐츠 수급·PM 사전 준비 계획, 고객 질문 등록 |
-| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | **요청 추적표 빈칸 0**(고객 요청 → REQ), 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 폼·콘텐츠 유형·법적 고지 정의, (리뉴얼) 리다이렉트 맵, **팀 제안 기능 PM 개별 결정(검토 전)**, P1 규모 대비 변화 보고, **스택 프리셋 확정** |
+| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | **요청 추적표 빈칸 0**(고객 요청 → REQ), 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 폼·콘텐츠 유형·법적 고지 정의, (리뉴얼) 리다이렉트 맵, **팀 제안 기능 PM 개별 결정(검토 전)**, P1 규모 대비 변화 보고, **스택 프리셋·로컬 개발 환경·운영 환경 확정** |
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
-| **P4 개발** | developer | `developer/04_tech-design.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과, (백엔드) 보안 코드 리뷰 Must 0, 성능 예산 확인 |
+| **P4 개발** | developer (+devops 운영 환경 명세) | `developer/04_tech-design.md`<br>`devops/04_environment.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과, (백엔드) 보안 코드 리뷰 Must 0, 성능 예산 확인 |
 | **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
 | **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | PM(고객) 승인, 피드백은 CR로 등록 (lite는 생략 가능) |
 | **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, `[TBD` 0건(또는 PM 예외 승인), 운영 스모크 테스트 통과, 검색엔진 등록 안내 |
@@ -113,9 +114,11 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 |---|---|---|---|
 | **진행 모드** | `lite`(기본) / `standard` | kickoff (`--standard`), 진행 중 PM 지시 | `.claude/reference/modes.md` |
 | **스택 프리셋** | `static` / `kr-shared` / `react-spring` / `custom` | P1 잠정 → **G2 확정** (이후 CR) | `.claude/reference/stack-presets.md` |
+| **로컬 개발 환경** | `native` / `docker` / `hybrid` | P1 도구 확인 → **G2 확정** | `.claude/reference/environments.md` |
+| **운영 환경** | `static-hosting` / `shared-hosting` / `paas` / `docker-vm` / `k8s` / `linux-native` | P1 잠정 → **G2 확정** → P4 운영 환경 명세 | `.claude/reference/environments.md` |
 | **디자인 프로필** | 스타일 체계 `css-vars`/`tailwind`, Claude Design `off`/`on`, Design Sync `off`/`on` | G2 전 (Design Sync는 G4 이후) | `.claude/reference/design-profile.md` |
 
-설정값은 `{PROJECT}/pm/STATUS.md`에 기록하고, 오케스트레이터는 에이전트 호출 프롬프트에 `진행 모드`·`스택 프리셋`(확정 후)을 적는다.
+설정값은 `{PROJECT}/pm/STATUS.md`에 기록하고, 오케스트레이터는 에이전트 호출 프롬프트에 `진행 모드`·`스택 프리셋`·`로컬 개발 환경`·`운영 환경`(확정 후)을 적는다.
 
 ---
 
@@ -138,7 +141,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 
 ### 에이전트 호출 규칙 (오케스트레이터)
 호출 프롬프트에는 반드시 포함한다:
-- `PROJECT: projects/<slug>`, `진행 모드: <lite|standard>`, (G2 이후) `스택 프리셋: <프리셋>`
+- `PROJECT: projects/<slug>`, `진행 모드: <lite|standard>`, (G2 이후) `스택 프리셋: <프리셋>`·`로컬 개발 환경: <값>`·`운영 환경: <값>`
 - 단계와 작업 종류 (작성 / 검토 / 반영 / 구현 작업 단위 / 결함 수정 / 영향도 의견 등)
 - 입력 문서 경로, 템플릿 경로(`templates/docs/…`), 출력 경로(`{PROJECT}/…`), 필요한 기준 문서 경로
 - 관련 리뷰·티켓·CR 경로, 리뷰 라운드 번호
@@ -269,7 +272,8 @@ planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고
 
 ### 기술·실행 환경
 - **기술 스택**: 스택 프리셋으로 정한다 — `.claude/reference/stack-presets.md`. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
-- **실행 환경**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Gradle Wrapper·Composer scripts·uv 등)으로 작성하며, 사용한 OS를 보고서에 기록한다.
+- **로컬 개발·운영 환경**: `.claude/reference/environments.md` — 로컬은 native/docker/hybrid, 운영은 정적 호스팅·공유 호스팅·PaaS·Docker VM·K8s·리눅스 직접 설치 중 G2에서 확정한다. 운영 서버 접속 정보는 어디에도 기록하지 않는다.
+- **개발 PC**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Gradle Wrapper·Composer scripts·uv 등)으로 작성하며, 사용한 OS를 보고서에 기록한다.
 
 ---
 

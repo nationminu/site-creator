@@ -52,6 +52,7 @@ git -C "projects/<SLUG>" init -b main
   | 관리자(콘텐츠 수정) 필요 여부 | 스택 프리셋·규모 |
 
   빠진 항목 중 **계획에 가장 큰 영향을 주는 것만 AskUserQuestion으로 한 번(최대 4문항)** 묻는다. 각 질문에 흔한 선택지를 옵션으로 주고, PM이 "모름/나중에"를 고르면 그대로 진행한다. 다 갖춰졌으면 묻지 않는다.
+- **개발 도구 확인**: `node -v`, `docker --version`, `docker compose version`, `java -version`, `php -v`, `python3 --version`(Windows는 `python --version`)을 실행해 설치 현황을 확인한다(설치는 하지 않는다). 결과는 아래 QNA에 출처 "환경 확인"으로 기록하고, 로컬 개발 환경(`.claude/reference/environments.md` §2) 판단에 쓴다.
 - PM의 답과 남은 미확인 항목은 `projects/<SLUG>/pm/requests/QNA.md`에 기록한다: 답을 받은 항목은 `Q-001`부터 질문·답변(원문)·출처 PM·상태 `answered`로, 모르는 항목은 상태 `open`으로 둔다(이후 pmo가 고객 질문을 이어서 등록한다). 요청 원문(CR-000)은 수정하지 않는다.
 
 ## 4. 최초 커밋

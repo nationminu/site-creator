@@ -33,7 +33,7 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 |---|---|
 | G1 | 범위·일정·산출물 확정, 잠정 스택 프리셋, 콘텐츠 수급·PM 사전 준비 기한 확인 |
 | P3 중간 | 디자인 컨셉 시안 선택 |
-| G2 | 요구사항 승인, **스택 프리셋 확정** (static / kr-shared / react-spring / custom) |
+| G2 | 요구사항 승인, **스택 프리셋·로컬 개발 환경·운영 환경 확정** |
 | G3 ~ G5 | 단계 산출물 승인 |
 | G6 | 중간보고(고객) 결과 및 피드백 반영 여부 |
 | P7 중간 | **운영 배포 실행 승인**, 남은 `[TBD` 예외 승인, 검색엔진 등록(PM 계정) |
@@ -52,7 +52,7 @@ site-creator/                      ← Git ① 틀 저장소 (에이전트·규�
 ├── .claude/
 │   ├── agents/                    # 팀 에이전트: pmo, planner, designer, developer, qa, devops
 │   ├── skills/                    # PM 명령어: kickoff, run-phase, status, change-request, resume-project
-│   ├── reference/                 # 기준 문서: 진행 모드, 스택 프리셋, 디자인 프로필, 국내 실무·마감 품질 체크리스트, Git 운영
+│   ├── reference/                 # 기준 문서: 진행 모드, 스택 프리셋, 실행 환경, 디자인 프로필, 국내 실무·마감 품질 체크리스트, Git 운영
 │   └── settings.json              # 틀 보호 규칙 (보호 영역 Edit·Write 시 확인 요청)
 ├── templates/
 │   ├── project/                   # /kickoff 때 복사되는 프로젝트 골격

@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md` §0·§4·§5·§8을 확인하고, `.claude/reference/stack-presets.md`와 `.claude/reference/polish-checklist.md`를 읽는다 (스타일 체계 `tailwind`면 `.claude/reference/design-profile.md`도).
+2. `CLAUDE.md` §0·§4·§5·§8을 확인하고, `.claude/reference/stack-presets.md`, `.claude/reference/environments.md`, `.claude/reference/polish-checklist.md`를 읽는다 (스타일 체계 `tailwind`면 `.claude/reference/design-profile.md`도).
 3. 입력 (모두 승인본):
    - 기획: 요구사항(§3 REQ-F, §3.2 동적 기능, §3.3 폼 정의, §4 REQ-N, §4.1 측정 계획, §5.2 콘텐츠 유형), IA(§5-1 관리자·권한표, §6 SEO 규칙, §7 리다이렉트 맵·이관 목록), 화면정의서(실제 문구, 상태·예외, SCR별 SEO 메타)
    - 디자인: 디자인 시스템(토큰, 컴포넌트, §4-2 디자인 QA 판정 기준), 페이지 디자인(섹션 명세, 이미지 자리 명세, **개발 전달 패키지**, 상태·예외 화면), `design/mockups/`, `design/assets/`
@@ -45,6 +45,8 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - **목업을 출발점으로**: `design/mockups/`의 마크업·스타일을 출발점으로 삼아 컴포넌트로 나눈다(처음부터 새로 짜지 않는다). 목업과 다르게 구현해야 하면 이유를 개발 보고서에 적는다.
 - **초기 정합 확인**: 작업 단위 1(토큰·공통 레이아웃·헤더·푸터)을 마치면 메인과 대표 화면 1개를 360·1280 폭으로 구현·목업 쌍 캡처해 `evidence/design-qa/early-*`에 두고 개발 보고서 §4-1에 적는다(designer가 확인). 지적은 다음 단위에서 반영한다.
 - **미확정 콘텐츠 표시**: 확보되지 않은 문구·이미지 자리는 사이트에 `[TBD: Q-xxx]` 문자열을 **그대로** 노출한다(이미지는 대체 텍스트·자리 표시에). 그럴듯한 임의 문구로 채우지 않는다 — 배포 전 `grep`으로 0건을 확인하기 위한 규칙이다.
+- **로컬 개발 환경**: STATUS의 `로컬 개발 환경`(native/docker/hybrid)대로 구성한다(`environments.md` §2). `docker`·`hybrid`면 `developer/site/compose.yaml`의 서비스 버전을 운영 환경 명세와 맞추고, `native`면 런타임 버전 고정 파일(`.nvmrc` 등)을 둔다. `site/README.md`에는 처음 받은 사람이 그대로 따라 할 설치·실행 절차를 쓴다. 필요한 도구가 없으면 설치하지 말고 PM 조치 필요 사항으로 보고한다.
+- **컨테이너 기반 운영**(`paas`·`docker-vm`·`k8s`)이면 `Dockerfile`을 작성한다 — 멀티 스테이지 빌드, 비루트 사용자, 헬스체크 엔드포인트, 비밀 정보는 이미지에 넣지 않음. 배포 설정(compose.prod·매니페스트)은 devops가 만든다.
 - **설계 먼저**: 백엔드가 있으면 기술 설계 §5-1 데이터 모델, §5-2 API 목록, §5-3 인증·권한, §5-4 P2 구현 설계를 쓴 뒤 검토를 받고 구현한다.
 
 ### 디자인 연동

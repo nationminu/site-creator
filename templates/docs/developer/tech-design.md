@@ -134,6 +134,10 @@ erDiagram
 ## 6. 로컬 개발 환경
 | 항목 | 내용 |
 |---|---|
+| 로컬 개발 환경 | native / docker / hybrid (STATUS·ADR) — `.claude/reference/environments.md` §2 |
+| 구성 방법 | (`compose.yaml` 서비스 목록과 버전 / 직접 설치할 런타임과 버전 고정 파일) |
+| 운영 환경과 차이 | (`devops/04_environment.md` §3 버전 일치표 기준) |
+| 컨테이너 이미지 | (`paas`·`docker-vm`·`k8s`면 `Dockerfile` 위치·베이스 이미지·헬스체크) |
 | 요구 런타임 | (2.3 버전 표 기준 — Node / JDK / PHP·Composer / Python·uv) |
 | 로컬 DB | (Docker Compose / 대안과 운영 DB 차이) |
 | 개발 서버 주소 | 프론트: · 백엔드: |

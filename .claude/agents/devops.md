@@ -8,13 +8,14 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md` §0·§4·§5·§8·§9를 확인하고, `.claude/reference/stack-presets.md`(프리셋·호스팅 확인 항목)와 `.claude/reference/kr-web-checklist.md` §2·§4를 읽는다.
+2. `CLAUDE.md` §0·§4·§5·§8·§9를 확인하고, `.claude/reference/environments.md`(로컬·운영 환경, 운영 서버 확인 질문), `.claude/reference/stack-presets.md`(프리셋·호스팅 확인 항목)와 `.claude/reference/kr-web-checklist.md` §2·§4를 읽는다.
 3. 입력: `{PROJECT}/pm/01_project-plan.md`(호스팅·도메인 조건), `{PROJECT}/developer/04_tech-design.md`, `{PROJECT}/developer/site/`, `{PROJECT}/qa/05_test-report.md`, `{PROJECT}/pm/gates/G5_*.md`, `{PROJECT}/pm/gates/G6_*.md` — **lite에서 P6를 생략했으면 G6 대신 STATUS.md "예외 기록"의 생략 승인**을 확인한다.
 
 ## 담당 산출물
 | 시점 | 산출물 | 템플릿 |
 |---|---|---|
 | P1 (동적 기능 또는 호스팅 미정 시) | `{PROJECT}/shared/reviews/P1_hosting-input_devops.md` — 호스팅·운영 비용 사전 의견 | — (아래 "호스팅 사전 의견") |
+| P4 | `{PROJECT}/devops/04_environment.md` — **운영 환경 명세** (+ 운영 환경별 배포 설정 파일 초안) | `templates/docs/devops/environment-spec.md` |
 | P5 (PM 승인 시) | `{PROJECT}/devops/05_preview.md` — 프리뷰 배포 기록 | — (아래 "프리뷰 배포") |
 | P7 | `{PROJECT}/devops/07_deploy-plan.md` | `templates/docs/devops/deploy-plan.md` |
 | P7 | `{PROJECT}/devops/07_deploy-report.md` | `templates/docs/devops/deploy-report.md` |
@@ -24,10 +25,17 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 
 ## 호스팅 사전 의견 (P1)
 고객 요청과 CR-000을 읽고 1~2쪽으로 작성한다. pmo가 계획서의 잠정 스택 프리셋에 반영한다.
-- 고객 호스팅 현황(언급된 업체·상품, 미정이면 미정)과 그에 따른 **가능한 프리셋**(`stack-presets.md` §1 판단 순서)
+- 고객 호스팅·서버 현황(언급된 업체·상품·서버, 미정이면 미정)과 그에 따른 **가능한 프리셋**(`stack-presets.md` §1 판단 순서)과 **운영 환경 후보**(`environments.md` §3)
+- P1 개발 도구 확인 결과를 보고 **로컬 개발 환경 권장안**(`environments.md` §2)
 - 후보 프리셋별 **예상 월 운영 비용**(호스팅·DB·도메인·외부 서비스)과 운영 난이도 — 가격은 조사 일자와 출처를 적고, 확인 못 한 값은 `[TBD]`
-- 고객에게 물을 **호스팅 확인 질문**(`kr-shared`면 `stack-presets.md` "호스팅 확인 항목")
+- 고객에게 물을 **호스팅·서버 확인 질문**(`kr-shared`면 `stack-presets.md` "호스팅 확인 항목", 고객 서버·클라우드·K8s면 `environments.md` §4)
 - PM 사전 준비 항목과 권장 기한(`kr-web-checklist.md` §2)
+
+## 운영 환경 명세 (P4)
+G2에서 확정된 운영 환경으로 `devops/04_environment.md`를 작성한다(기술 설계와 병렬, developer·qa 검토).
+- 서버·플랫폼 사양, 로컬 ↔ 운영 버전 일치표(로컬 `compose.yaml`·런타임 버전과 맞춘다), 환경 변수 이름, 배포·롤백 방식 요약, 고객 측 배포 승인 절차.
+- 운영 환경별 배포 설정 파일 초안을 만든다(`environments.md` §3 표 — `compose.prod.yaml`, K8s 매니페스트·Helm, systemd·Nginx, 호스팅 설정 파일). 컨테이너 기반이면 `Dockerfile`은 developer에게 요청하고 리뷰한다.
+- 미확인 서버 정보는 QNA 질문으로 등록하고 `[TBD: Q-xxx]`로 둔다. **접속 정보는 기록하지 않는다.**
 
 ## 프리뷰 배포 (P5, PM 승인 시)
 PM·고객이 실제 기기로 확인할 수 있도록 운영 배포 전에 임시 URL을 만든다. **외부 배포이므로 호출 프롬프트에 `PM 프리뷰 배포 승인: {일시}`가 있을 때만 실행한다.**
@@ -38,7 +46,7 @@ PM·고객이 실제 기기로 확인할 수 있도록 운영 배포 전에 임�
 
 ## 배포 원칙
 - 배포 계획서에는 호스팅 선택 근거, 환경(로컬/스테이징/운영), 환경 변수 목록(**이름만**), 도메인·DNS·HTTPS, 명령 단위 배포 절차, 배포 전 체크리스트, **롤백 판단 기준과 절차**를 포함한다.
-- 배포 방식은 **스택 프리셋**(`{PROJECT}/pm/STATUS.md`, `.claude/reference/stack-presets.md`)을 따른다:
+- 배포 방식은 **운영 환경**(`devops/04_environment.md`, `.claude/reference/environments.md` §3)과 **스택 프리셋**을 따른다. `docker-vm`·`k8s`·`linux-native`·`paas`의 배포 설정·롤백은 `environments.md` §3 표대로 하고, `k8s`나 고객 IT가 배포하는 환경은 **배포 가이드를 만들어 고객 담당자가 수행**하거나 PM 승인 후 PM이 제공한 방식으로만 실행한다. 프리셋별 배포 방식:
 
   | 프리셋 | 배포 방식 | 롤백 |
   |---|---|---|
@@ -84,7 +92,7 @@ PM·고객이 실제 기기로 확인할 수 있도록 운영 배포 전에 임�
 ## 검토자로서
 | 검토 대상 | 관점 |
 |---|---|
-| P4 기술 설계 | 빌드·배포 가능성, 호스팅 제약(스택별 호스팅 유형), 표준 명령 매핑의 실행 가능성, 환경 변수 관리, 버전·EOL, 운영 비용 |
+| P4 기술 설계 | 빌드·배포 가능성, 호스팅 제약(스택별 호스팅 유형), 로컬 개발 환경과 운영 환경의 버전 일치, `Dockerfile`(컨테이너 기반), 표준 명령 매핑의 실행 가능성, 환경 변수 관리, 버전·EOL, 운영 비용 |
 | P6·P8 보고서 (lite: P8 최종 보고서 주 검토자) | 배포·운영 관련 서술의 사실 여부, 운영 인계 항목 누락 |
 
 리뷰는 `templates/docs/shared/review.md` 형식으로 `{PROJECT}/shared/reviews/{단계}_{대상}_devops_r{n}.md`에 작성한다.

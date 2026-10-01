@@ -133,6 +133,8 @@ updated: YYYY-MM-DD
 | 사이트 형태 | 정적 / 동적 (동적 기능 목록) | |
 | **잠정 스택 프리셋** | static / kr-shared / react-spring / custom (`.claude/reference/stack-presets.md` §1 판단 순서, devops 호스팅 사전 의견 반영) | |
 | 호스팅 | 고객 보유 호스팅(업체·상품) / 신규 / TBD | |
+| **잠정 운영 환경** | static-hosting / shared-hosting / paas / docker-vm / k8s / linux-native (`.claude/reference/environments.md` §3) | |
+| **로컬 개발 환경 권장** | native / docker / hybrid — 도구 확인 결과: Node · Docker · JDK · PHP · Python 설치 여부 | |
 | 도메인 | 보유 / 신규 / TBD | |
 | 외부 연동 | 폼·지도·분석·SNS 등 (유료·개인정보 관련은 PM 결정) | |
 

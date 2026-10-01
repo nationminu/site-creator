@@ -10,6 +10,8 @@
 | 프로젝트 상태 | **진행 중** (진행 중 / 보류 / 종료) |
 | 진행 모드 | `{mode}` (lite 기본 / standard — CLAUDE.md §2 "진행 모드") |
 | 스택 프리셋 | `TBD` (static / kr-shared / react-spring / custom — CLAUDE.md §2 "스택 프리셋", P1 잠정 → G2 확정) |
+| 로컬 개발 환경 | `TBD` (native / docker / hybrid — `.claude/reference/environments.md`, G2 확정) |
+| 운영 환경 | `TBD` (static-hosting / shared-hosting / paas / docker-vm / k8s / linux-native — P1 잠정 → G2 확정) |
 | 스타일 체계 | `css-vars` (css-vars / tailwind — CLAUDE.md §2 "디자인 프로필", G2 전 결정) |
 | Claude Design | `off` (반입 사용 on/off · Design Sync on/off) |
 | 현재 단계 | **P1 계획** — 착수 |
