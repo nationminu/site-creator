@@ -17,9 +17,11 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 - 첫 토큰이 `projects/<토큰>/` 디렉토리로 존재하면 그것이 `SLUG`, 아니면 `CLAUDE.md` §10 규칙(진행 중 프로젝트가 하나면 자동 선택, 여러 개면 질문)으로 정한다.
 - 단계가 비어 있거나 `next`이면 `projects/<SLUG>/pm/STATUS.md` 기준으로 승인 완료된 마지막 단계의 다음 단계.
 - 이하 `{PROJECT}` = `projects/<SLUG>`. **모든 에이전트 호출 프롬프트 첫 줄에 `PROJECT: projects/<SLUG>`를 넣는다.**
+- `{PROJECT}/pm/STATUS.md`의 "진행 모드"를 읽어 `MODE`로 정한다(항목이 없으면 `standard`). 이하 절차에서 `lite` 표기가 있는 부분은 `MODE=lite`일 때만 적용한다. 에이전트 호출 프롬프트에 `진행 모드: <MODE>`를 함께 적는다.
+- `MODE=lite`이고 단계가 `P6`이며 STATUS에 `➖ 생략`으로 표기되어 있으면 P7로 넘어간다 (`next`도 동일).
 
 ## 1. 착수 점검
-- `{PROJECT}/pm/STATUS.md`에서 이전 게이트가 PM 승인되었는지 확인한다.
+- `{PROJECT}/pm/STATUS.md`에서 이전 게이트가 PM 승인되었는지 확인한다. (lite에서 P6가 `➖ 생략`이면 P7의 이전 게이트는 G5다.)
   미승인이면 진행하지 않고 PM에게 알린다. PM이 명시적으로 강행을 지시하면 STATUS.md "예외 기록"에 남기고 진행한다.
 - 이 단계의 입력 산출물이 존재하고 `status: approved`인지 확인한다.
 - `{PROJECT}/shared/tickets/`, `{PROJECT}/pm/requests/`에서 이 단계와 관련된 미해결 건(`status: open|in-progress|reopened`)을 Grep으로 확인한다.
@@ -41,6 +43,9 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 | **P7** | ① `devops` 배포 계획 → 검토 `developer`, `qa` → ② **PM 배포 승인 요청** (배포 대상·호스팅·도메인·롤백 계획·PM 조치 필요 사항 제시) → ③ 승인 시 **릴리스 커밋·태그** (§6-2) → ④ `devops` 호출 프롬프트에 `PM 배포 승인 완료: {일시}`와 `배포 태그: release-v{x.y.z}` 명시하여 배포 실행 → ⑤ `qa` 운영 스모크 테스트(`qa/07_smoke-test-report.md`) → ⑥ `devops` 배포 보고서 (실패 시 롤백 기준에 따라 판단하고 PM 보고) |
 | **P8** | ① `devops` 운영 가이드 (필요 정보는 `developer` 티켓으로) + `pmo` 최종 보고서 → 검토 전 팀 → ② `pmo` 회고 회의록(각 팀 WORKLOG·리뷰 이력 기반 Keep/Problem/Try + 틀 개선 제안) → ③ G8 승인 후 **고객 인도 패키지** (§6-3) |
 
+**lite 모드 조정** (`CLAUDE.md` §2 "진행 모드"): 위 표의 검토자 대신 **주 검토자 1명**만 호출한다 — P1 `developer` · P2 `developer` · P3 `developer` · P4 설계 `devops` / 구현 `designer` · P5 `developer` · P7 `developer` · P8 `devops`. P3 컨셉 시안은 1~2안. P8 `pmo` 최종 보고서는 요약판(1~2쪽). 그 밖의 절차(PM 시안 선택, 배포 승인, 결함 사이클, 커밋)는 동일하다.
+**lite의 P6 생략**: G5 게이트 보고에 "P6 중간보고 생략 여부"를 PM 결정 사항으로 포함한다. PM이 생략을 승인하면 STATUS.md P6 행을 `➖ 생략`으로, "예외 기록"에 승인 일시를 남기고 커밋(`chore: P6 중간보고 생략 — PM 승인`)한 뒤 P7로 진행한다. 거절하면 P6를 standard와 같이 수행한다.
+
 **호출 프롬프트 필수 항목** (`CLAUDE.md` §3): `PROJECT`, 단계·작업 종류, 입력 경로, 템플릿 경로(`templates/docs/…`), 출력 경로(`{PROJECT}/…`), 관련 리뷰·티켓·CR, 라운드 번호.
 
 **각 에이전트 호출(병렬이면 배치)이 끝날 때마다 §6-0에 따라 커밋한다.**
@@ -54,7 +59,7 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 ## 4. 반영과 수렴
 - 판정이 `수정 요청`인 리뷰가 있으면 Owner를 재호출한다: 모든 리뷰 경로를 전달하고, 각 지적에 처리 결과를 리뷰 문서에 기입한 뒤 버전을 올리게 한다.
 - 다음 라운드는 **Must를 지적한 검토자만** 재검토한다.
-- 3라운드 후 Must 잔존 또는 팀 간 의견 충돌 → `pmo`가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고 정리 → PM 결정 요청 → 결정을 ADR에 기록 후 Owner 반영.
+- 라운드 상한(standard 3 · lite 2) 후 Must 잔존 또는 팀 간 의견 충돌 → `pmo`가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고 정리 → PM 결정 요청 → 결정을 ADR에 기록 후 Owner 반영.
 - 에이전트 완료 보고의 "PM 결정 필요 사항"은 모아 두었다가 게이트 보고에 포함한다(진행을 막는 사항이면 즉시 질문).
 
 ## 5. 게이트 준비와 PM 보고
@@ -81,6 +86,7 @@ PM 응답 처리:
 ## 6. Git (오케스트레이터만 수행)
 
 커밋 전 공통: `git -C {PROJECT} status --short`로 `.env`, 비밀 정보, `node_modules`, `{PROJECT}` 밖 경로가 포함되지 않았는지 확인한다. 의심 파일이 있으면 커밋하지 말고 PM에게 알린다.
+틀 루트에서도 `git status --porcelain`을 실행해 보호 영역(`CLAUDE.md` §0)에 의도치 않은 변경이 생기지 않았는지 확인한다. 있으면 프로젝트 커밋을 멈추고 PM에게 알린다 (Bash를 통한 쓰기는 권한 규칙으로 막히지 않기 때문).
 
 ### 6-0. 작업 단위마다 커밋 (기본 규칙)
 에이전트 1회 호출(병렬이면 그 배치)이 끝나 결과를 확인한 **직후 커밋**한다. 커밋하지 않은 채 다음 에이전트를 호출하지 않는다. 메시지 형식은 `CLAUDE.md` §9 "프로젝트 저장소 커밋 시점" 표를 따른다.

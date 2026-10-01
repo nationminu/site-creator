@@ -9,7 +9,7 @@
 
 ```
 site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙·템플릿 (보호 영역)
-├── CLAUDE.md  README.md  .gitignore  .gitattributes
+├── CLAUDE.md  README.md  USAGE.md  .gitignore  .gitattributes
 ├── .claude/     agents/ · skills/ · settings.json
 ├── templates/
 │   ├── project/                 ← /kickoff 때 복사되는 프로젝트 골격
@@ -29,7 +29,7 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 - 같은 slug의 폴더가 이미 있으면 새로 만들지 않는다.
 
 ### 보호 영역 (틀)
-`CLAUDE.md`, `README.md`, `.gitignore`, `.gitattributes`, `.claude/**`, `templates/**`
+`CLAUDE.md`, `README.md`, `USAGE.md`, `.gitignore`, `.gitattributes`, `.claude/**`, `templates/**`
 
 | 상황 | 규칙 |
 |---|---|
@@ -40,7 +40,8 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 | **프로젝트에만 필요한 문서 양식** | 템플릿을 고치지 않고 `{PROJECT}` 안에 문서를 추가한다. |
 
 - 명령 실행(npm, 빌드, 테스트 등)은 반드시 `{PROJECT}` 하위 디렉토리에서 한다. 틀 루트에 `package.json`, `node_modules` 등을 만들지 않는다.
-- `.claude/settings.json`의 권한 규칙이 보호 영역 편집 시 사용자 확인을 요구한다. 확인 요청이 뜨면 프로젝트 작업 중에는 **거절이 기본**이다.
+- `.claude/settings.json`의 권한 규칙이 보호 영역 편집(`Edit`·`Write` 도구) 시 사용자 확인을 요구한다. 확인 요청이 뜨면 프로젝트 작업 중에는 **거절이 기본**이다.
+- 권한 규칙은 Bash 명령(`>`, `cp`, `mv`, `sed -i`, `rm` 등)을 통한 쓰기는 막지 못한다. 따라서 **Bash로 보호 영역에 쓰거나 삭제하는 명령은 실행하지 않는다.** 오케스트레이터는 각 작업 단위 커밋 전에 틀 루트에서 `git status --porcelain`을 실행해 틀에 의도치 않은 변경이 없는지 확인하고, 있으면 커밋하지 말고 PM에게 알린다.
 
 ---
 
@@ -94,6 +95,21 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 - **P7**: 배포 계획 검토 → **PM 배포 승인** → 릴리스 태그 → 배포 실행 → qa 운영 스모크 테스트 → 배포 보고서.
 - **P8**: PM이 고객 인도 범위를 결정하면 인도 패키지를 만든다 (§9).
 
+### 진행 모드 (standard / lite)
+프로젝트 규모에 맞춰 kickoff 때 PM이 고르고 `{PROJECT}/pm/STATUS.md`의 "진행 모드"에 기록한다. 기본값은 `standard`이며, 변경은 PM 지시로만 하고 STATUS.md "예외 기록"에 남긴다.
+
+| 항목 | standard (기본) | lite (소규모: 랜딩·5페이지 이하 정적 사이트 등) |
+|---|---|---|
+| 교차 검토자 | §2 단계표의 검토자 전원 | 단계별 **주 검토자 1명** (아래 표) |
+| 리뷰 라운드 상한 | 3라운드 | 2라운드 (초과 시 PM 결정) |
+| P3 컨셉 시안 | 2~3안 | 1~2안 (PM 선택 절차는 유지) |
+| P6 중간보고 | 수행 (G6) | **생략 가능** — PM이 G5 보고에서 생략을 승인하면 STATUS에 `➖ 생략` 표기, G6 태그 없음 |
+| P8 산출물 | 최종 보고서·운영 가이드·회고 | 최종 보고서는 요약판(1~2쪽), 운영 가이드·회고는 유지 |
+
+lite 주 검토자: P1 `developer` · P2 `developer` · P3 `developer` · P4 설계 `devops` / 구현 `designer` · P5 `developer` · P7 `developer` · P8 `devops`
+
+**모드와 무관하게 유지**: 모든 게이트 PM 승인(lite의 G6 생략 제외), Must 지적 해소, §6 품질 기준, P5 Critical·Major 0건, **P7 PM 배포 승인**, §8 안전 규칙, §9 커밋 규칙.
+
 ---
 
 ## 3. 단계 실행 표준 루프
@@ -101,14 +117,14 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 ```
 ① 착수 점검 → ② 작성 → ③ 교차 검토(병렬) → ④ 반영 ─┬→ ⑤ 게이트 준비 → ⑥ PM 승인 → ⑦ 커밋·태그
                               ▲                 │
-                              └── Must 잔존 시 ──┘  (최대 3라운드, 초과 시 PM 결정)
+                              └── Must 잔존 시 ──┘  (최대 3라운드 · lite 2라운드, 초과 시 PM 결정)
 ```
 
 1. **착수 점검** — `{PROJECT}/pm/STATUS.md`에서 이전 게이트 승인 확인, 입력 산출물이 `approved`인지 확인, 관련 open 티켓·CR 확인.
 2. **작성** — Owner 에이전트 호출. 산출물은 `status: in-review`로 제출.
-3. **교차 검토** — 검토자 에이전트를 **한 번에 병렬 호출**. 각자 `{PROJECT}/shared/reviews/`에 리뷰를 작성.
+3. **교차 검토** — 검토자 에이전트(lite 모드면 주 검토자 1명)를 **한 번에 병렬 호출**. 각자 `{PROJECT}/shared/reviews/`에 리뷰를 작성.
 4. **반영** — `수정 요청` 판정이 있으면 Owner 재호출. Owner는 리뷰 문서의 모든 지적에 처리 결과(반영/부분 반영/미반영+사유)를 기입하고 버전을 올린다. Must를 지적한 검토자만 다음 라운드 재검토.
-5. **수렴** — 3라운드 후에도 Must가 남거나 팀 간 의견이 충돌하면, pmo가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고를 정리하고 PM 결정을 요청.
+5. **수렴** — 라운드 상한(standard 3 · lite 2) 후에도 Must가 남거나 팀 간 의견이 충돌하면, pmo가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고를 정리하고 PM 결정을 요청.
 6. **게이트 준비** — pmo 호출: `{PROJECT}/pm/gates/G{n}_{slug}.md` 작성, `STATUS.md` 갱신(`승인 대기`).
 7. **PM 승인** — 오케스트레이터가 PM에게 게이트 보고. 승인 시 산출물 `status: approved`, `version: 1.0`. 반려 시 지시를 게이트 문서에 기록하고 ④로 복귀.
 8. **커밋·태그** — 승인 반영 후 오케스트레이터가 프로젝트 저장소에 커밋하고 게이트 태그를 단다 (§9).
@@ -231,6 +247,8 @@ updated: YYYY-MM-DD
 - **보안**: HTTPS, 비밀 정보 저장소 커밋 금지, 폼 입력 검증, 개인정보 수집 시 처리방침 고지
 
 planner는 이 기준을 `REQ-N-*` 비기능 요구사항으로 구체화한다.
+qa는 이 기준을 `.claude/agents/qa.md`의 **표준 검증 도구 세트**(Lighthouse CLI · Playwright · axe-core · linkinator)로 측정한다.
+- **실행 환경**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Node 스크립트)으로 작성하며, 사용한 OS를 보고서에 기록한다.
 
 ---
 

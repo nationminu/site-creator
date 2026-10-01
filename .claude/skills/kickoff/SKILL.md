@@ -1,7 +1,7 @@
 ---
 name: kickoff
 description: 새 고객 프로젝트를 착수한다. projects/<project-slug>/ 에 프로젝트 골격을 복사하고 독립 git 저장소를 만든 뒤, 고객 요청 원문을 CR-000으로 기록·커밋하고 P1 계획 단계(계획서·킥오프 회의록 → 교차 검토 → 게이트 G1 → PM 승인 요청)를 실행한다. 새 홈페이지 프로젝트를 시작할 때 사용.
-argument-hint: "<project-slug> <고객 요청 내용 또는 요청 파일 경로>"
+argument-hint: "<project-slug> [--lite] <고객 요청 내용 또는 요청 파일 경로>"
 ---
 
 # 프로젝트 착수 (Kickoff)
@@ -17,6 +17,8 @@ argument-hint: "<project-slug> <고객 요청 내용 또는 요청 파일 경로
 1. 첫 토큰이 slug 규칙(영문 소문자·숫자·하이픈, 3~40자)에 맞으면 `SLUG`, 나머지를 고객 요청으로 본다.
    - slug가 없거나 규칙에 맞지 않으면: 요청 내용에서 slug 후보 1~2개와 한글 표시명을 제안하고 AskUserQuestion으로 확정받는다.
    - 고객 요청이 비어 있으면 PM에게 요청 내용을 받는다. 요청이 파일 경로이면 해당 파일을 읽는다.
+   - 인자에 `--lite` 또는 `--standard`가 있으면 그것이 `MODE`다(인자에서 제거한 뒤 나머지를 요청으로 본다).
+     없으면 요청 규모로 판단한다: 랜딩·5페이지 이하 정적 사이트이고 로그인·결제·CMS·게시판이 없으면 AskUserQuestion으로 `lite (Recommended)` / `standard`를 묻고(각 옵션 설명에 `CLAUDE.md` §2 "진행 모드" 차이 요약), 그 외에는 `standard`로 정한다.
 2. `projects/<SLUG>`가 이미 존재하면 **중단**하고 PM에게 알린다 (덮어쓰지 않는다).
 3. 틀 버전 확인 (틀 루트에서):
    ```bash
@@ -33,7 +35,7 @@ git -C "projects/<SLUG>" init -b main
 - 복사 결과에 `.gitignore`, `.gitattributes`, 팀 폴더(`pm planning design developer qa devops shared`)가 모두 있는지 확인한다.
 - 다음 파일의 자리표시자를 채운다:
   - `projects/<SLUG>/README.md` — `{프로젝트 표시명}`, `{project-slug}`, `{고객명}`, 착수일, `{framework-commit}`
-  - `projects/<SLUG>/pm/STATUS.md` — 프로젝트 ID, 프로젝트명, 고객, 틀 버전, 최종 갱신일 (고객명을 모르면 `[TBD: 고객 확인 필요]`)
+  - `projects/<SLUG>/pm/STATUS.md` — 프로젝트 ID, 프로젝트명, 고객, 진행 모드(`MODE`), 틀 버전, 최종 갱신일 (고객명을 모르면 `[TBD: 고객 확인 필요]`)
 
 ## 3. 고객 요청 원문 기록
 - `templates/docs/pm/change-request.md`를 읽어 `projects/<SLUG>/pm/requests/CR-000_initial-request.md`를 만든다 (`doc_id: PM-CR-000`, `type: initial`, `status: received`).
@@ -51,11 +53,11 @@ git -C "projects/<SLUG>" tag -a kickoff -m "kickoff — pm/requests/CR-000_initi
 ## 5. P1 계획 단계 실행
 `.claude/skills/run-phase/SKILL.md`를 읽고 `PROJECT: projects/<SLUG>`, 단계 **P1**로 표준 루프를 수행한다.
 - 작성: `pmo` → `pm/01_project-plan.md`, `shared/meetings/MTG-{YYYYMMDD}_kickoff.md`, CR-000의 "요청 정리" 절, `pm/STATUS.md` 갱신
-- 검토(병렬): `planner`, `developer`
+- 검토(병렬): `planner`, `developer` (lite: `developer`만)
 - 반영 → 게이트 `pm/gates/G1_plan.md` → PM 보고 → 승인 시 커밋·태그 `G1`
 
 ## 6. PM 보고 시 강조할 것
-- 생성된 프로젝트 경로 `projects/<SLUG>/`와 틀 버전
+- 생성된 프로젝트 경로 `projects/<SLUG>/`, 진행 모드, 틀 버전
 - 범위(포함/제외)와 가정
 - 단계별 일정·마일스톤
 - **고객 확인 필요 사항 목록** — PM이 고객에게 바로 물어볼 수 있게 질문 형태로

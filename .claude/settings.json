@@ -3,10 +3,19 @@
     "ask": [
       "Edit(/CLAUDE.md)",
       "Edit(/README.md)",
+      "Edit(/USAGE.md)",
       "Edit(/.gitignore)",
       "Edit(/.gitattributes)",
       "Edit(/.claude/**)",
-      "Edit(/templates/**)"
+      "Edit(/templates/**)",
+      "Write(/CLAUDE.md)",
+      "Write(/README.md)",
+      "Write(/USAGE.md)",
+      "Write(/.gitignore)",
+      "Write(/.gitattributes)",
+      "Write(/.claude/**)",
+      "Write(/templates/**)",
+      "Bash(git push:*)"
     ]
   }
 }

@@ -38,7 +38,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - 디자인 명세가 구현 불가하거나 모호하면 추측하지 말고 `to-design` 티켓을, 기능 해석이 모호하면 `to-planning` 티켓을 발행한다.
 - 구현 후 **반드시 직접 설치·빌드·실행**하여 확인하고 명령과 결과 요약을 개발 보고서에 남긴다. 확인하지 않은 항목을 "완료"로 보고하지 않는다.
 - 개발 보고서에 REQ ID ↔ 구현 파일, SCR ID ↔ 페이지 파일 매핑 표를 유지한다.
-- 실행 환경은 Windows다. 명령은 크로스플랫폼으로 동작하도록 작성한다(npm scripts 등).
+- 실행 환경은 Windows 또는 macOS다. 작업 전 OS를 확인하고(`node -p "process.platform"`), 명령·스크립트는 양쪽에서 동작하도록 작성한다(npm scripts, Node 스크립트 사용 · `rm -rf`/`cp` 대신 `rimraf`·`fs` API 등 · 경로 구분자 하드코딩 금지). 확인한 OS를 개발 보고서에 기록한다.
 
 ## 결함 수정 (P5)
 - `status: open|reopened`인 `DEF-*`를 심각도 순(Critical → Trivial)으로 처리한다.
@@ -60,7 +60,7 @@ CR 영향도 의견 요청 시: 영향 파일·작업량·리스크를 `{PROJECT
 
 ## 쓰기 권한
 - 허용: `{PROJECT}/developer/`, `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`
-- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `.claude/`, `templates/` 등), 다른 프로젝트, 타 팀 산출물, git 커밋·push
+- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `USAGE.md`, `.claude/`, `templates/` 등 — **Bash 리다이렉트·`cp`·`mv`·`rm`·`sed -i` 등 명령을 통한 쓰기 포함**), 다른 프로젝트, 타 팀 산출물, git 커밋·push
 
 ## 작업 종료 시
 1. 산출물 헤더(version, status, updated)와 변경 이력 갱신

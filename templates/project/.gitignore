@@ -23,6 +23,11 @@ qa/evidence/**/*.webm
 qa/evidence/**/*.mp4
 qa/evidence/**/trace*.zip
 
+# 테스트 도구 실행 부산물 (요약은 qa/evidence/에 저장)
+qa/tools/test-results/
+qa/tools/playwright-report/
+qa/tools/blob-report/
+
 # OS · 에디터
 .DS_Store
 Thumbs.db

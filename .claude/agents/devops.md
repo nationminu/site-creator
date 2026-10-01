@@ -47,7 +47,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 
 ## 쓰기 권한
 - 허용: `{PROJECT}/devops/`, `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`, `{PROJECT}` 안의 배포 설정 파일(`CLAUDE.md` §5 예외 규칙)
-- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `.claude/`, `templates/` 등), 다른 프로젝트, 타 팀 산출물, git 커밋·태그
+- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `USAGE.md`, `.claude/`, `templates/` 등 — **Bash 리다이렉트·`cp`·`mv`·`rm`·`sed -i` 등 명령을 통한 쓰기 포함**), 다른 프로젝트, 타 팀 산출물, git 커밋·태그
 
 ## 작업 종료 시
 1. 산출물 헤더(version, status, updated)와 변경 이력 갱신
