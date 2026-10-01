@@ -105,6 +105,7 @@ kickoff 때 정해 `{PROJECT}/pm/STATUS.md`의 "진행 모드"에 기록한다. 
 | P3 컨셉 시안 | 2~3안 | 1~2안 (PM 선택 절차는 유지) |
 | P6 중간보고 | 수행 (G6) | **생략 가능** — PM이 G5 보고에서 생략을 승인하면 STATUS에 `➖ 생략` 표기, G6 태그 없음 |
 | P8 산출물 | 최종 보고서·운영 가이드·회고 | 최종 보고서는 요약판(1~2쪽), 운영 가이드·회고는 유지 |
+| 교차 검토 모델 | 세션 기본 모델 | **`sonnet`** (검토 호출에만 적용 — 작성·반영·결함 수정·배포 등 작업 호출은 세션 기본 모델) |
 
 lite 주 검토자: P1 `developer` · P2 `developer` · P3 `developer` · P4 설계 `devops` / 구현 `designer` · P5 `developer` · P7 `developer` · P8 `devops`
 
