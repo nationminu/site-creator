@@ -43,6 +43,11 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 | **P7** | ① `devops` 배포 계획 → 검토 `developer`, `qa` → ② **PM 배포 승인 요청** (배포 대상·호스팅·도메인·롤백 계획·PM 조치 필요 사항 제시) → ③ 승인 시 **릴리스 커밋·태그** (§6-2) → ④ `devops` 호출 프롬프트에 `PM 배포 승인 완료: {일시}`와 `배포 태그: release-v{x.y.z}` 명시하여 배포 실행 → ⑤ `qa` 운영 스모크 테스트(`qa/07_smoke-test-report.md`) → ⑥ `devops` 배포 보고서 (실패 시 롤백 기준에 따라 판단하고 PM 보고) |
 | **P8** | ① `devops` 운영 가이드 (필요 정보는 `developer` 티켓으로) + `pmo` 최종 보고서 → 검토 전 팀 → ② `pmo` 회고 회의록(각 팀 WORKLOG·리뷰 이력 기반 Keep/Problem/Try + 틀 개선 제안) → ③ G8 승인 후 **고객 인도 패키지** (§6-3) |
 
+**디자인 프로필** (`CLAUDE.md` §2 "디자인 프로필"):
+- **P1~P2**: 요청·계획에 Tailwind나 Claude Design 언급이 있거나 PM이 원하면, G2 게이트 보고 전에 스타일 체계(`css-vars`/`tailwind`)와 Claude Design 사용(`on`/`off`)을 PM에게 묻는다. 결정은 `pmo`가 ADR로 기록하고 STATUS.md에 반영한다. 묻지 않았으면 기본값(`css-vars`·`off`)이다.
+- **P3 (Claude Design `on`)**: PM이 외부 도구 결과물을 전달하면 오케스트레이터가 `design/imports/{YYYYMMDD}_{slug}/`에 저장(원본·작성자·일시 README 포함)하고 커밋(`chore(P3): 디자인 반입 자료 저장`)한 뒤, `designer`에게 정규화·반영을 지시한다. 고객 자료를 외부 도구에 올리는 일은 PM 승인 후에만 한다.
+- **G4 이후 (Design Sync)**: PM이 원하면 `designer`에게 게시 대상 컴포넌트 목록을 정리시키고, PM이 직접 `/design-sync`를 실행하도록 안내한다. 오케스트레이터는 PM 승인 없이 게시하지 않는다.
+
 **lite 모드 조정** (`CLAUDE.md` §2 "진행 모드"): 위 표의 검토자 대신 **주 검토자 1명**만 호출한다 — P1 `developer` · P2 `developer` · P3 `developer` · P4 설계 `devops` / 구현 `designer` · P5 `developer` · P7 `developer` · P8 `devops`. P3 컨셉 시안은 1~2안. P8 `pmo` 최종 보고서는 요약판(1~2쪽). 그 밖의 절차(PM 시안 선택, 배포 승인, 결함 사이클, 커밋)는 동일하다.
 **lite의 P6 생략**: G5 게이트 보고에 "P6 중간보고 생략 여부"를 PM 결정 사항으로 포함한다. PM이 생략을 승인하면 STATUS.md P6 행을 `➖ 생략`으로, "예외 기록"에 승인 일시를 남기고 커밋(`chore: P6 중간보고 생략 — PM 승인`)한 뒤 P7로 진행한다. 거절하면 P6를 standard와 같이 수행한다.
 

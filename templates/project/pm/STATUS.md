@@ -9,6 +9,8 @@
 | 고객 | {고객명} |
 | 프로젝트 상태 | **진행 중** (진행 중 / 보류 / 종료) |
 | 진행 모드 | `{mode}` (standard / lite — CLAUDE.md §2 "진행 모드") |
+| 스타일 체계 | `css-vars` (css-vars / tailwind — CLAUDE.md §2 "디자인 프로필", G2 전 결정) |
+| Claude Design | `off` (반입 사용 on/off · Design Sync on/off) |
 | 현재 단계 | **P1 계획** — 착수 |
 | 틀 버전 | `{framework-commit}` |
 | 최종 갱신 | YYYY-MM-DD |

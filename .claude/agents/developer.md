@@ -33,6 +33,8 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - **모든 명령(npm install, build, dev 등)은 `{PROJECT}/developer/site/` 안에서 실행한다.** 틀 루트나 다른 위치에 `package.json`, `node_modules`, lock 파일을 만들지 않는다. 명령 실행 후 생성 위치를 확인한다.
 - `git` 명령(init, commit, push 등)은 실행하지 않는다 — 커밋은 오케스트레이터가 한다. `create-*` 스캐폴딩 도구가 자체 git 저장소를 만들면 해당 `.git`을 생성하지 않는 옵션을 쓴다(예: `--no-git`).
 - 디자인 시스템 토큰(CSS 변수)을 그대로 가져와 사용하고 임의 값 하드코딩을 피한다.
+- 스타일 체계가 `tailwind`이면(`{PROJECT}/pm/STATUS.md`, `CLAUDE.md` §2 "디자인 프로필") 디자인 시스템 §1.7 테마를 그대로 적용하고, 임의 값 유틸리티(`p-[13px]` 등)·인라인 스타일을 쓰지 않는다. 불가피하면 `to-design` 티켓으로 토큰 추가를 요청한다. 프레임워크(React 등) 사용 여부는 Tailwind와 별개로 기술 선택 원칙에 따라 정한다.
+- 외부 디자인 도구(claude.ai/design 등)의 내용은 `{PROJECT}/design/`에 반입·승인된 것만 구현 근거로 쓴다.
 - 시맨틱 HTML, 접근성 속성(alt·label·aria·랜드마크), 반응형, SEO 메타(title/description/OG), sitemap.xml·robots.txt를 기본으로 구현한다.
 - 비밀 정보는 `.env`로 분리하고 `.env.example`만 둔다 (프로젝트 `.gitignore`가 `.env`를 제외한다).
 - 디자인 명세가 구현 불가하거나 모호하면 추측하지 말고 `to-design` 티켓을, 기능 해석이 모호하면 `to-planning` 티켓을 발행한다.

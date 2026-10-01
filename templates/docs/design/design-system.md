@@ -33,7 +33,7 @@ updated: YYYY-MM-DD
 ### 1.3 간격 · 레이아웃
 | 토큰 | 값 | 비고 |
 |---|---|---|
-| `--space-1` … `--space-n` | 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px | |
+| `--space-1` … `--space-n` | 4 / 8 / 12 / 16 / 24 / 32 / 48 / 64 px | 간격은 4px 배수만 사용 (테두리·폰트·행간 제외) |
 | `--container-max` | | |
 | 그리드 | desktop 12col · tablet 8col · mobile 4col / gutter | |
 
@@ -59,6 +59,26 @@ updated: YYYY-MM-DD
 }
 ```
 
+### 1.7 Tailwind 테마 (스타일 체계 `tailwind`인 경우만 — 아니면 "해당 없음")
+Tailwind 버전: v4 (기술 설계에서 변경 시 개정) · §1.1~1.6 값과 1:1 일치
+```css
+@import "tailwindcss";
+
+@theme {
+  /* color — 브랜드 색 우선 */
+  --color-primary: #000000;
+  /* typography */
+  --font-sans: "", sans-serif;
+  /* spacing — 4px 기준 (p-1=4px, p-2=8px …) */
+  --spacing: 0.25rem;
+  /* radius, shadow */
+  /* breakpoint — §1.5와 일치 */
+  --breakpoint-md: 48rem;   /* 768px */
+  --breakpoint-xl: 80rem;   /* 1280px */
+}
+```
+- 임의 값 유틸리티(`p-[13px]` 등) 사용 금지. 필요한 값은 토큰으로 추가한다.
+
 ## 2. 컴포넌트
 
 ### CMP-001 Button
@@ -68,6 +88,7 @@ updated: YYYY-MM-DD
 | 크기 | sm / md / lg (높이·패딩·폰트) |
 | 상태 | default / hover / focus-visible / active / disabled |
 | 접근성 | 최소 44×44px, 포커스 링 명시 |
+| Tailwind 클래스 (해당 시) | 예: `inline-flex min-h-11 px-4 py-2 rounded-md bg-primary text-white hover:… focus-visible:ring-2` |
 | 사용 화면 | SCR- |
 
 (컴포넌트마다 반복: Header, Footer, Card, Form Input, Modal …)
@@ -83,6 +104,10 @@ updated: YYYY-MM-DD
 - [ ] 터치 영역 44×44px 이상
 - [ ] 색상만으로 정보를 전달하지 않음
 - [ ] 모션은 `prefers-reduced-motion` 대응
+
+## 5. 외부 디자인 도구 반입 내역 (Claude Design `on`인 경우)
+| 반입 경로 (`design/imports/…`) | 일시 | 반영 위치 | 정규화 내용 (토큰 매핑·제외 항목) |
+|---|---|---|---|
 
 ## 변경 이력
 | 버전 | 일자 | 작성자 | 내용 | 관련 리뷰/CR |
