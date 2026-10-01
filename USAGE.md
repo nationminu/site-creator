@@ -92,9 +92,9 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 작성(Owner) → 교차 검토(다른 팀들, 동시에) → 수정 반영 (최대 3라운드) → 게이트 문서 → PM 승인 → 커밋·태그
 ```
 
-**진행 모드** — kickoff 때 고르며 `pm/STATUS.md`에 기록됩니다.
+**진행 모드** — 기본은 **lite**입니다. 큰 프로젝트는 `--standard`로 시작하거나 G1에서 전환합니다. `pm/STATUS.md`에 기록됩니다.
 
-| | standard (기본) | lite (소규모 사이트) |
+| | standard (대규모·고위험) | lite (**기본**) |
 |---|---|---|
 | 검토자 | 단계별 2~5명 | 주 검토자 1명 |
 | 리뷰 라운드 상한 | 3 | 2 |
@@ -218,13 +218,13 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 > 프로젝트가 **하나만 진행 중**이면 `project-slug`는 생략할 수 있습니다. 여러 개면 붙이거나, 생략 시 어느 프로젝트인지 질문을 받습니다.
 > ⚠️ Claude Code 기본 명령 `/init`은 `CLAUDE.md`를 덮어쓰므로 **사용하지 마세요.**
 
-### `/kickoff <project-slug> [--lite] <고객 요청 | 요청 파일 경로>`
+### `/kickoff <project-slug> [--standard] <고객 요청 | 요청 파일 경로>`
 
 새 프로젝트를 만들고 P1 계획까지 진행합니다.
 
 | 순서 | 동작 |
 |---|---|
-| 1 | slug 확인, 중복 검사, 틀 커밋 번호 확인, 진행 모드 결정(`--lite` / 소규모면 질문 / 그 외 standard) |
+| 1 | slug 확인, 중복 검사, 틀 커밋 번호 확인, 진행 모드 결정(기본 lite / `--standard`면 standard, 대규모면 G1에서 전환 권고) |
 | 2 | `templates/project/`를 `projects/<slug>/`로 복사, `git init` |
 | 3 | 고객 요청 원문을 `pm/requests/CR-000_initial-request.md`에 기록 |
 | 4 | 최초 커밋 + 태그 `kickoff` |
@@ -234,7 +234,7 @@ P1 계획 → P2 기획 → P3 디자인 → P4 개발 → P5 검증(로컬) →
 ```text
 /kickoff hanbit-dental 강남 한빛치과 홈페이지, 예약 문의 증가 목적, 5페이지, 10월 말 오픈
 /kickoff hanbit-dental C:\Users\natio\Desktop\hanbit-request.md
-/kickoff cafe-landing --lite 동네 카페 원페이지 랜딩, 메뉴·위치·인스타 링크
+/kickoff mall-renewal --standard 쇼핑몰 리뉴얼, 회원·결제·ERP 연동
 ```
 
 ### `/run-phase [project-slug] <P1~P8 | next>`
@@ -777,7 +777,7 @@ Claude Code 세션을 재시작하세요. 틀 폴더(`site-creator`)를 작업 �
 **Q. 토큰 사용량이 많아요.**
 단계마다 작성 1회 + 검토자 2~5명이 동시에 실행되고 수정 라운드가 반복되므로 사용량이 큽니다. 줄이는 방법:
 - 요청을 구체적으로 작성해 리뷰 라운드를 줄이기 (특히 5절의 최소 정보)
-- 작은 프로젝트는 **lite 모드**로 시작: `/kickoff <slug> --lite …` (진행 중 전환은 "이 프로젝트 lite 모드로 바꿔" — 예외 기록에 남음)
+- 기본이 **lite 모드**입니다. 큰 프로젝트만 `/kickoff <slug> --standard …`로 시작하거나 진행 중 "이 프로젝트 standard 모드로 바꿔"라고 지시하세요 (예외 기록에 남음)
 - 특정 단계만 검토자를 줄이도록 지시: "이번 프로젝트 P2 검토는 developer만"
 - 게이트 보고 전에 방향을 먼저 확인받도록 지시: "요구사항 초안만 먼저 보여줘"
 

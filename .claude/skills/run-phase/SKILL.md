@@ -17,7 +17,7 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 - 첫 토큰이 `projects/<토큰>/` 디렉토리로 존재하면 그것이 `SLUG`, 아니면 `CLAUDE.md` §10 규칙(진행 중 프로젝트가 하나면 자동 선택, 여러 개면 질문)으로 정한다.
 - 단계가 비어 있거나 `next`이면 `projects/<SLUG>/pm/STATUS.md` 기준으로 승인 완료된 마지막 단계의 다음 단계.
 - 이하 `{PROJECT}` = `projects/<SLUG>`. **모든 에이전트 호출 프롬프트 첫 줄에 `PROJECT: projects/<SLUG>`를 넣는다.**
-- `{PROJECT}/pm/STATUS.md`의 "진행 모드"를 읽어 `MODE`로 정한다(항목이 없으면 `standard`). 이하 절차에서 `lite` 표기가 있는 부분은 `MODE=lite`일 때만 적용한다. 에이전트 호출 프롬프트에 `진행 모드: <MODE>`를 함께 적는다.
+- `{PROJECT}/pm/STATUS.md`의 "진행 모드"를 읽어 `MODE`로 정한다(항목이 없으면 `lite`). 이하 절차에서 `lite` 표기가 있는 부분은 `MODE=lite`일 때만 적용한다. 에이전트 호출 프롬프트에 `진행 모드: <MODE>`를 함께 적는다.
 - `MODE=lite`이고 단계가 `P6`이며 STATUS에 `➖ 생략`으로 표기되어 있으면 P7로 넘어간다 (`next`도 동일).
 
 ## 1. 착수 점검
