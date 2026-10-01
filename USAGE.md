@@ -47,6 +47,8 @@ PM(사용자) ──요청·승인──▶ 오케스트레이터(메인 Claude 
 | Claude Code | 오케스트레이터·에이전트 실행 | VS Code 확장 또는 CLI |
 | Git | 틀·프로젝트 버전 관리 | `git --version` |
 | Node.js (LTS) | 사이트 빌드, 테스트 도구(Lighthouse 등) 실행 | `node --version` — P4 이전에 설치 권장 |
+| 백엔드 런타임 (해당 시) | Java: JDK · PHP: PHP + Composer · Python: Python + uv | `java -version` / `php -v`·`composer -V` / `uv --version` — P4 기술 설계에서 스택이 정해지면 안내 |
+| Docker (권장, 백엔드 시) | 로컬 DB 실행 | `docker --version` |
 | GitHub 계정 (선택) | 원격 저장소, 일부 호스팅 연동 | — |
 | 호스팅 계정 (P7) | 운영 배포 (Vercel·Netlify·Cloudflare Pages 등) | P7 배포 계획서에서 안내 |
 
@@ -359,7 +361,19 @@ P3 진행 중에 세션이 끊겼어. 기존 산출물이랑 리뷰 확인해서
 | **PM 확인** | 기술 스택 선택 이유(고객이 운영할 수 있는가, 비용) · **로컬에서 사이트 직접 확인** · 요구사항별 구현 현황 |
 | **PM 결정** | G4 승인 |
 
-로컬 실행 방법은 `developer/site/README.md`에 있습니다. 일반적인 형태:
+**기술 스택 표준** (`CLAUDE.md` §6) — 고객 제약이 없으면 아래 기본값으로 설계됩니다.
+
+| 구분 | 기본 | 선택지 |
+|---|---|---|
+| 프론트엔드 | Astro + TypeScript | Next.js(React), Nuxt(Vue), 순수 HTML(예외) |
+| 백엔드 (게시판·회원·관리자 등 동적 기능이 있을 때만) | Java · Spring Boot | PHP · Laravel / CodeIgniter 4, Python · Django |
+| DB | PostgreSQL | MySQL / MariaDB |
+
+- 폼·CMS·예약은 외부 서비스로 충분한지 먼저 검토하므로 백엔드가 아예 없을 수도 있습니다.
+- 고객 측 제약(예: "카페24 호스팅 사용 중", "사내 Java 개발자가 유지보수")은 kickoff 요청이나 P2 단계에서 알려 주세요. 기본값보다 우선합니다.
+- 기술 설계서의 "버전·지원 종료" 표에서 런타임 지원 기간을, "표준 명령 매핑" 표에서 실행 명령을 확인할 수 있습니다.
+
+로컬 실행 방법은 `developer/site/README.md`에 있습니다. 정적(Astro) 사이트의 일반적인 형태:
 
 ```bash
 cd projects/<slug>/developer/site

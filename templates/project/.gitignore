@@ -10,6 +10,17 @@ out/
 .vercel/
 .netlify/
 
+# 백엔드 스택별 산출물
+.gradle/
+target/
+vendor/
+.venv/
+__pycache__/
+*.pyc
+staticfiles/
+*.sqlite3
+application-local.*
+
 # 비밀 정보 (예시 파일만 커밋)
 .env
 .env.*

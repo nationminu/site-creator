@@ -263,6 +263,15 @@ updated: YYYY-MM-DD
 
 planner는 이 기준을 `REQ-N-*` 비기능 요구사항으로 구체화한다.
 qa는 이 기준을 `.claude/agents/qa.md`의 **표준 검증 도구 세트**(Lighthouse CLI · Playwright · axe-core · linkinator)로 측정한다.
+- **기술 스택 표준**: 스택은 P4 기술 설계에서 developer가 정하며, `.claude/agents/developer.md` "스택 표준 카탈로그" 안에서 고른다(밖이면 ADR로 PM 결정).
+
+  | 구분 | 기본 | 카탈로그 |
+  |---|---|---|
+  | 프론트엔드 | **Astro (SSG) + TypeScript strict** | Next.js(React), Nuxt(Vue), 순수 HTML(예외) |
+  | 백엔드 (동적 요구 시만) | **Java · Spring Boot** | PHP · Laravel / CodeIgniter 4, Python · Django |
+  | DB | PostgreSQL | 고객 호스팅에 따라 MySQL/MariaDB |
+
+  선택 순서: 외부 서비스로 충분한지 → 고객 제약(운영 언어·기존 시스템·호스팅) → 요구 기능 → 운영 비용 → 틀 기본값. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
 - **실행 환경**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Node 스크립트)으로 작성하며, 사용한 OS를 보고서에 기록한다.
 
 ---
