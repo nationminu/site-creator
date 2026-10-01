@@ -75,7 +75,7 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 > 따라서 팀 간 소통은 **파일(산출물·리뷰·티켓)** 로만 이루어지고, 에이전트 호출과 순서 조율은 **오케스트레이터**가 담당한다.
 >
 > **오케스트레이터는 팀 산출물을 직접 작성하지 않는다.** 반드시 해당 팀 에이전트에게 위임한다.
-> (예외: 프로젝트 골격 생성, `pm/STATUS.md` 갱신, CR·SUG 요청 원문과 첨부 기록, 목업·화면 스크린샷 캡처(도구 실행 결과 저장), 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
+> (예외: 프로젝트 골격 생성, kickoff 사전 질문, `pm/STATUS.md` 갱신, CR·SUG 요청 원문과 첨부 기록, QNA 질문 옮겨 등록·고객 답변 원문 기록, 목업·화면 스크린샷 캡처(도구 실행 결과 저장), 게이트 문서의 PM 결정 기입, 승인 후 산출물 헤더의 status/version 갱신, 요구사항 "제안 기능" 표의 PM 결정 열 기입, `ACTIVITY.md` 진행 요약 기록, PM이 전달한 외부 디자인 도구 결과물의 `design/imports/` 저장)
 
 ---
 
@@ -91,7 +91,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 
 | 단계 | Owner | 산출물 | 교차 검토자 (standard) | 게이트 통과 기준(요약) |
 |---|---|---|---|---|
-| **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md` | planner, developer | 범위·일정·산출물·리스크 확정, 잠정 스택 프리셋, 콘텐츠 수급·PM 사전 준비 계획 |
+| **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md`<br>`shared/meetings/MTG-*_kickoff-agenda.md`<br>`pm/requests/QNA.md` | planner, developer | 범위·**규모 초안**(페이지·기능)·**오픈일 역산 일정**·리스크 확정, 이해관계자·피드백 정책, 잠정 스택 프리셋, 비용 요약, 콘텐츠 수급·PM 사전 준비 계획, 고객 질문 등록 |
 | **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 법적 고지 REQ-C 점검, **팀 제안 기능 PM 개별 결정**, **스택 프리셋 확정** |
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
 | **P4 개발** | developer | `developer/04_tech-design.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과 |
@@ -195,6 +195,7 @@ updated: YYYY-MM-DD
 |---|---|---|
 | 고객 요청·변경 요청 | `CR-000`(최초 요청), `CR-001` … | 오케스트레이터 |
 | 제안 (시안·기능·자료·불편) | `SUG-001` … | 오케스트레이터 |
+| 고객 질문 | `Q-001` … (`pm/requests/QNA.md`) | pmo · planner · 오케스트레이터 |
 | 요구사항 | `REQ-F-001`(기능) / `REQ-N-001`(비기능) / `REQ-C-001`(콘텐츠) | planner |
 | 화면 | `SCR-001` | planner |
 | 컴포넌트 | `CMP-001` | designer |
@@ -220,6 +221,7 @@ updated: YYYY-MM-DD
 | 티켓 | `shared/tickets/TKT-{발행팀}-{nnn}_to-{수신팀}_{slug}.md` | `templates/docs/shared/ticket.md` | 리뷰 주기 밖의 요청·질의·자료 요청 (수신팀: `pmo`·`planning`·`design`·`developer`·`qa`·`devops`) |
 | 결함 | `shared/tickets/DEF-{nnn}_{slug}.md` | `templates/docs/shared/defect.md` | 검증 중 발견된 결함 |
 | 결정 기록 | `shared/decisions/ADR-{nnn}_{slug}.md` | `templates/docs/shared/decision.md` | PM 결정, 팀 간 합의, 되돌리기 어려운 선택 |
+| 고객 질문·답변 | `pm/requests/QNA.md` (`Q-{nnn}`) | `templates/project/pm/requests/QNA.md` | 고객에게 확인할 질문 등록(pmo·planner, 다른 팀은 완료 보고로 요청) → PM이 답변 전달 → `/answer`로 원문 기록·산출물 반영 |
 | 제안 (PM·고객) | `pm/requests/SUG-{nnn}_{slug}.md` + `pm/requests/attachments/SUG-{nnn}/` | `templates/docs/pm/suggestion.md` | PM·고객의 시안·기능·자료·불편 제안 — `/suggest`로 접수 → 팀 검토 → PM 결정 → 반영/CR |
 | 회의록 | `shared/meetings/MTG-{YYYYMMDD}_{slug}.md` | `templates/docs/shared/meeting.md` | 킥오프, 이슈 조율, 회고 |
 
@@ -289,7 +291,7 @@ planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고
   - G2 후: 기능 추가·변경·삭제가 필요하면 구현하지 말고 `to-pmo` 티켓을 발행한다 → PM 결정, 승인된 산출물에 영향이 있으면 §7 CR.
   - **외부 서비스**(폼·CMS·지도·분석·메일·결제·예약 등) 중 유료이거나 개인정보·고객 데이터가 전달되는 것은 기술 설계에서 후보 비교까지만 하고, **선택은 PM이 한다**(ADR 기록).
   - 검토자는 대상 산출물에 REQ에 없는 기능이 있으면 **Must**로 지적한다.
-- 확인되지 않은 사실(고객 정보, 연락처, 수치, 연혁 등)은 지어내지 않고 `[TBD: 고객 확인 필요]`로 표시한다.
+- 확인되지 않은 사실(고객 정보, 연락처, 수치, 연혁 등)은 지어내지 않고 `[TBD: Q-xxx]`(질문을 `pm/requests/QNA.md`에 등록) 또는 등록 전이면 `[TBD: 고객 확인 필요]`로 표시한다. 열리지 않은 회의의 논의·결정도 지어내지 않는다.
 - 외부 이미지·폰트·코드는 상업적 사용 가능 라이선스만 사용하고 출처를 기록한다.
 - 확인하지 않은 것을 "완료"·"통과"로 보고하지 않는다. 실행 증거(명령·결과)를 남긴다.
 - 보호 영역(§0)은 프로젝트 작업 중 수정하지 않는다.
@@ -322,6 +324,7 @@ devops는 `release-v*` 태그 기준으로 배포하고, 롤백은 이전 릴리
 | `/status [project-slug]` | 프로젝트 목록 또는 특정 프로젝트 현황 보고 |
 | `/change-request [project-slug] <변경 내용>` | 변경 요청 접수 → 영향도 분석 → 승인 시 회귀 |
 | `/resume-project [project-slug]` | 세션 중단 후 파일·git 상태로 재개 지점을 판정해 이어서 진행 |
+| `/answer [project-slug] [Q-xxx] <답변>` | 고객 질문 답변을 QNA에 원문 기록 → 영향 산출물 반영(승인된 내용이 바뀌면 CR) |
 | `/suggest [project-slug] <제안> [파일·URL]` | PM·고객 제안(캡처·파일·설명) 접수 → 팀 검토 → PM 결정 → 반영 또는 CR (자료는 `{PROJECT}/inbox/`에 넣어도 됨) |
 
 - `project-slug`를 생략하면: `projects/*/pm/STATUS.md` 중 프로젝트 상태가 `진행 중`인 것이 하나면 그 프로젝트, 여러 개면 PM에게 묻는다.

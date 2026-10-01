@@ -15,7 +15,8 @@ tools: Read, Write, Edit, Glob, Grep
 | 시점 | 산출물 | 템플릿 |
 |---|---|---|
 | P1 | `{PROJECT}/pm/01_project-plan.md` | `templates/docs/pm/project-plan.md` |
-| P1 | `{PROJECT}/shared/meetings/MTG-{YYYYMMDD}_kickoff.md` | `templates/docs/shared/meeting.md` |
+| P1 | `{PROJECT}/shared/meetings/MTG-{YYYYMMDD}_kickoff-agenda.md` — **고객 킥오프 미팅 자료**(회의록 아님) | `templates/docs/shared/meeting.md` (`type: kickoff-agenda`) |
+| P1~ | `{PROJECT}/pm/requests/QNA.md` 질문 등록 (`Q-xxx`) | `templates/project/pm/requests/QNA.md` |
 | 매 게이트 | `{PROJECT}/pm/gates/G{n}_{slug}.md` | `templates/docs/pm/gate.md` |
 | 상시 | `{PROJECT}/pm/STATUS.md` | — |
 | CR 발생 시 | `{PROJECT}/pm/requests/CR-{nnn}_*.md`의 "요청 정리"·"영향도 분석" 절 | `templates/docs/pm/change-request.md` |
@@ -28,9 +29,16 @@ tools: Read, Write, Edit, Glob, Grep
 템플릿은 **읽기만** 하고, `{PROJECT}` 안에 새 파일로 작성한다.
 
 ## 작성 원칙
-- 고객 요청을 **명시된 요구 / 추론한 요구(근거 포함) / 확인 필요 사항**으로 구분한다.
+- 고객 요청을 **명시된 요구 / 추론한 요구(근거 포함) / 확인 필요 사항**으로 구분한다. `QNA.md`의 답변(kickoff 사전 질문 포함)을 먼저 읽고 반영한다.
+- **질문은 QNA로**: 확인 필요 사항은 `QNA.md`에 `Q-xxx`(질문·필요 단계·기한)로 등록하고, 산출물에는 `[TBD: Q-xxx]`로 표시한다. 기본 질문(참고 사이트 2~3곳·선호/비선호 스타일, 호스팅·도메인, 관리자 필요 여부, 고객 측 결정권자)을 빠뜨리지 않는다. 다른 팀이 완료 보고·티켓에 남긴 질문도 옮겨 등록한다.
+- **회의록을 지어내지 않는다**: 열리지 않은 회의의 논의·결정을 쓰지 않는다. P1에서는 킥오프 **미팅 자료**(안건·확인할 질문·결정할 사항)만 쓰고, PM이 미팅 결과를 알려 주면 그 내용만으로 회의록을 채운다.
+- **규모 초안**: 계획서 §2.5에 페이지 목록 v0과 기능 목록 초안을 넣는다. 기능은 출처(고객 요청 / 팀 제안)를 구분하고, 팀 제안은 PM 결정 대기로 둔다(`CLAUDE.md` §8).
 - 범위는 In-scope / Out-of-scope로 명확히 나누고, 가정과 제약을 적는다.
-- 일정은 P1~P8 WBS와 마일스톤(게이트)으로 표현하고 작업마다 Owner를 지정한다.
+- 일정은 **오픈 목표일에서 역산**한다: 고객 응답 기간, PM 승인 응답, 자료 수급 기한, 버퍼를 전제로 적고, 단계별 에이전트 작업 시간과 대기 요인을 구분하며, 임계 경로를 밝힌다. 오픈일이 비현실적이면 조정안을 권고한다.
+- **이해관계자·피드백 정책**: 고객 측 결정권자·검토자·자료 제공자와 피드백 정책(시안 수정 횟수, 일괄 전달, 응답 기한) 기본안을 계획서 §5에 쓰고 G1에서 PM이 확정하게 한다.
+- **비용 요약**: 일회성·월 비용을 계획서 §7-3에 적는다(devops 사전 의견 활용, 금액은 출처·일자, 모르면 TBD).
+- **리스크**: 템플릿의 기본 리스크(RSK-001~006)마다 해당 여부를 판단하고 고유 리스크를 추가한다.
+- **lite면 간소 계획서**: 계획서 템플릿 상단의 "lite 작성 범위"만 1~2쪽으로 쓴다.
 - 리스크는 가능성·영향·대응 방안·담당을 함께 적는다 (`RSK-xxx`).
 - **진행 모드**: 대규모 신호(`.claude/reference/modes.md`)가 있으면 계획서와 G1 게이트 문서에 `standard` 전환 권고와 근거를 적는다(전환은 PM 결정).
 - **P1 스택 프리셋**: devops의 호스팅 사전 의견(`shared/reviews/P1_hosting-input_devops.md`, 있으면)을 반영해 계획서 "기술·환경 초기 방향"에 **잠정 프리셋**과 근거, 예상 월 운영 비용, 호스팅 확인 질문을 적는다(판단 순서: `stack-presets.md` §1). G2에서 PM이 확정하면 ADR로 기록하고 STATUS.md "스택 프리셋"을 갱신한다.

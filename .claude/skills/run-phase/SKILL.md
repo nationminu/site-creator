@@ -35,7 +35,7 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 
 | 단계 | 진행 방식 |
 |---|---|
-| **P1** | ① (동적 기능이 있거나 호스팅이 미정이면) `devops` 호스팅 사전 의견 → `shared/reviews/P1_hosting-input_devops.md` → ② `pmo` 계획서·킥오프 회의록(잠정 프리셋, 콘텐츠 수급 계획, PM 사전 준비 항목 포함) → 검토 `planner`, `developer` |
+| **P1** | (kickoff 사전 질문·`QNA.md` 기록 후) ① (동적 기능이 있거나 호스팅이 미정이면) `devops` 호스팅 사전 의견 → `shared/reviews/P1_hosting-input_devops.md` → ② `pmo` 계획서(규모 초안, 역산 일정, 이해관계자·피드백 정책, 잠정 프리셋, 콘텐츠 수급, PM 사전 준비, 비용 요약, 리스크)·킥오프 **미팅 자료**·QNA 질문 등록 → 검토 `planner`, `developer` → G1 보고에서 **G1 결정 묶음**(진행 모드·잠정 프리셋·오픈 목표일·피드백 정책) 확인 (`kickoff` §6) |
 | **P2** | `planner`가 요구사항 → IA → 화면정의서를 작성(법적 고지 REQ-C, 동적 기능 목록 포함) → 검토 `designer`, `developer`, `qa` |
 | **P3** | ① `designer` 컨셉 시안(standard 2~3안 / lite 1~2안) → 오케스트레이터가 시안 목업 스크린샷 캡처(아래 "스크린샷 캡처") → **PM에게 시안 선택 요청** (스크린샷을 보여 주고 AskUserQuestion, 시안별 요약을 옵션 설명에) → ② `pmo`가 선택 결과를 `shared/decisions/ADR-*`로 기록 → ③ `designer` 디자인 시스템·페이지 디자인·전 SCR 목업 → ④ 오케스트레이터 스크린샷 캡처 → ⑤ `designer` **시각 자기 점검·수정**(스크린샷을 보고 수정, 큰 수정이면 재캡처 후 1회 더) → 검토 `planner`, `developer` (스크린샷 경로 전달) |
 | **P4** | ① `developer` 기술 설계(구현 순서를 작업 단위로 분할) → 검토 `devops`, `qa` (루프) → ② **구현: 기술 설계 "구현 순서"의 작업 단위마다 `developer`를 순차 호출**하고 단위마다 커밋(`feat(P4): {단위} — developer`). 프롬프트에 이번 단위 범위와 이전 단위의 개발 보고서 "진행 현황"을 넘긴다 → ③ 마지막 호출에서 자체 점검·디자인 QA 스크린샷(`developer/evidence/design-qa/`)·개발 보고서 완성 → 검토 `designer`(스크린샷 기반 디자인 QA), `planner`(기능 부합) (루프). 이 기간에 `qa`의 테스트 계획·케이스 선작성을 병렬로 지시할 수 있다 |
@@ -56,6 +56,8 @@ argument-hint: "[project-slug] <P1~P8 | next>"
 - **P1~P2**: 요청·계획에 Tailwind나 Claude Design 언급이 있거나 PM이 원하면, G2 게이트 보고 전에 스타일 체계와 Claude Design 사용을 PM에게 묻는다. 결정은 `pmo`가 ADR로 기록하고 STATUS.md에 반영한다. 묻지 않았으면 기본값이다.
 - **P3 (Claude Design `on`)**: PM이 외부 도구 결과물을 전달하면 오케스트레이터가 `design/imports/{YYYYMMDD}_{slug}/`에 저장(원본·작성자·일시 README 포함)하고 커밋(`chore(P3): 디자인 반입 자료 저장`)한 뒤, `designer`에게 정규화·반영을 지시한다. 고객 자료를 외부 도구에 올리는 일은 PM 승인 후에만 한다.
 - **G4 이후 (Design Sync)**: PM이 원하면 `designer`에게 게시 대상 컴포넌트 목록을 정리시키고, PM이 직접 `/design-sync`를 실행하도록 안내한다. 오케스트레이터는 PM 승인 없이 게시하지 않는다.
+
+**고객 답변·질문**: 에이전트 완료 보고에 새 고객 질문이 있으면 `QNA.md`에 등록(오케스트레이터 또는 pmo)한다. PM이 답변을 전달하면 `/answer` 절차로 기록·반영한다. 게이트 보고에 미답변 질문 수와 기한 지난 질문을 포함한다.
 
 **lite의 P6 생략**: G5 게이트 보고에 "P6 중간보고 생략 여부"를 PM 결정 사항으로 포함한다. PM이 생략을 승인하면 STATUS.md P6 행을 `➖ 생략`으로, "예외 기록"에 승인 일시를 남기고 커밋(`chore: P6 중간보고 생략 — PM 승인`)한 뒤 P7로 진행한다. 거절하면 P6를 수행한다.
 

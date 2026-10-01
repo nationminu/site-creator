@@ -13,7 +13,8 @@
 | 3 | `/run-phase next` | 다음 단계 실행 (작성 → 교차 검토 → 반영 → 게이트) |
 | 4 | `/status` | 프로젝트 목록 / 현황 확인 |
 | 5 | `/change-request <변경 내용>` | 고객 요구 변경 시 영향도 분석 후 회귀 |
-| 6 | `/suggest <제안> [파일·URL]` | PM·고객의 시안 캡처·기능·자료 제안 접수 → 팀 검토 → PM 결정 → 반영 (파일은 `projects/<slug>/inbox/`에) |
+| 6 | `/answer [Q-xxx] <답변>` | 고객 질문 답변 기록 → 관련 문서 반영 |
+| 7 | `/suggest <제안> [파일·URL]` | PM·고객의 시안 캡처·기능·자료 제안 접수 → 팀 검토 → PM 결정 → 반영 (파일은 `projects/<slug>/inbox/`에) |
 
 프로젝트가 여러 개 진행 중이면 명령에 `project-slug`를 붙입니다. 예: `/run-phase acme-homepage next`
 

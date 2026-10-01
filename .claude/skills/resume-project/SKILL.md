@@ -32,6 +32,7 @@ argument-hint: "[project-slug]"
 | 리뷰 | `{PROJECT}/shared/reviews/{단계}_*` | 검토자별 최신 라운드, `verdict`, 지적 표 "처리 결과" 열 기입 여부 |
 | 티켓·결함 | `{PROJECT}/shared/tickets/` | `status: open\|in-progress\|reopened\|resolved` |
 | 변경 요청 | `{PROJECT}/pm/requests/CR-*` | `status`가 `done\|rejected`가 아닌 것 |
+| 고객 질문 | `{PROJECT}/pm/requests/QNA.md` | `answered`인데 반영 위치가 비어 있으면 → `/answer` §3 반영 재개 |
 | 제안 | `{PROJECT}/pm/requests/SUG-*`, `{PROJECT}/inbox/` | `status`가 `applied\|rejected`가 아닌 것(analyzing → 검토·종합 재개, pending-approval → PM 결정 요청, accepted → 반영 재개), inbox에 남은 파일 → 접수 여부 PM 확인 (`suggest` 스킬 해당 절) |
 | 결정 기록 | `{PROJECT}/shared/decisions/ADR-*` | `status: proposed` |
 | 진행 요약 | `{PROJECT}/ACTIVITY.md` 상단 항목 | 마지막으로 기록된 작업 단위 (git 로그와 대조 — 커밋에 없는 항목·항목 없는 커밋은 불일치로 보고) |
