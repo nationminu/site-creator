@@ -9,7 +9,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
 2. `CLAUDE.md` §0·§4·§5·§8을 확인하고, `.claude/reference/stack-presets.md`와 `.claude/reference/polish-checklist.md`를 읽는다 (스타일 체계 `tailwind`면 `.claude/reference/design-profile.md`도).
-3. 입력: `{PROJECT}/planning/02_*.md`, `{PROJECT}/design/03_*.md`, `{PROJECT}/design/mockups/`, `{PROJECT}/design/assets/`(승인본), 관련 리뷰·티켓·결함
+3. 입력 (모두 승인본):
+   - 기획: 요구사항(§3 REQ-F, §3.2 동적 기능, §3.3 폼 정의, §4 REQ-N, §4.1 측정 계획, §5.2 콘텐츠 유형), IA(§5-1 관리자·권한표, §6 SEO 규칙, §7 리다이렉트 맵·이관 목록), 화면정의서(실제 문구, 상태·예외, SCR별 SEO 메타)
+   - 디자인: 디자인 시스템(토큰, 컴포넌트, §4-2 디자인 QA 판정 기준), 페이지 디자인(섹션 명세, 이미지 자리 명세, **개발 전달 패키지**, 상태·예외 화면), `design/mockups/`, `design/assets/`
+   - `pm/requests/QNA.md`(답변), 승인된 `SUG-*`, STATUS(스택 프리셋·디자인 프로필), 관련 리뷰·티켓·결함·ADR
 
 ## 담당 산출물
 | 시점 | 산출물 | 템플릿 |
@@ -18,6 +21,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 | P4-② | `{PROJECT}/developer/site/` (소스코드 + `site/README.md` 실행 방법) — **작업 단위별 호출** | — |
 | P4-③ | `{PROJECT}/developer/evidence/design-qa/` 디자인 QA용 스크린샷 | — |
 | P4-③ | `{PROJECT}/developer/04_dev-report.md` (작업 단위마다 "진행 현황" 갱신, 마지막에 완성) | `templates/docs/developer/dev-report.md` |
+| P4 (백엔드 프리셋, 검토 역할) | `{PROJECT}/shared/reviews/P4_code_security-review_r{n}.md` — 보안 코드 리뷰 | `templates/docs/shared/review.md` |
 | P5 | 결함 수정, `{PROJECT}/shared/tickets/DEF-*` 조치 절 기입 | — |
 | P7·P8 | 검색엔진 소유 확인용 메타 태그·파일 반영, 운영 가이드용 유지보수 기술 정보 (`to-developer` 티켓) | — |
 
@@ -38,6 +42,10 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - 구현 순서는 기술 설계 "구현 순서"를 따른다: 초기화·토큰 적용 → 공통 레이아웃 → 컴포넌트 → 페이지 묶음 → 동적 기능. 기술 설계의 구현 순서 표는 **한 번의 호출로 끝낼 수 있는 작업 단위**(대략 페이지 2~4개 또는 기능 1개)로 나눠 적는다.
 - **구현은 작업 단위별로 호출된다.** 호출 프롬프트가 지정한 작업 단위만 수행하고, 끝나면 빌드가 깨지지 않은 상태로 멈춘 뒤 개발 보고서 "진행 현황"에 완료 범위·남은 작업·다음 단위의 주의점을 적는다. 다음 호출은 이 기록과 기존 코드를 읽고 이어서 한다(처음부터 다시 쓰지 않는다).
 - **SCR 하나를 마칠 때마다** 로컬 빌드·미리보기로 확인한다.
+- **목업을 출발점으로**: `design/mockups/`의 마크업·스타일을 출발점으로 삼아 컴포넌트로 나눈다(처음부터 새로 짜지 않는다). 목업과 다르게 구현해야 하면 이유를 개발 보고서에 적는다.
+- **초기 정합 확인**: 작업 단위 1(토큰·공통 레이아웃·헤더·푸터)을 마치면 메인과 대표 화면 1개를 360·1280 폭으로 구현·목업 쌍 캡처해 `evidence/design-qa/early-*`에 두고 개발 보고서 §4-1에 적는다(designer가 확인). 지적은 다음 단위에서 반영한다.
+- **미확정 콘텐츠 표시**: 확보되지 않은 문구·이미지 자리는 사이트에 `[TBD: Q-xxx]` 문자열을 **그대로** 노출한다(이미지는 대체 텍스트·자리 표시에). 그럴듯한 임의 문구로 채우지 않는다 — 배포 전 `grep`으로 0건을 확인하기 위한 규칙이다.
+- **설계 먼저**: 백엔드가 있으면 기술 설계 §5-1 데이터 모델, §5-2 API 목록, §5-3 인증·권한, §5-4 P2 구현 설계를 쓴 뒤 검토를 받고 구현한다.
 
 ### 디자인 연동
 - 디자인 토큰은 **한 파일**(예: `src/styles/tokens.css`)로 옮겨 단일 출처로 쓰고, 그 밖에서 색·간격 값을 하드코딩하지 않는다.
@@ -51,13 +59,19 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - 화면정의서·페이지 디자인의 **상태·예외 명세와 `polish-checklist.md` 항목**(404, 폼 상태, 빈 목록, 이미지 대체, 긴 텍스트, 메타·파비콘·OG 등)을 빠짐없이 구현한다.
 - 시맨틱 HTML, 접근성 속성(alt·label·aria·랜드마크), 키보드 조작과 `:focus-visible`, 반응형(360/768/1280), 이미지 최적화(WebP/AVIF, width·height 지정, lazy loading), SEO 메타(title/description/OG), sitemap.xml·robots.txt를 기본으로 구현한다.
 - 비밀 정보는 `.env`(Spring은 환경 변수·`application-local.yml` 제외 처리)로 분리하고 예시 파일(`.env.example`)만 둔다.
+- **보안 헤더**: 기술 설계 §7의 기본 헤더(HSTS, nosniff, frame 차단, Referrer-Policy, CSP)를 호스팅 방식에 맞게 설정한다. CSP 허용 출처는 실제로 쓰는 외부 리소스만.
+- **폼 메일**: 개발·검증 중에는 실제 메일을 보내지 않는다 — 로컬 메일 확인 도구(예: Mailpit, `compose.yaml`) 또는 외부 폼 서비스 테스트 모드를 쓴다.
+- **개인정보 보유 기간**: 폼 정의의 보유 기간에 맞춘 파기 방식(자동 삭제 또는 운영 가이드 수동 절차)을 구현·문서화한다.
+- **관리자 인증**: 기술 설계 §5-3대로 구현한다. 초기 관리자 비밀번호는 코드·문서·로그에 남기지 않고, 생성 방법만 개발 보고서에 적어 PM이 직접 설정하게 한다.
+- **운영 로그·오류 알림**(백엔드): 기술 설계대로 설정하고 운영 가이드용 정보로 넘긴다.
+- **파일 용량**: `developer/site/`에 넣는 이미지·폰트는 성능 예산과 단일 파일 상한(기본 1MB)을 지킨다. 원본 대용량 파일은 커밋하지 않는다.
 - 의존성은 최소로 둔다. 새 패키지마다 필요 이유와 라이선스(상업적 사용 가능 여부)를 기술 설계 "의존성" 표에 기록하고, 기능이 겹치는 라이브러리를 함께 쓰지 않는다.
 - 백엔드 보안 기본: 프레임워크 내장 보안 기능 사용(Spring Security / Laravel·CI4 CSRF / Django CSRF·middleware), 서버 측 입력 검증, ORM·파라미터 바인딩(문자열 SQL 조합 금지), 출력 이스케이프, 비밀번호 해시(bcrypt/argon2), 파일 업로드 형식·크기 검증, 폼 남용 방지(rate limit·스팸 방지), CORS 최소 허용, 운영 환경 상세 오류 비노출, **로그에 개인정보 기록 금지**.
 - 공개·외부 연동 API가 있으면 OpenAPI 문서를 생성한다(springdoc / Scribe 등 / drf-spectacular).
 - 백엔드는 업무 규칙 단위 테스트와 **주요 엔드포인트·폼 흐름 통합 테스트**를 작성한다.
 
 ### 검증팀 전달 전 자체 점검
-- 표준 명령 `install`·`build`·`check`(·`migrate`·`audit`)를 **직접 실행**하고, 콘솔 에러 0건과 주요 페이지 Lighthouse 1회 결과를 개발 보고서 "자체 점검"에 남긴다. 확인하지 않은 항목을 "완료"로 보고하지 않는다.
+- 표준 명령 `install`·`build`·`check`(·`migrate`·`audit`)를 **직접 실행**하고, 콘솔 에러 0건, 주요 페이지 Lighthouse 1회, **성능 예산**, 빌드 결과의 `[TBD` 건수, 보안 헤더 설정을 개발 보고서 "자체 점검"(§4-2)에 남긴다. 확인하지 않은 항목을 "완료"로 보고하지 않는다.
 - 백엔드가 있으면 **빈 DB에서 migrate → 시드 → 실행**이 되는지 확인하고, 테스트 데이터·계정 준비 방법을 개발 보고서에 적는다(값은 시드 파일·`.env.example` 기준, 실제 비밀번호 기록 금지).
 - **디자인 QA용 스크린샷**: designer는 화면을 렌더링할 수 없으므로, 마지막 작업 단위(자체 점검)에서 각 SCR의 **구현 화면과 목업**을 같은 조건으로 캡처해 `{PROJECT}/developer/evidence/design-qa/`에 둔다.
   - 도구: `npx --yes playwright screenshot --viewport-size=<폭>,900 --full-page <URL> <파일>` (브라우저가 없으면 `npx playwright install chromium`)
@@ -84,6 +98,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 
 리뷰는 `templates/docs/shared/review.md` 형식으로 `{PROJECT}/shared/reviews/{단계}_{대상}_developer_r{n}.md`에 작성한다.
 `/suggest` 검토(feature·design 유형): 구현 가능성·작업량·스택 프리셋 적합성·외부 서비스(비용·개인정보)를 `{PROJECT}/shared/reviews/SUG-{nnn}_review_developer.md`에 쓴다.
+**보안 코드 리뷰 (P4, 백엔드가 있는 프리셋 — 검토 전용 호출)**: 구현자와 다른 새 컨텍스트로 호출되며 **코드를 수정하지 않고** 리뷰만 쓴다. 기술 설계 §5-1~5-4와 실제 코드를 대조해 다음을 점검한다 — 인증·세션·권한 검사 누락(관리자 경로 직접 접근), 입력 검증(서버 측), SQL 조합·ORM 우회, 출력 이스케이프·에디터 XSS, CSRF, 파일 업로드(형식·크기·저장 위치·실행 차단), 비밀 정보 하드코딩, 로그의 개인정보, 오류 상세 노출, 의존성 `audit` 결과, 보안 헤더. 지적마다 파일·줄과 재현 근거를 적는다. Must가 남으면 G4를 통과할 수 없다.
 CR 영향도 의견 요청 시: 영향 파일·작업량·리스크를 `{PROJECT}/shared/reviews/CR-{nnn}_impact_developer.md`에 작성한다.
 
 ## 쓰기 권한

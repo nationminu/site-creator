@@ -88,6 +88,9 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 - 고객 제공 이미지·로고는 해상도·형식·사용 권리를 확인한다.
 - PM 결정 전에는 산출물에 반영하지 않는다.
 
+### 초기 정합 확인 (P4 작업 단위 1 직후)
+- developer가 남긴 `developer/evidence/design-qa/early-*` 스크린샷 쌍을 보고 토큰(색·폰트·굵기)·그리드·간격·헤더·푸터가 디자인과 맞는지 **짧게** 확인해 `{PROJECT}/shared/reviews/P4_early-alignment_designer.md`에 쓴다. 여기서 잡은 차이는 모든 페이지에 퍼지는 기반 오류이므로 Must로 표시한다.
+
 ### 디자인 QA 방법 (P4 구현)
 - 당신은 화면을 직접 렌더링할 수 없다. developer가 남긴 **스크린샷 쌍**(`{PROJECT}/developer/evidence/design-qa/scr-{nnn}-{폭}-impl.jpg` · `-mock.jpg`)을 Read로 열어 **시각적으로 비교**하고, 수치·토큰은 소스(CSS·컴포넌트)를 읽어 확인한다.
 - 등급은 디자인 시스템 §4-2 **디자인 QA 판정 기준**(허용 오차표)을 따른다. 실제 콘텐츠 차이로 생긴 높이·줄 수 변화는 지적하지 않는다.

@@ -62,6 +62,25 @@ updated: YYYY-MM-DD
 | Lighthouse (주요 페이지 1회, 모바일) | | 성능 / 접근성 / 권장사항 / SEO |
 | 주요 API · 폼 흐름 (백엔드 시) | | |
 
+## 4-1. 초기 정합 확인 (작업 단위 1 직후)
+> 토큰·폰트·그리드·헤더·푸터가 디자인과 맞는지 일찍 확인한다. 스크린샷: `evidence/design-qa/early-{화면}-{360|1280}-impl.jpg` · `-mock.jpg`
+
+| 확인 항목 | designer 결과 | 조치 (다음 단위에 반영) |
+|---|---|---|
+
+## 4-2. 성능 예산 · 미확정 콘텐츠
+| 항목 | 예산 (기술 설계 §7.1) | 결과 |
+|---|---|---|
+| 페이지당 JS / CSS | | |
+| LCP 이미지 · 웹폰트 합계 | | |
+| 사이트 안 `[TBD` 건수 (빌드 결과 grep) | 배포 전 0 | n건 (Q ID 목록) |
+| 보안 헤더 설정 확인 (로컬 미리보기 `curl -I` 또는 설정 파일) | | |
+
+## 4-3. 보안 코드 리뷰 (백엔드가 있을 때)
+| 리뷰 파일 | 라운드 | Must / Should | 처리 결과 |
+|---|---|---|---|
+| `shared/reviews/P4_code_security-review_r1.md` | | | |
+
 ## 5-1. 디자인 QA 스크린샷
 > `npx --yes playwright screenshot --viewport-size=<폭>,900 --full-page <URL> <파일>` — 구현(미리보기 URL)과 목업(`design/mockups/*.html`)을 같은 조건으로 캡처.
 

@@ -40,7 +40,7 @@
 | 서버 제약 | 서버에 Node 없음 → 프론트는 로컬/CI에서 빌드 후 업로드. 서버 상주 프로세스 없음 → 큐는 동기 처리 또는 cron(지원 시)으로 대체 |
 | 의존성 | `composer.json`의 `config.platform.php`를 **운영 PHP 버전으로 고정**하고 `composer install --no-dev -o` 결과 `vendor/`를 업로드 묶음에 포함 (SSH·Composer가 있어도 같은 방식 권장) |
 | DB 마이그레이션 | 프레임워크 마이그레이션 + **버전 번호가 붙은 SQL 파일**(`database/sql/V{nnn}__{설명}.sql`)을 함께 유지. SSH가 없으면 SQL 파일을 호스팅 DB 관리도구로 적용 |
-| 로컬·검증 환경 | `compose.yaml`로 **운영과 같은 버전**의 `php:{버전}-apache` + `mariadb:{버전}`(또는 mysql) 구성, 필요한 PHP 확장 동일하게 설치 |
+| 로컬·검증 환경 | `compose.yaml`로 **운영과 같은 버전**의 `php:{버전}-apache` + `mariadb:{버전}`(또는 mysql) 구성, 필요한 PHP 확장 동일하게 설치. 폼 메일은 로컬 메일 확인 도구(예: Mailpit)로 받는다 |
 | 메일 | 호스팅 메일 발송 제한 확인, 부족하면 외부 메일 발송 서비스 |
 | 호스팅 확인 항목 | PHP 버전·확장(mbstring·intl·pdo_mysql·openssl·curl·fileinfo·gd), SSH/SFTP, Composer, cron, DB 종류·버전·용량·외부 접속, 웹 루트 위치·상위 디렉토리 쓰기 권한, `.htaccess`·mod_rewrite, 무료 SSL·자동 갱신, 업로드 용량 제한, 메일 발송 제한, 백업 주기 |
 
@@ -51,7 +51,7 @@
 | 렌더링 | **페이지별로 SSG/SSR을 정한다.** 콘텐츠 페이지는 SSG(정적 생성) 우선, 개인화·실시간 데이터·요청 시점 SEO가 필요한 페이지만 SSR. 페이지별 렌더링 방식과 근거를 기술 설계에 표로 기록. 전 페이지가 SSG면 static export로 Node 서버 없이 배포 |
 | API 연결 | 운영은 **같은 사이트**로 구성(리버스 프록시 `/api` 또는 `api.<도메인>` 서브도메인). 인증은 세션 쿠키(HttpOnly·Secure·SameSite) 우선, CORS는 프론트 도메인만 허용. Next 서버 기능은 렌더링·BFF 수준으로만 쓰고 업무 로직은 Spring에 둔다 |
 | 백엔드 | Spring Security, Bean Validation, springdoc-openapi, Spring Data JPA + Flyway, Actuator 헬스체크 |
-| 로컬 | `compose.yaml`(PostgreSQL) + `web` `npm run dev` + `api` `./gradlew bootRun`, 개발 시 Next rewrites로 `/api` 프록시 |
+| 로컬 | `compose.yaml`(PostgreSQL, 메일 확인 도구 예: Mailpit) + `web` `npm run dev` + `api` `./gradlew bootRun`, 개발 시 Next rewrites로 `/api` 프록시 |
 | 운영 비용 | 프론트(정적 또는 Node) + Spring 런타임 + 관리형 PostgreSQL — 월 비용 추정을 기술 설계·배포 계획에 기록 |
 
 ### `custom` — 개별 선택
