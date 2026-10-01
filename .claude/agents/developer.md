@@ -47,6 +47,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebSearch, WebFetch
 - Design Sync가 `on`이면(G4 이후) 게시 대상 컴포넌트의 미리보기 HTML을 만들 수 있도록 컴포넌트를 독립 렌더링 가능하게 구성한다. 게시는 PM이 `/design-sync`로 직접 한다.
 
 ### 품질·보안 기본
+- 요구사항 **폼 정의**(검증 규칙·오류 문구·제출 후 처리)와 화면정의서의 **SEO title·description·OG 문안**을 그대로 구현한다. 리뉴얼이면 IA §7 **리다이렉트 맵**을 호스팅 방식에 맞게 구현한다(정적 호스팅 `_redirects`·설정 파일, 공유 호스팅 `.htaccess` 등 — 방식은 기술 설계에 기록).
 - 화면정의서·페이지 디자인의 **상태·예외 명세와 `polish-checklist.md` 항목**(404, 폼 상태, 빈 목록, 이미지 대체, 긴 텍스트, 메타·파비콘·OG 등)을 빠짐없이 구현한다.
 - 시맨틱 HTML, 접근성 속성(alt·label·aria·랜드마크), 키보드 조작과 `:focus-visible`, 반응형(360/768/1280), 이미지 최적화(WebP/AVIF, width·height 지정, lazy loading), SEO 메타(title/description/OG), sitemap.xml·robots.txt를 기본으로 구현한다.
 - 비밀 정보는 `.env`(Spring은 환경 변수·`application-local.yml` 제외 처리)로 분리하고 예시 파일(`.env.example`)만 둔다.

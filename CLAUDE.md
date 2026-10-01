@@ -92,7 +92,7 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
 | 단계 | Owner | 산출물 | 교차 검토자 (standard) | 게이트 통과 기준(요약) |
 |---|---|---|---|---|
 | **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md`<br>`shared/meetings/MTG-*_kickoff-agenda.md`<br>`pm/requests/QNA.md` | planner, developer | 범위·**규모 초안**(페이지·기능)·**오픈일 역산 일정**·리스크 확정, 이해관계자·피드백 정책, 잠정 스택 프리셋, 비용 요약, 콘텐츠 수급·PM 사전 준비 계획, 고객 질문 등록 |
-| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 법적 고지 REQ-C 점검, **팀 제안 기능 PM 개별 결정**, **스택 프리셋 확정** |
+| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | **요청 추적표 빈칸 0**(고객 요청 → REQ), 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 폼·콘텐츠 유형·법적 고지 정의, (리뉴얼) 리다이렉트 맵, **팀 제안 기능 PM 개별 결정(검토 전)**, P1 규모 대비 변화 보고, **스택 프리셋 확정** |
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
 | **P4 개발** | developer | `developer/04_tech-design.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과 |
 | **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
