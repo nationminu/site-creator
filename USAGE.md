@@ -429,7 +429,8 @@ npm run dev       # 표시되는 http://localhost:xxxx 주소를 브라우저로
 | 검증 도구 | Lighthouse CLI(점수) · Playwright(기능·반응형 360/768/1280·크로스브라우저·콘솔 에러) · axe-core(접근성) · linkinator(링크) + 키보드 수동 점검. 증거는 `qa/evidence/` |
 | 산출물 | `qa/05_test-plan.md`, `05_test-cases.md`(요구사항 추적표), `05_test-report.md`, `shared/tickets/DEF-*` |
 | **PM 확인** | 결론(합격/조건부/불합격) · Critical·Major 결함 0건 · **잔존 Minor 결함과 이월 사유** · 검증하지 못한 항목 |
-| **PM 결정** | 프리뷰 배포 여부, G5 승인, 잔존 결함 이월 여부 (lite는 P6 생략 여부) |
+| **PM 할 일** | 프리뷰 URL에서 **실기기 간단 점검표**(아이폰 Safari·안드로이드, 메뉴, 폼, 전화·지도, 카카오톡 공유 미리보기 등 5분) 확인 → 이상은 `/suggest` |
+| **PM 결정** | 프리뷰 배포 여부, G5 승인, 잔존 결함 이월 여부, Lighthouse 90 미만 예외(외부 스크립트 원인 등) 승인 (lite는 P6 생략 여부) |
 
 ### P6 중간보고
 

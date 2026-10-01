@@ -26,9 +26,12 @@ updated: YYYY-MM-DD
 | 콘텐츠 | 오탈자, `[TBD` 잔존, 화면정의서 문구 일치 | Grep, 육안 | 결함 0 (TBD는 목록화) |
 | 링크 | 내부·외부 링크 | linkinator | 깨진 링크 0 |
 | 반응형 | 360 / 768 / 1280px | Playwright 스크린샷 | 레이아웃 붕괴 0 |
-| 크로스브라우저 | Chrome · Edge · Safari · Firefox | Playwright chromium · firefox · webkit(Safari 대용) + 가능 범위 명시 | 주요 흐름 Pass |
+| 크로스브라우저 | Chrome · Edge · Safari · Firefox | Playwright chromium · firefox · webkit(Safari 대용) — lite는 firefox·webkit 주요 페이지만 + PM 실기기 점검 | 주요 흐름 Pass |
+| 권한·콘텐츠 유형 (관리자 시) | 권한표 각 칸, 유형별 CRUD·검증·업로드 | Playwright (화면·`request`) | 우회 0, Fail 0 |
+| 화면 회귀 | G4 직후 기준 대비 사이클별 비교 | Playwright `toHaveScreenshot` (chromium) | 의도치 않은 변경 0 |
+| 폼 메일 | 수신처·내용·자동 회신 | Mailpit / 서비스 테스트 모드 | 정상 수신 |
 | 접근성 | 대비, alt, 키보드, 랜드마크, 포커스 | axe-core(Playwright) + Lighthouse + 키보드 수동 | axe critical·serious 0, Lighthouse 접근성 90+ |
-| 성능 · SEO | Lighthouse(모바일·데스크톱), 메타, sitemap, robots | Lighthouse CLI | 각 90+ |
+| 성능 · SEO | Lighthouse(모바일·데스크톱), 메타, sitemap, robots | Lighthouse CLI (성능은 3회 중앙값) | 각 90+ |
 | 폼 · 보안 | 입력 검증, 오류 처리, 비밀 정보 노출 | | |
 | 디자인 일치 | 디자인 명세·목업 대비 | 비교 | Major 불일치 0 |
 | 마감 품질 | 404·메타·OG·상태·예외·긴 텍스트 (`polish-checklist.md`) | Playwright + 수동 | 누락 0 (해당 없음은 사유) |

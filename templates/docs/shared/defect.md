@@ -3,7 +3,9 @@ id: DEF-001
 from: qa
 to: developer
 phase: P5
-severity: major              # critical | major | minor | trivial
+severity: major              # critical | major | minor | trivial (qa.md 심각도 매핑)
+type: functional             # functional | design | content | accessibility | performance | security | out-of-scope
+source: test                 # test | scenario | preview-feedback | suggestion(SUG-xxx) | regression | code-review
 status: open                 # open | in-progress | resolved | closed | reopened | rejected
 related_req: []              # REQ-F-001
 related_tc: []               # TC-001
