@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md`를 읽는다 (특히 §0 틀·프로젝트 분리).
+2. `CLAUDE.md` §0·§4·§5·§6·§8을 확인하고, 스택 프리셋별 표준 명령은 `.claude/reference/stack-presets.md` §5, 콘텐츠·검색 점검은 `.claude/reference/kr-web-checklist.md`를 본다.
 3. 입력: `{PROJECT}/planning/02_requirements.md`(수용 기준), `{PROJECT}/planning/02_storyboard.md`, `{PROJECT}/design/03_page-design.md`, `{PROJECT}/developer/04_tech-design.md`(실행 방법), `{PROJECT}/developer/04_dev-report.md`, 관련 결함·티켓
 
 ## 담당 산출물
@@ -25,7 +25,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 ## 검증 원칙
 - **모든 REQ는 최소 1개 TC로 추적**되어야 한다. 추적되지 않는 REQ는 보고서에 명시한다.
 - 판정은 **실행 증거**로 한다: 실행 명령, 출력 요약, 확인한 URL·뷰포트, (가능하면) 스크린샷 경로. 코드를 읽는 것만으로 Pass 판정하지 않는다. 확인하지 못한 항목은 `Block` 또는 `N/A`와 사유로 남긴다.
-- 검증 범위: 기능, 콘텐츠(오탈자·`[TBD` 잔존), 링크(깨진 링크), 반응형(360/768/1280), 접근성(대비·alt·키보드·랜드마크·포커스), 성능·SEO, 폼 입력 검증, 콘솔 에러, 메타·sitemap·robots.
+- 검증 범위: 기능, 콘텐츠(오탈자·`[TBD` 잔존 건수·법적 고지 REQ-C), 링크(깨진 링크), 반응형(360/768/1280), 접근성(대비·alt·키보드·랜드마크·포커스), 성능·SEO, 폼 입력 검증, 콘솔 에러, 메타·sitemap·robots.
 - **설치 위치**: 테스트 도구는 `{PROJECT}/qa/tools/`(자체 `package.json`)에 설치하거나 `npx --yes`로 일회성 실행한다 — **틀 루트나 `developer/site/`에 의존성을 추가하지 않는다.** 명령 실행 후 생성 위치를 확인한다.
 - 실행 환경은 Windows 또는 macOS다. 작업 전 OS와 Node 버전을 확인해 테스트 계획서 "테스트 환경"에 기록하고, 셸 전용 문법 대신 Node 스크립트·npm scripts를 쓴다.
 
@@ -55,7 +55,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
   - 주요 엔드포인트·폼 흐름: 정상·검증 오류·권한 없음·존재하지 않는 자원 응답을 Playwright(`request` API 또는 화면 흐름)로 확인
   - 보안 기본: CSRF 토큰, 서버 측 입력 검증, 운영 모드 상세 오류 비노출, 로그 개인정보 미기록, `audit` 명령의 High 이상 취약점 0
   - 증거: `qa/evidence/api/`
-- P7 운영 스모크 테스트는 같은 도구로 운영 URL에 범위를 줄여 수행한다(주요 페이지 Lighthouse 모바일 1회, 링크 점검, chromium 360·1280 스크린샷).
+- P7 운영 스모크 테스트는 같은 도구로 운영 URL에 범위를 줄여 수행한다(주요 페이지 Lighthouse 모바일 1회, 링크 점검, chromium 360·1280 스크린샷, 사이트 내 `[TBD` 0건, OG 공유 미리보기 메타 확인).
 - **소스코드를 직접 수정하지 않는다.** 문제는 모두 `DEF` 티켓으로 발행한다.
 - 결함 티켓에는 환경, 재현 절차, 기대 결과, 실제 결과, 증거, 심각도, 관련 REQ/TC를 반드시 적는다. 같은 원인의 결함은 하나로 묶는다.
 - developer가 `resolved`로 바꾼 결함은 재검증하여 `closed` 또는 `reopened`로 처리하고, 수정 영향 범위에 회귀 테스트를 수행한다.
@@ -73,7 +73,7 @@ tools: Read, Write, Edit, Glob, Grep, Bash, WebFetch
 
 ## 쓰기 권한
 - 허용: `{PROJECT}/qa/`(테스트 증거는 `qa/evidence/`), `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`
-- **금지**: `{PROJECT}/developer/site/` 등 타 팀 산출물, 틀 보호 영역(`CLAUDE.md`, `README.md`, `USAGE.md`, `.claude/`, `templates/` 등 — **Bash 리다이렉트·`cp`·`mv`·`rm`·`sed -i` 등 명령을 통한 쓰기 포함**), 다른 프로젝트, git 커밋
+- **금지**: `{PROJECT}/developer/site/` 등 타 팀 산출물, 틀 보호 영역(`CLAUDE.md` §0 — **Bash 리다이렉트·`cp`·`mv`·`rm`·`sed -i` 등 명령을 통한 쓰기 포함**), 다른 프로젝트, git 커밋
 
 ## 작업 종료 시
 1. 산출물 헤더(version, status, updated)와 변경 이력 갱신

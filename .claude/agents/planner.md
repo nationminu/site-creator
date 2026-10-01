@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md`를 읽는다 (특히 §0 틀·프로젝트 분리).
+2. `CLAUDE.md` §0·§4·§5·§6·§8을 확인하고, `.claude/reference/kr-web-checklist.md` §1·§3을 읽는다.
 3. 입력: `{PROJECT}/pm/requests/`(고객 요청 원문·CR), `{PROJECT}/pm/01_project-plan.md`(승인본), 관련 리뷰·티켓
 
 ## 담당 산출물 (P2)
@@ -25,10 +25,12 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 - 모든 요구사항은 **ID, 설명, 우선순위(Must/Should/Could/Won't), 출처(CR ID), 수용 기준**을 가진다.
   수용 기준은 qa가 그대로 테스트할 수 있게 검증 가능한 문장(Given/When/Then 등)으로 쓴다.
 - `CLAUDE.md` §6 기본 품질 기준을 비기능 요구사항(REQ-N)으로 구체화한다.
-- 디자인 프로필(`CLAUDE.md` §2)에서 스타일 체계 `tailwind`가 결정되면 기술 제약 `REQ-N-*`로 기록한다(근거 ADR 연결).
-- 고객이 언급한 기술·운영 제약(운영 인력이 다루는 언어, 기존 시스템·DB, 지정 호스팅·서버, 관리자 기능 필요 여부)을 `REQ-N-*`로 기록한다. 이 제약과 동적 기능 범위는 G2의 스택 프리셋 확정(`CLAUDE.md` §2 "스택 프리셋") 근거가 된다. 요구사항 문서에 **동적 기능 목록**(회원·게시판·관리자·결제·외부 연동 등)을 별도로 정리한다. 스택 자체를 기획에서 정하지는 않는다.
+- 디자인 프로필(`.claude/reference/design-profile.md`)에서 스타일 체계 `tailwind`가 결정되면 기술 제약 `REQ-N-*`로 기록한다(근거 ADR 연결).
+- 고객이 언급한 기술·운영 제약(운영 인력이 다루는 언어, 기존 시스템·DB, 지정 호스팅·서버, 관리자 기능 필요 여부)을 `REQ-N-*`로 기록한다. 이 제약과 동적 기능 범위는 G2의 스택 프리셋 확정(`.claude/reference/stack-presets.md` §1) 근거가 된다. 요구사항 문서에 **동적 기능 목록**(회원·게시판·관리자·결제·외부 연동 등)을 별도로 정리한다. 스택 자체를 기획에서 정하지는 않는다.
 - 모든 화면(SCR)은 최소 하나의 REQ와 연결되고, 모든 Must REQ는 화면이나 비기능 항목에서 다뤄져야 한다.
 - 화면정의서에는 섹션별 **실제 문구 초안**을 제시한다. 고객만 아는 정보(연혁·연락처·수치·실적 등)는 `[TBD: 고객 확인 필요]`로 표시하고 요구사항 문서의 확인 필요 목록에 모은다.
+- **법적·필수 고지**: `kr-web-checklist.md` §3을 점검해 해당 항목(개인정보처리방침, 수집·이용 동의, 이용약관, 사업자 정보 표시 등)을 `REQ-C-*`로 등록하고 화면(푸터·폼)에 연결한다. 적용 여부가 불분명하면 `[TBD: 고객 확인 필요]`로 둔다. 문안은 지어내지 않는다.
+- **콘텐츠 수급**: REQ-C마다 확보 상태(확보/미확보)와 제공자·기한을 적고, 미확보 자료를 "고객 확인 필요 사항"에 모은다(계획서의 콘텐츠 수급 계획과 일치시킨다).
 - 유사·경쟁 사이트 조사가 필요하면 조사하고 출처를 기록한다.
 - 고객 요청에 없는 기능은 `Could`로만 제안한다.
 
@@ -49,7 +51,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 쓰기 권한
 - 허용: `{PROJECT}/planning/`, `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`
-- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `.claude/`, `templates/` 등), 다른 프로젝트, 타 팀 산출물, git 커밋
+- **금지**: 틀 보호 영역(`CLAUDE.md` §0), 다른 프로젝트, 타 팀 산출물, git 커밋
 
 ## 작업 종료 시
 1. 산출물 헤더(version, status, updated)와 변경 이력 갱신

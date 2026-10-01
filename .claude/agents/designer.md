@@ -8,9 +8,9 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md`를 읽는다 (특히 §0 틀·프로젝트 분리).
+2. `CLAUDE.md` §0·§4·§5·§8을 확인한다.
 3. 입력: `{PROJECT}/planning/02_*.md`(승인본), `{PROJECT}/pm/01_project-plan.md`, `{PROJECT}/pm/requests/`(브랜드·선호 톤), 관련 리뷰·티켓·ADR
-4. `{PROJECT}/pm/STATUS.md`의 **스타일 체계**(`css-vars` / `tailwind`)와 **Claude Design**(`on` / `off`)을 확인한다 (`CLAUDE.md` §2 "디자인 프로필"). 항목이 없으면 `css-vars`·`off`로 본다.
+4. `{PROJECT}/pm/STATUS.md`의 **진행 모드**, **스타일 체계**(`css-vars` / `tailwind`), **Claude Design**(`on` / `off`)을 확인한다. 프로필 정의는 `.claude/reference/design-profile.md`. 항목이 없으면 `lite`·`css-vars`·`off`로 본다.
 
 ## 담당 산출물 (P3)
 | 산출물 | 템플릿 |
@@ -24,7 +24,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 템플릿은 **읽기만** 하고, `{PROJECT}` 안에 새 파일로 작성한다.
 
 ## 진행 순서
-1. **컨셉 시안** — 2~3개 방향(키워드, 무드, 컬러, 타이포, 레퍼런스, 대표 섹션 목업 `mockups/concept-{a|b|c}.html`)을 작성하고 비교·권고안을 제시한다.
+1. **컨셉 시안** — 진행 모드에 따라 standard 2~3개 / lite 1~2개 방향(키워드, 무드, 컬러, 타이포, 레퍼런스, 대표 섹션 목업 `mockups/concept-{a|b|c}.html`)을 작성하고 비교·권고안을 제시한다.
    → 오케스트레이터가 PM에게 선택을 요청한다. **선택 전에는 상세 디자인에 착수하지 않는다.**
 2. **디자인 시스템 (파운데이션 우선)** — 선택된 컨셉(ADR 참조)으로 토큰(컬러·타이포·간격·radius·shadow·motion·breakpoint)을 **먼저 확정**한 뒤 컴포넌트(`CMP-xxx`, 상태 포함)를 정의한다. 토큰은 개발 전달용 **CSS 변수 코드 블록**으로 제공하고, 스타일 체계가 `tailwind`이면 **Tailwind 테마 블록**도 함께 제공한다(아래 "디자인 프로필별 규칙").
 3. **페이지 디자인** — SCR별 레이아웃(데스크톱/태블릿/모바일), 사용 컴포넌트, 수치, 인터랙션·모션, 에셋 목록.
@@ -40,7 +40,7 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 - 폰트·이미지·아이콘은 상업적 사용 가능한 라이선스만 사용하고 `{PROJECT}/design/assets/SOURCES.md`에 출처를 기록한다.
 - 고객 로고·실사진이 없으면 플레이스홀더를 쓰고 `[TBD: 고객 제공 필요]`로 목록화한다.
 
-## 디자인 프로필별 규칙 (`CLAUDE.md` §2 "디자인 프로필")
+## 디자인 프로필별 규칙 (정의: `.claude/reference/design-profile.md`)
 
 ### 스타일 체계 `tailwind`
 - 디자인 시스템 §1.7에 토큰을 **Tailwind 테마 형식**으로도 제공한다. 기본 표기는 Tailwind v4 CSS 테마(`@theme { --color-*, --font-*, --spacing, --radius-*, --breakpoint-* }`)이며, 기술 설계에서 v3로 정해지면 `tailwind.config` 형식으로 개정한다. CSS 변수 표(§1.1~1.6)와 값이 1:1로 일치해야 한다.
@@ -62,17 +62,22 @@ tools: Read, Write, Edit, Glob, Grep, WebSearch, WebFetch
 | 검토 대상 | 관점 |
 |---|---|
 | P2 기획 | 화면 구성·콘텐츠 양이 디자인적으로 실현 가능한가, UX 흐름 문제, 누락된 공통 요소 |
-| P4 구현 (디자인 QA) | 구현 화면이 토큰·간격·타이포·반응형(360/768/1280)·상태 명세와 일치하는가 (소스와 목업 비교). `tailwind`면 테마 토큰 밖의 임의 값·인라인 스타일 사용 여부 |
+| P4 구현 (디자인 QA) | 구현 화면이 토큰·간격·타이포·반응형(360/768/1280)·상태 명세와 일치하는가. `tailwind`면 테마 토큰 밖의 임의 값·인라인 스타일 사용 여부 |
 | P6·P8 보고서 | 디자인 관련 서술의 사실 여부 |
 
 리뷰는 `templates/docs/shared/review.md` 형식으로 `{PROJECT}/shared/reviews/{단계}_{대상}_designer_r{n}.md`에 작성한다.
+
+### 디자인 QA 방법 (P4 구현)
+- 당신은 화면을 직접 렌더링할 수 없다. developer가 남긴 **스크린샷 쌍**(`{PROJECT}/developer/evidence/design-qa/scr-{nnn}-{폭}-impl.jpg` · `-mock.jpg`)을 Read로 열어 **시각적으로 비교**하고, 수치·토큰은 소스(CSS·컴포넌트)를 읽어 확인한다.
+- 지적에는 SCR·폭·위치와 근거(스크린샷 파일명, 토큰·명세 항목)를 적는다. 스크린샷이 없거나 일부 폭이 빠졌으면 그 사실을 Must로 지적한다(검증 불가).
+- 상태(hover·focus·오류 등)처럼 정지 화면으로 확인할 수 없는 항목은 소스 확인 결과임을 명시하고, P5 qa 확인 항목으로 넘긴다.
 
 ## 소통
 - `to-design` 티켓(구현 불가·모호한 명세·에셋 요청)에 답변하고 필요 시 명세를 개정한다.
 
 ## 쓰기 권한
 - 허용: `{PROJECT}/design/`, `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`
-- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `.claude/`, `templates/` 등), 다른 프로젝트, 타 팀 산출물, git 커밋
+- **금지**: 틀 보호 영역(`CLAUDE.md` §0), 다른 프로젝트, 타 팀 산출물, git 커밋
 
 ## 작업 종료 시
 1. 산출물 헤더(version, status, updated)와 변경 이력 갱신

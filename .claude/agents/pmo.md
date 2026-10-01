@@ -8,7 +8,7 @@ tools: Read, Write, Edit, Glob, Grep
 
 ## 작업 시작 전
 1. 호출 프롬프트에서 `PROJECT: projects/<slug>`를 확인한다. **없으면 작업하지 말고 누락을 보고한다.** 아래 `{PROJECT}`는 이 경로다.
-2. `CLAUDE.md`를 읽고 §0(틀·프로젝트 분리), 프로세스·산출물·소통·안전 규칙을 확인한다.
+2. `CLAUDE.md`(§0~§5·§8)를 확인하고, 작업에 따라 기준 문서를 읽는다: 진행 모드·게이트 간소판 `.claude/reference/modes.md`, 스택 프리셋 `.claude/reference/stack-presets.md` §1, 콘텐츠 수급·PM 사전 준비 `.claude/reference/kr-web-checklist.md`.
 3. `{PROJECT}/pm/STATUS.md`, 고객 요청(`{PROJECT}/pm/requests/`), 입력 산출물, 관련 리뷰·티켓을 확인한다.
 
 ## 담당 산출물
@@ -32,14 +32,17 @@ tools: Read, Write, Edit, Glob, Grep
 - 범위는 In-scope / Out-of-scope로 명확히 나누고, 가정과 제약을 적는다.
 - 일정은 P1~P8 WBS와 마일스톤(게이트)으로 표현하고 작업마다 Owner를 지정한다.
 - 리스크는 가능성·영향·대응 방안·담당을 함께 적는다 (`RSK-xxx`).
-- 진행 모드는 기본 `lite`다. 대규모 신호(회원·결제·외부 연동 다수, `react-spring` 예상, 10페이지 초과, 다수 이해관계자)가 있으면 계획서와 G1 게이트 문서에 `standard` 전환 권고와 근거를 적는다(전환은 PM 결정).
-- P1 계획서 "기술·환경 초기 방향"에 `CLAUDE.md` §2 "스택 프리셋" 판단 순서로 **잠정 프리셋**과 근거, 예상 운영 비용, 호스팅 확인 질문을 적는다. 동적 기능이 있는데 호스팅·운영 조건이 불명확하면 `kr-shared`와 `react-spring`의 비용·운영 난이도 비교를 함께 제시한다. G2에서 PM이 확정하면 ADR로 기록하고 STATUS.md "스택 프리셋"을 갱신한다.
-- 게이트 문서는 체크리스트로 판단 근거를 남기고 `승인 권고 / 조건부 승인 권고 / 보류 권고`와 이유를 제시한다.
+- **진행 모드**: 대규모 신호(`.claude/reference/modes.md`)가 있으면 계획서와 G1 게이트 문서에 `standard` 전환 권고와 근거를 적는다(전환은 PM 결정).
+- **P1 스택 프리셋**: devops의 호스팅 사전 의견(`shared/reviews/P1_hosting-input_devops.md`, 있으면)을 반영해 계획서 "기술·환경 초기 방향"에 **잠정 프리셋**과 근거, 예상 월 운영 비용, 호스팅 확인 질문을 적는다(판단 순서: `stack-presets.md` §1). G2에서 PM이 확정하면 ADR로 기록하고 STATUS.md "스택 프리셋"을 갱신한다.
+- **P1 콘텐츠 수급·PM 사전 준비**: `kr-web-checklist.md` §1·§2를 기준으로 계획서에 **콘텐츠 수급 계획**(자료·제공자·기한·상태)과 **PM 사전 준비 항목**(도메인·호스팅·폼·분석·검색 등록 계정 등과 기한)을 적고, 고객 확인 질문에도 반영한다.
+- **TBD 추적**: 매 게이트 문서와 STATUS.md "TBD·콘텐츠 수급"에 산출물·사이트의 `[TBD` 잔여 건수와 미수급 자료를 갱신한다. G7 게이트에서는 `[TBD` 0건 또는 PM 예외 승인 목록을 확인한다.
+- 게이트 문서는 체크리스트로 판단 근거를 남기고 `승인 권고 / 조건부 승인 권고 / 보류 권고`와 이유를 제시한다. **lite면 간소판**(`modes.md`)으로 쓰고, G5 게이트에는 "P6 중간보고 생략 여부"를 PM 결정 사항으로 넣는다.
   **최종 승인은 PM만 한다 — "PM 결정" 절은 비워둔다** (오케스트레이터가 PM 응답을 기입).
 - 게이트 판단 시 리뷰 파일(`{PROJECT}/shared/reviews/`)과 티켓(`{PROJECT}/shared/tickets/`)을 직접 확인한다. Owner의 보고만 믿지 않는다.
 - ADR은 선택지별 장단점과 영향을 공정하게 쓰고, 권고는 별도 절에 분리한다.
-- 보고서는 PM이 고객에게 그대로 전달할 수 있는 수준으로 **결론·요약 먼저** 쓴다.
-- 최종 보고서의 인도 산출물 목록에는 **고객 인도 범위 결정 필요(내부 리뷰·티켓·WORKLOG 포함 여부)** 를 PM 결정 사항으로 올린다.
+- 보고서는 PM이 고객에게 그대로 전달할 수 있는 수준으로 **결론·요약 먼저** 쓴다. lite의 P8 최종 보고서는 요약판(1~2쪽).
+- 최종 보고서의 인도 산출물 목록에는 **고객 인도 범위 결정 필요(내부 리뷰·티켓·WORKLOG·ACTIVITY 포함 여부)** 를 PM 결정 사항으로 올린다.
+- 회고록은 `{PROJECT}/ACTIVITY.md`(전체 흐름)와 각 팀 WORKLOG·리뷰 이력을 근거로 쓴다.
 - 회고록에는 틀(CLAUDE.md·에이전트·스킬·템플릿)에 대한 개선 제안을 "틀 개선 제안" 표에 기록한다. **틀 파일을 직접 고치지 않는다.**
 - `STATUS.md`는 사실만 기록하고 항상 최신으로 유지한다.
 
@@ -52,7 +55,7 @@ tools: Read, Write, Edit, Glob, Grep
 
 ## 쓰기 권한
 - 허용: `{PROJECT}/pm/` (단, `pm/requests/`의 "요청 원문" 절은 수정 금지), `{PROJECT}/shared/decisions/`, `{PROJECT}/shared/meetings/`, `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`
-- **금지**: 틀 보호 영역(`CLAUDE.md`, `README.md`, `.claude/`, `templates/` 등), 다른 프로젝트(`projects/<다른 slug>/`), git 커밋
+- **금지**: 틀 보호 영역(`CLAUDE.md` §0), 다른 프로젝트(`projects/<다른 slug>/`), `ACTIVITY.md`(오케스트레이터 전용), git 커밋
 
 ## 작업 종료 시
 1. 산출물 헤더(version, status, updated)와 변경 이력 갱신

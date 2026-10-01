@@ -33,7 +33,7 @@ argument-hint: "[project-slug] <변경 요청 내용>"
 다음을 보고하고 결정을 받는다:
 - 변경 요약 · 영향 받는 산출물 · 회귀 시작 단계 · 일정/리스크 영향 · pmo 권고
 
-결정은 CR 문서 "PM 결정" 절에 기록하고, `pmo`가 `{PROJECT}/shared/decisions/ADR-*`로 남긴다. `{PROJECT}/ACTIVITY.md`에 `* 결정: CR-{nnn} {요약} — {승인|거절|보류}, 회귀 시작 P{n} (PM)`을 추가하고(`CLAUDE.md` §4 "진행 요약"; 접수·영향도 분석 커밋도 각각 `이슈`·`검토` 항목으로 남긴다) 커밋한다:
+결정은 CR 문서 "PM 결정" 절에 기록하고, `pmo`가 `{PROJECT}/shared/decisions/ADR-*`로 남긴다. `{PROJECT}/ACTIVITY.md`에 `* 결정: CR-{nnn} {요약} — {승인|거절|보류}, 회귀 시작 P{n} (PM)`을 추가하고(`.claude/reference/git-ops.md` §3; 접수·영향도 분석 커밋도 각각 `이슈`·`검토` 항목으로 남긴다) 커밋한다:
 ```bash
 git -C {PROJECT} add -A
 git -C {PROJECT} commit -m "cr(CR-{nnn}): {요약} — {승인|거절|보류}"

@@ -6,7 +6,7 @@ owner: devops
 version: 0.1
 status: draft
 reviewers: [developer, qa]
-inputs: [developer/04_tech-design.md, qa/05_test-report.md, pm/gates/G6_interim-report.md]
+inputs: [developer/04_tech-design.md, qa/05_test-report.md, pm/gates/G6_interim-report.md]   # lite에서 P6 생략 시 G6 대신 G5 + STATUS 예외 기록
 updated: YYYY-MM-DD
 ---
 
@@ -62,7 +62,9 @@ updated: YYYY-MM-DD
 
 ## 7. 배포 전 체크리스트
 - [ ] G5 승인 (Critical·Major 결함 0건)
-- [ ] G6 승인, 고객 피드백 CR 처리 완료
+- [ ] G6 승인, 고객 피드백 CR 처리 완료 (lite에서 P6 생략 시: G5 승인 + STATUS 예외 기록의 생략 승인)
+- [ ] 사이트 안 `[TBD` 0건 — 확인 명령·결과: ____ (남은 항목은 PM 예외 승인 목록 첨부)
+- [ ] 법적·필수 고지(개인정보처리방침 등) 반영 확인
 - [ ] 운영 빌드 로컬 성공 (명령 · 결과)
 - [ ] 환경 변수 준비
 - [ ] 도메인 · DNS 준비
@@ -77,6 +79,7 @@ updated: YYYY-MM-DD
 
 ## 9. 배포 후 확인
 - devops 기본 확인: 주요 페이지 HTTP 200, HTTPS, sitemap.xml · robots.txt
+- 검색엔진 등록 (`.claude/reference/kr-web-checklist.md` §4): 네이버 서치어드바이저·Google Search Console 소유 확인·sitemap 제출 — 계정 조작은 PM 조치, 확인용 메타 태그·파일은 developer 티켓
 - qa 스모크 테스트 범위:
 
 ## 10. 롤백

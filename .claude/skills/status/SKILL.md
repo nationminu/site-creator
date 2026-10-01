@@ -39,7 +39,8 @@ argument-hint: "[project-slug]"
    - `{PROJECT}/pm/gates/` — "PM 결정" 절이 비어 있는 게이트
    - `{PROJECT}/pm/requests/` — `status`가 `done|rejected`가 아닌 CR
    - `{PROJECT}/shared/decisions/` — `status: proposed`인 ADR
-   - `{PROJECT}` 전체 산출물 — `[TBD` 잔존 건수
+   - `{PROJECT}` 전체 산출물 — `[TBD` 잔존 건수, 그리고 사이트 소스(`developer/site/`)의 `[TBD` 잔존 건수(배포 전 0건이어야 함)
+   - STATUS.md "TBD·콘텐츠 수급" 표 — 미수급 자료와 기한 경과 여부
 3. `{PROJECT}/ACTIVITY.md`의 최근 항목(최대 10개)과 각 팀 `{PROJECT}/{팀}/WORKLOG.md`의 최신 항목
 4. Git: `git -C {PROJECT} log --oneline -5`, `git -C {PROJECT} tag --sort=-creatordate | head -5`, `git -C {PROJECT} status --short | wc -l`
 

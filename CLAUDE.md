@@ -2,6 +2,17 @@
 
 고객이 원하는 홈페이지를 **여러 팀(에이전트)의 협업**으로 계획·기획·디자인·개발·검증·배포한다.
 이 문서는 프레임워크 헌장이며, 오케스트레이터(메인 세션)와 모든 에이전트가 따르는 최상위 규칙이다.
+세부 규칙은 주제별 **기준 문서**(`.claude/reference/`)에 한 번만 정의하고, 이 문서와 에이전트·스킬은 그 파일을 참조한다.
+
+| 기준 문서 | 내용 | 주로 읽는 쪽 |
+|---|---|---|
+| `.claude/reference/modes.md` | 진행 모드(standard/lite), lite 주 검토자, 간소 게이트 | 오케스트레이터, pmo |
+| `.claude/reference/stack-presets.md` | 스택 프리셋, 기술 카탈로그, 표준 명령 매핑 | developer, devops, qa, pmo |
+| `.claude/reference/design-profile.md` | 디자인 프로필(Tailwind, Claude Design, Design Sync) | designer, developer, 오케스트레이터 |
+| `.claude/reference/kr-web-checklist.md` | 콘텐츠 수급, PM 사전 준비, 법적 고지, 검색엔진 등록 | pmo, planner, devops, qa |
+| `.claude/reference/git-ops.md` | 커밋·태그, 진행 요약(`ACTIVITY.md`), 인도 패키지 | 오케스트레이터 |
+
+**에이전트는** 작업 전에 이 문서의 §0·§4·§5·§8과, 호출 프롬프트·자기 정의 파일이 가리키는 기준 문서만 읽는다(전체를 매번 다시 읽지 않는다).
 
 ---
 
@@ -10,7 +21,7 @@
 ```
 site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙·템플릿 (보호 영역)
 ├── CLAUDE.md  README.md  USAGE.md  ACTIVITY.md  .gitignore  .gitattributes
-├── .claude/     agents/ · skills/ · settings.json
+├── .claude/     agents/ · skills/ · reference/ · settings.json
 ├── templates/
 │   ├── project/                 ← /kickoff 때 복사되는 프로젝트 골격
 │   └── docs/{팀}/               ← 산출물 문서 템플릿
@@ -35,13 +46,13 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 |---|---|
 | **프로젝트 작업 중** (kickoff·단계 실행·CR·현황 조회 등) | 보호 영역을 **수정·삭제·생성하지 않는다.** 쓰기는 `{PROJECT}/` 안에서만 한다. |
 | **다른 프로젝트** | `projects/<다른 slug>/`는 읽기만 가능 (참고용). 수정·삭제 금지. |
-| **틀 수정 요청** (사용자가 에이전트·스킬·규칙·템플릿 변경을 명시적으로 요청) | 요청 범위만 수정 → 틀 `ACTIVITY.md`에 요약 추가(§4 형식) → 변경 요약 보고 → 틀 저장소에 커밋 (`framework: …`). |
+| **틀 수정 요청** (사용자가 에이전트·스킬·규칙·템플릿 변경을 명시적으로 요청) | 요청 범위만 수정 → 틀 `ACTIVITY.md`에 요약 추가 → 변경 요약 보고 → 틀 저장소에 커밋 (`framework: …`). 같은 규칙을 여러 파일에 복사하지 말고 기준 문서 한 곳을 고친다. |
 | **프로젝트 중 틀 개선 아이디어** | 틀을 고치지 않고 회고록(`{PROJECT}/shared/meetings/…_retrospective.md`) "틀 개선 제안"에 기록만 한다. |
 | **프로젝트에만 필요한 문서 양식** | 템플릿을 고치지 않고 `{PROJECT}` 안에 문서를 추가한다. |
 
 - 명령 실행(npm, 빌드, 테스트 등)은 반드시 `{PROJECT}` 하위 디렉토리에서 한다. 틀 루트에 `package.json`, `node_modules` 등을 만들지 않는다.
 - `.claude/settings.json`의 권한 규칙이 보호 영역 편집(`Edit`·`Write` 도구) 시 사용자 확인을 요구한다. 확인 요청이 뜨면 프로젝트 작업 중에는 **거절이 기본**이다.
-- 권한 규칙은 Bash 명령(`>`, `cp`, `mv`, `sed -i`, `rm` 등)을 통한 쓰기는 막지 못한다. 따라서 **Bash로 보호 영역에 쓰거나 삭제하는 명령은 실행하지 않는다.** 오케스트레이터는 각 작업 단위 커밋 전에 틀 루트에서 `git status --porcelain`을 실행해 틀에 의도치 않은 변경이 없는지 확인하고, 있으면 커밋하지 말고 PM에게 알린다.
+- 권한 규칙은 Bash 명령(`>`, `cp`, `mv`, `sed -i`, `rm` 등)을 통한 쓰기는 막지 못한다. 따라서 **Bash로 보호 영역에 쓰거나 삭제하는 명령은 실행하지 않는다.** 오케스트레이터는 커밋 전마다 틀 저장소 상태를 점검한다(`.claude/reference/git-ops.md` §2).
 
 ---
 
@@ -50,13 +61,13 @@ site-creator/                    ← Git ① 틀 저장소: 에이전트·규칙
 | 역할 | 주체 | 산출물 위치 | 정의 파일 | 핵심 책임 |
 |---|---|---|---|---|
 | 총괄 PM | **사용자** | `{PROJECT}/pm/requests/` | — | 고객 요청 전달, 게이트 승인, 최종 의사결정 |
-| 오케스트레이터 | 메인 Claude 세션 | — | 이 문서 | 프로젝트 생성, 단계 진행, 에이전트 호출, 리뷰 루프 조율, PM 보고, **git 커밋** |
+| 오케스트레이터 | 메인 Claude 세션 | `{PROJECT}/ACTIVITY.md` | 이 문서 + 스킬 | 프로젝트 생성, 단계 진행, 에이전트 호출, 리뷰 루프 조율, PM 보고, **git 커밋** |
 | PMO | `pmo` | `{PROJECT}/pm/` | `.claude/agents/pmo.md` | 계획서, 현황판, 게이트 문서, 중간·최종 보고서 |
 | 기획팀 | `planner` | `{PROJECT}/planning/` | `.claude/agents/planner.md` | 요구사항, 정보구조(IA), 화면정의서 |
 | 디자인팀 | `designer` | `{PROJECT}/design/` | `.claude/agents/designer.md` | 디자인 컨셉, 디자인 시스템, 페이지 디자인, 목업 |
 | 개발팀 | `developer` | `{PROJECT}/developer/` | `.claude/agents/developer.md` | 기술 설계, 사이트 구현(`developer/site/`), 개발 보고 |
 | 품질검증팀 | `qa` | `{PROJECT}/qa/` | `.claude/agents/qa.md` | 테스트 계획·케이스·결과, 결함 관리 |
-| 배포운영팀 | `devops` | `{PROJECT}/devops/` | `.claude/agents/devops.md` | 빌드·배포 환경, 운영 배포, 운영 가이드 |
+| 배포운영팀 | `devops` | `{PROJECT}/devops/` | `.claude/agents/devops.md` | 호스팅 의견, 빌드·배포 환경, 운영 배포, 운영 가이드 |
 | 공용 소통 | 전 팀 | `{PROJECT}/shared/` | `{PROJECT}/shared/README.md` | 티켓, 리뷰, 결정 기록, 회의록 |
 
 > **구조적 제약**: 서브에이전트는 다른 서브에이전트를 직접 호출할 수 없다.
@@ -75,74 +86,35 @@ P1 계획 ─G1→ P2 기획 ─G2→ P3 디자인 ─G3→ P4 개발 ─G4→ P
               └────────────── 변경 요청(CR) 발생 시 영향 받는 가장 앞 단계로 회귀 ──────────┘
 ```
 
-아래 산출물 경로는 모두 `{PROJECT}` 기준이다.
+아래 산출물 경로는 모두 `{PROJECT}` 기준이다. 검토자는 **standard 기준**이며, lite(기본)는 `.claude/reference/modes.md`의 주 검토자 1명이다.
 
-| 단계 | Owner | 산출물 | 교차 검토자 | 게이트 통과 기준(요약) |
+| 단계 | Owner | 산출물 | 교차 검토자 (standard) | 게이트 통과 기준(요약) |
 |---|---|---|---|---|
-| **P1 계획** | pmo | `pm/01_project-plan.md` | planner, developer | 범위·일정·산출물·리스크 확정 |
-| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결 |
+| **P1 계획** | pmo (+devops 호스팅 의견) | `pm/01_project-plan.md` | planner, developer | 범위·일정·산출물·리스크 확정, 잠정 스택 프리셋, 콘텐츠 수급·PM 사전 준비 계획 |
+| **P2 기획** | planner | `planning/02_requirements.md`<br>`planning/02_information-architecture.md`<br>`planning/02_storyboard.md` | designer, developer, qa | 모든 요구사항에 ID·우선순위·수용 기준 존재, 모든 Must REQ가 화면/비기능 항목과 연결, 법적 고지 REQ-C 점검, **스택 프리셋 확정** |
 | **P3 디자인** | designer | `design/03_design-concept.md`<br>`design/03_design-system.md`<br>`design/03_page-design.md`<br>`design/mockups/` | planner, developer | PM 컨셉 선택 완료, 전 화면(SCR) 디자인 명세 완료, 구현 가능성 확인 |
-| **P4 개발** | developer (+devops) | `developer/04_tech-design.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료 |
+| **P4 개발** | developer | `developer/04_tech-design.md`<br>`developer/site/`<br>`developer/04_dev-report.md` | 설계: devops, qa<br>구현: designer, planner | 로컬 빌드·실행 성공, Must 요구사항 구현 완료, 디자인 QA 통과 |
 | **P5 검증(로컬)** | qa | `qa/05_test-plan.md`<br>`qa/05_test-cases.md`<br>`qa/05_test-report.md`<br>`shared/tickets/DEF-*` | developer, planner | Critical·Major 결함 0건, 요구사항 추적 100% |
-| **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | PM(고객) 승인, 피드백은 CR로 등록 |
-| **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, 운영 스모크 테스트 통과 |
+| **P6 중간보고** | pmo | `pm/06_interim-report.md` | 전 팀(사실 확인) | PM(고객) 승인, 피드백은 CR로 등록 (lite는 생략 가능) |
+| **P7 배포(운영)** | devops | `devops/07_deploy-plan.md`<br>`qa/07_smoke-test-report.md`<br>`devops/07_deploy-report.md` | developer, qa | **배포 전 PM 명시 승인**, `[TBD` 0건(또는 PM 예외 승인), 운영 스모크 테스트 통과, 검색엔진 등록 안내 |
 | **P8 최종 산출물** | pmo (+devops) | `pm/08_final-report.md`<br>`devops/08_operation-guide.md`<br>`shared/meetings/MTG-*_retrospective.md` | 전 팀 | 인도 산출물 목록 완비, 인수인계 완료, 회고 기록 |
 
 **단계 내 체크포인트**
-- **P3**: 컨셉 시안(2~3안)을 먼저 PM에게 제시해 방향을 선택받은 뒤 상세 디자인에 착수한다.
-- **P4**: ① 기술 설계 작성·검토 → ② 구현 → ③ 로컬 빌드 확인·개발 보고서 → ④ 디자인/기능 검토.
+- **P1**: 동적 기능이 있거나 호스팅이 미정이면 devops가 호스팅·운영 비용 사전 의견을 먼저 내고, pmo가 계획서에 반영한다.
+- **P3**: 컨셉 시안을 먼저 PM에게 제시해 방향을 선택받은 뒤 상세 디자인에 착수한다 (시안 수는 진행 모드에 따름).
+- **P4**: ① 기술 설계 작성·검토 → ② 구현(기술 설계 "구현 순서"의 **작업 단위별로 나눠 호출·커밋**) → ③ 자체 점검(디자인 QA용 스크린샷 포함)·개발 보고서 → ④ 디자인 QA·기능 검토.
 - **P5**: qa는 G3 승인 이후(P4 진행 중) 테스트 계획·케이스를 미리 작성할 수 있다. 결함 수정 ↔ 재검증은 최대 3사이클, 초과 시 PM 보고.
-- **P7**: 배포 계획 검토 → **PM 배포 승인** → 릴리스 태그 → 배포 실행 → qa 운영 스모크 테스트 → 배포 보고서.
-- **P8**: PM이 고객 인도 범위를 결정하면 인도 패키지를 만든다 (§9).
+- **P7**: 배포 계획 검토 → **PM 배포 승인** → 릴리스 태그 → 배포 실행 → qa 운영 스모크 테스트 → 배포 보고서(검색엔진 등록 PM 조치 포함).
+- **P8**: PM이 고객 인도 범위를 결정하면 인도 패키지를 만든다.
 
-### 진행 모드 (standard / lite)
-kickoff 때 정해 `{PROJECT}/pm/STATUS.md`의 "진행 모드"에 기록한다. **기본값은 `lite`** 이며, `standard`는 PM이 `--standard`로 시작하거나 전환을 지시할 때만 쓴다. 진행 중 변경은 PM 지시로만 하고 STATUS.md "예외 기록"에 남긴다. 규모가 큰 프로젝트(회원·결제·외부 연동 다수, `react-spring` 예상, 10페이지 초과 등)는 pmo가 P1 계획서·G1 보고에서 `standard` 전환을 **권고**한다(전환은 PM 결정).
-
-| 항목 | standard (대규모·고위험) | lite (**기본**) |
-|---|---|---|
-| 교차 검토자 | §2 단계표의 검토자 전원 | 단계별 **주 검토자 1명** (아래 표) |
-| 리뷰 라운드 상한 | 3라운드 | 2라운드 (초과 시 PM 결정) |
-| P3 컨셉 시안 | 2~3안 | 1~2안 (PM 선택 절차는 유지) |
-| P6 중간보고 | 수행 (G6) | **생략 가능** — PM이 G5 보고에서 생략을 승인하면 STATUS에 `➖ 생략` 표기, G6 태그 없음 |
-| P8 산출물 | 최종 보고서·운영 가이드·회고 | 최종 보고서는 요약판(1~2쪽), 운영 가이드·회고는 유지 |
-| 교차 검토 모델 | 세션 기본 모델 | **`sonnet`** (검토 호출에만 적용 — 작성·반영·결함 수정·배포 등 작업 호출은 세션 기본 모델) |
-
-lite 주 검토자: P1 `developer` · P2 `developer` · P3 `developer` · P4 설계 `devops` / 구현 `designer` · P5 `developer` · P7 `developer` · P8 `devops`
-
-**모드와 무관하게 유지**: 모든 게이트 PM 승인(lite의 G6 생략 제외), Must 지적 해소, §6 품질 기준, P5 Critical·Major 0건, **P7 PM 배포 승인**, §8 안전 규칙, §9 커밋 규칙.
-
-### 디자인 프로필 (선택)
-프로젝트별로 켜는 선택 규칙이다. 켜고 끄는 결정은 PM이 하며, pmo가 `{PROJECT}/shared/decisions/ADR-*`에 기록하고 `{PROJECT}/pm/STATUS.md`의 "스타일 체계"·"Claude Design"에 반영한다. **G2 승인 이후 변경은 CR로 처리한다.**
-
-| 프로필 | 기본값 | 켜는 시점 | 내용 |
+### 프로젝트 설정 (상세는 기준 문서)
+| 설정 | 값 | 정하는 시점 | 기준 문서 |
 |---|---|---|---|
-| **스타일 체계** | `css-vars` | P1~P2 (늦어도 G2 전) | `css-vars`: 토큰을 CSS 변수로 정의(기본). `tailwind`: 토큰을 Tailwind 테마로도 정의하고, 화면은 Tailwind 유틸리티와 테마 토큰으로만 구성한다. planner는 `tailwind` 선택 시 이를 기술 제약 `REQ-N-*`로 기록한다. **프레임워크(React 등)는 이 프로필이 정하지 않는다** — P4 기술 설계에서 developer가 정한다. |
-| **Claude Design** | `off` | P3 착수 전 | `on`: PM(또는 사람 디자이너)이 claude.ai/design에서 시안·화면을 다듬을 수 있다. 결과는 반드시 `{PROJECT}/design/`으로 반입해 리뷰·게이트를 거친다. |
-| **Design Sync** | `off` | G4 승인 이후 | `on`: 구현된 컴포넌트 라이브러리를 claude.ai/design 디자인 시스템 프로젝트로 게시한다(`/design-sync`, 코드 → Design 방향, PM이 직접 실행). |
+| **진행 모드** | `lite`(기본) / `standard` | kickoff (`--standard`), 진행 중 PM 지시 | `.claude/reference/modes.md` |
+| **스택 프리셋** | `static` / `kr-shared` / `react-spring` / `custom` | P1 잠정 → **G2 확정** (이후 CR) | `.claude/reference/stack-presets.md` |
+| **디자인 프로필** | 스타일 체계 `css-vars`/`tailwind`, Claude Design `off`/`on`, Design Sync `off`/`on` | G2 전 (Design Sync는 G4 이후) | `.claude/reference/design-profile.md` |
 
-**공통 원칙**
-- **기준(SoT)은 프로젝트 저장소의 승인된 산출물이다.** 외부 디자인 도구의 내용은 `{PROJECT}/design/`으로 반입·승인되기 전까지 기준이 아니다. 외부 도구에서 바뀐 내용을 코드에 직접 반영하지 않는다.
-- 디자인 확정은 G3에서, 디자인–구현 일치 확인은 P4 디자인 QA와 P5 검증에서 한다 (구현 완료를 디자인 승인의 전제로 삼지 않는다).
-- 승인 이후 디자인 변경은 외부 도구에서 시작되었더라도 §7 CR 절차를 따른다.
-- 외부 디자인 서비스(claude.ai/design 등)에 고객 자료를 올리거나 게시하는 것은 §8의 **외부 전송**이므로 매번 PM 승인을 받는다.
-
-### 스택 프리셋
-호스팅 환경이 가능한 스택을 결정하므로, 프론트·백엔드·DB·호스팅·배포 방식을 **한 묶음**으로 고른다. 세부 규칙은 `.claude/agents/developer.md` "스택 프리셋 상세".
-
-| 프리셋 | 이런 경우 | 프론트 | 백엔드 | DB | 호스팅·배포 |
-|---|---|---|---|---|---|
-| **`static`** | 동적 기능 없음 (폼·CMS는 외부 서비스로 충분) | Astro | 없음 | 없음 | 정적 호스팅 또는 국내 공유 호스팅 업로드 |
-| **`kr-shared`** | 국내 공유 호스팅(카페24·가비아 등) 사용·희망 + 게시판·관리자 등 동적 기능 | Astro (정적 빌드) | CodeIgniter 4 (SSH·Composer 가능 시 Laravel) | 호스팅의 MariaDB / MySQL | SFTP 업로드 묶음, 앱은 웹 루트 밖, 같은 도메인 `/api` |
-| **`react-spring`** | 회원·결제·외부 연동이 많거나 장기 운영·확장 필요 + 서버 운영 가능 | Next.js (페이지별 SSG/SSR) | Spring Boot | PostgreSQL | 프론트(정적/Node) + 컨테이너·VM + 관리형 DB |
-| **`custom`** | 위 셋에 맞지 않음 (고객 지정 기술·기존 시스템 등) | Astro / Next.js / Nuxt / 순수 HTML | 없음 / Spring Boot / Laravel / CodeIgniter 4 / Django | 없음 / PostgreSQL / MySQL·MariaDB | 기술 설계·배포 계획에서 정의 |
-
-**판단 순서**: ① 동적 기능이 외부 서비스로 충분하면 `static` → ② 국내 공유 호스팅이 정해져 있거나 원하면 `kr-shared` → ③ 고객 지정 기술·기존 시스템이 있으면 `custom` → ④ 그 외에는 규모·운영 비용으로 `kr-shared`와 `react-spring`을 비교해 PM이 고른다.
-
-**결정 시점**
-- **P1**: pmo가 계획서 "기술·환경 초기 방향"에 **잠정 프리셋**과 근거, 호스팅 확인 질문(`developer.md` `kr-shared` "호스팅 확인 항목" 등)을 제시한다. STATUS에는 `{프리셋} (잠정)`으로 기록한다.
-- **G2**: 요구사항으로 동적 기능 범위가 확정되면 PM이 프리셋을 확정하고, pmo가 ADR로 기록하고 STATUS의 "(잠정)"을 지운다. `custom`이면 프론트·백엔드·DB 선택도 함께 기록한다.
-- **P4**: developer는 프리셋 안의 세부(버전, CI4/Laravel, 페이지별 SSG/SSR 등)만 정한다. **G2 이후 프리셋 변경은 §7 CR 절차**를 따른다.
-- 프리셋은 진행 모드(lite)·디자인 프로필과 독립적이다.
+설정값은 `{PROJECT}/pm/STATUS.md`에 기록하고, 오케스트레이터는 에이전트 호출 프롬프트에 `진행 모드`·`스택 프리셋`(확정 후)을 적는다.
 
 ---
 
@@ -151,23 +123,23 @@ lite 주 검토자: P1 `developer` · P2 `developer` · P3 `developer` · P4 설
 ```
 ① 착수 점검 → ② 작성 → ③ 교차 검토(병렬) → ④ 반영 ─┬→ ⑤ 게이트 준비 → ⑥ PM 승인 → ⑦ 커밋·태그
                               ▲                 │
-                              └── Must 잔존 시 ──┘  (최대 3라운드 · lite 2라운드, 초과 시 PM 결정)
+                              └── Must 잔존 시 ──┘  (라운드 상한: standard 3 · lite 2, 초과 시 PM 결정)
 ```
 
 1. **착수 점검** — `{PROJECT}/pm/STATUS.md`에서 이전 게이트 승인 확인, 입력 산출물이 `approved`인지 확인, 관련 open 티켓·CR 확인.
 2. **작성** — Owner 에이전트 호출. 산출물은 `status: in-review`로 제출.
-3. **교차 검토** — 검토자 에이전트(lite 모드면 주 검토자 1명)를 **한 번에 병렬 호출**. 각자 `{PROJECT}/shared/reviews/`에 리뷰를 작성.
+3. **교차 검토** — 검토자 에이전트를 **한 번에 병렬 호출**(lite는 주 검토자 1명, `sonnet`). 각자 `{PROJECT}/shared/reviews/`에 리뷰를 작성.
 4. **반영** — `수정 요청` 판정이 있으면 Owner 재호출. Owner는 리뷰 문서의 모든 지적에 처리 결과(반영/부분 반영/미반영+사유)를 기입하고 버전을 올린다. Must를 지적한 검토자만 다음 라운드 재검토.
-5. **수렴** — 라운드 상한(standard 3 · lite 2) 후에도 Must가 남거나 팀 간 의견이 충돌하면, pmo가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고를 정리하고 PM 결정을 요청.
-6. **게이트 준비** — pmo 호출: `{PROJECT}/pm/gates/G{n}_{slug}.md` 작성, `STATUS.md` 갱신(`승인 대기`).
+5. **수렴** — 라운드 상한 후에도 Must가 남거나 팀 간 의견이 충돌하면, pmo가 `{PROJECT}/shared/decisions/ADR-*`에 쟁점·선택지·권고를 정리하고 PM 결정을 요청.
+6. **게이트 준비** — pmo 호출: `{PROJECT}/pm/gates/G{n}_{slug}.md` 작성(lite는 간소판), `STATUS.md` 갱신(`승인 대기`).
 7. **PM 승인** — 오케스트레이터가 PM에게 게이트 보고. 승인 시 산출물 `status: approved`, `version: 1.0`. 반려 시 지시를 게이트 문서에 기록하고 ④로 복귀.
 8. **커밋·태그** — 승인 반영 후 오케스트레이터가 프로젝트 저장소에 커밋하고 게이트 태그를 단다 (§9).
 
 ### 에이전트 호출 규칙 (오케스트레이터)
 호출 프롬프트에는 반드시 포함한다:
-- `PROJECT: projects/<slug>`
-- 단계와 작업 종류 (작성 / 검토 / 반영 / 결함 수정 / 영향도 의견 등)
-- 입력 문서 경로, 템플릿 경로(`templates/docs/…`), 출력 경로(`{PROJECT}/…`)
+- `PROJECT: projects/<slug>`, `진행 모드: <lite|standard>`, (G2 이후) `스택 프리셋: <프리셋>`
+- 단계와 작업 종류 (작성 / 검토 / 반영 / 구현 작업 단위 / 결함 수정 / 영향도 의견 등)
+- 입력 문서 경로, 템플릿 경로(`templates/docs/…`), 출력 경로(`{PROJECT}/…`), 필요한 기준 문서 경로
 - 관련 리뷰·티켓·CR 경로, 리뷰 라운드 번호
 - (P7 배포 실행 시에만) `PM 배포 승인 완료: YYYY-MM-DD HH:MM`, 배포 대상 태그
 
@@ -177,7 +149,7 @@ lite 주 검토자: P1 `developer` · P2 `developer` · P3 `developer` · P4 설
 - 프로젝트: projects/<slug>
 - 작업: (단계 · 작업 종류)
 - 생성/수정 파일: (경로 목록 — 모두 {PROJECT} 안이어야 함)
-- 핵심 내용 요약: (3~5줄)
+- 핵심 내용 요약: (3~5줄, ID·버전·수치 포함)
 - 발행/처리한 티켓: TKT-… / DEF-… / 없음
 - 리스크·가정:
 - PM 결정 필요 사항: … / 없음
@@ -209,27 +181,13 @@ updated: YYYY-MM-DD
 - 파일·폴더명은 영문 kebab-case, 문서 본문은 한국어.
 - 새 산출물은 반드시 템플릿(`templates/docs/{팀}/`, 공용 `templates/docs/shared/`)을 **읽어서 `{PROJECT}` 안에 새 파일로** 작성한다. 템플릿 파일 자체는 수정하지 않는다.
 
-### 작업 로그 (진행 과정 기록)
-각 팀은 작업이 끝날 때마다 `{PROJECT}/{팀}/WORKLOG.md`에 항목을 추가한다(요청·수행·산출물·티켓·다음 할 일).
-**산출물이 "결과"라면 WORKLOG는 "과정"이다.**
+### 기록 두 가지
+| 기록 | 위치 | 작성 | 내용 |
+|---|---|---|---|
+| **작업 로그** (과정) | `{PROJECT}/{팀}/WORKLOG.md` | 각 에이전트, 작업이 끝날 때마다 (최신이 위) | 요청·수행·판단 근거·산출물·티켓·다음 할 일 |
+| **진행 요약** (한눈에) | `{PROJECT}/ACTIVITY.md` | 오케스트레이터만, 작업 단위 커밋마다 | 날짜별 묶음, 최신이 위, 항목당 1~2줄 `* {구분}: {요약} ({팀})` — 형식은 `.claude/reference/git-ops.md` §3 |
 
-### 진행 요약 (`{PROJECT}/ACTIVITY.md`)
-팀별 WORKLOG와 별도로, **프로젝트 전체 진행을 한눈에 보는 요약**을 프로젝트 루트 `ACTIVITY.md`에 둔다.
-- **WORKLOG와의 관계**: 두 기록을 모두 유지한다. `ACTIVITY.md` = 전 팀의 "무엇을 했나"(오케스트레이터, 1~2줄), `{팀}/WORKLOG.md` = 각 팀의 "어떻게·왜 했나"(에이전트, 요청·수행·판단 근거·다음 할 일). ACTIVITY 항목에서 자세한 내용이 필요하면 해당 팀 WORKLOG를 본다.
-- **작성 주체**: 오케스트레이터만 (에이전트는 쓰지 않는다 — 병렬 작업 충돌 방지).
-- **시점**: 작업 단위 커밋(§9)마다 항목을 추가하고 **같은 커밋에 포함**한다. 1커밋 = 1항목을 원칙으로 하되, 의미 없는 갱신(STATUS 동기화 등)은 생략할 수 있다.
-- **정렬**: 날짜(`### YYYY-MM-DD`, 로컬 날짜)별로 묶고 **최신 날짜가 위**, 같은 날짜 안에서도 **최신 항목이 위**.
-- **항목 형식**: `* {구분}: {무엇을 했고 결과가 무엇인지 1~2줄} ({팀})` — ID·버전·핵심 수치를 넣는다. 파일 경로는 필요할 때만.
-- **구분**: `추가`(새 산출물·기능) · `수정`(개정·리뷰 반영·결함 수정) · `검토`(리뷰 판정) · `검증`(테스트 실행 결과) · `결정`(PM 승인·선택·ADR·CR 결정) · `배포` · `이슈`(블로커·예외 진행·회귀·중단)
-- 지난 항목은 고치지 않는다. 정정이 필요하면 새 항목으로 적는다.
-- 예:
-  ```
-  ### 2026-10-02
-
-  * 결정: G2 기획 승인, 스택 프리셋 `kr-shared` 확정 (ADR-002) (PM)
-  * 검토: 요구사항·IA·화면정의서 R1 — 조건부 승인, Must 0 · Should 2 (developer)
-  * 추가: 요구사항 정의서 v0.1 — REQ 24건(Must 12), 화면 SCR 8개 (planner)
-  ```
+**산출물이 "결과"라면 WORKLOG는 "과정"이고, ACTIVITY는 "목차"다.**
 
 ### 추적 ID 체계 (프로젝트마다 독립 번호)
 | 대상 | 형식 | 부여 주체 |
@@ -257,19 +215,19 @@ updated: YYYY-MM-DD
 | 수단 | 위치 · 파일명 | 템플릿 | 언제 |
 |---|---|---|---|
 | 리뷰 | `shared/reviews/{단계}_{대상}_{검토자}_r{라운드}.md` | `templates/docs/shared/review.md` | 교차 검토 (대상 문서가 여러 개면 한 파일로 묶어도 됨) |
-| 티켓 | `shared/tickets/TKT-{발행팀}-{nnn}_to-{수신팀}_{slug}.md` | `templates/docs/shared/ticket.md` | 리뷰 주기 밖의 요청·질의·자료 요청 |
+| 티켓 | `shared/tickets/TKT-{발행팀}-{nnn}_to-{수신팀}_{slug}.md` | `templates/docs/shared/ticket.md` | 리뷰 주기 밖의 요청·질의·자료 요청 (수신팀: `pmo`·`planning`·`design`·`developer`·`qa`·`devops`) |
 | 결함 | `shared/tickets/DEF-{nnn}_{slug}.md` | `templates/docs/shared/defect.md` | 검증 중 발견된 결함 |
 | 결정 기록 | `shared/decisions/ADR-{nnn}_{slug}.md` | `templates/docs/shared/decision.md` | PM 결정, 팀 간 합의, 되돌리기 어려운 선택 |
 | 회의록 | `shared/meetings/MTG-{YYYYMMDD}_{slug}.md` | `templates/docs/shared/meeting.md` | 킥오프, 이슈 조율, 회고 |
 
 ### 쓰기 권한
 - 모든 에이전트는 틀과 프로젝트 전체를 **읽을 수 있다.**
-- **쓰기는 `{PROJECT}/{자기 팀}/` + `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`** 로 제한한다. (`shared/decisions/`, `shared/meetings/`는 pmo)
+- **쓰기는 `{PROJECT}/{자기 팀}/` + `{PROJECT}/shared/tickets/`, `{PROJECT}/shared/reviews/`** 로 제한한다. (`shared/decisions/`, `shared/meetings/`는 pmo, `ACTIVITY.md`·`design/imports/`는 오케스트레이터)
 - **타 팀 산출물을 직접 수정하지 않는다.** 수정이 필요하면 리뷰 지적 또는 티켓으로 요청한다.
 - 티켓의 "처리 결과"는 수신 팀이, 리뷰의 "처리 결과" 열은 산출물 Owner가 기입한다.
 - 예외: devops는 배포 설정 파일(`vercel.json`, `netlify.toml`, CI 워크플로 등)을 `{PROJECT}` 안에 작성할 수 있다. 변경 내역을 배포 계획서에 기록하고 developer 리뷰를 받는다.
 - `{PROJECT}/pm/requests/`의 **요청 원문 절은 수정 금지**(보존). 해석·정리는 별도 절이나 계획서·요구사항 문서에서 한다.
-- **보호 영역(§0)과 다른 프로젝트는 어떤 에이전트도 수정하지 않는다.**
+- **보호 영역(§0)과 다른 프로젝트는 어떤 에이전트도 수정하지 않는다.** Bash 리다이렉트·`cp`·`mv`·`rm`·`sed -i`를 통한 쓰기도 포함한다.
 
 ### 리뷰 지적 등급
 | 등급 | 의미 | 게이트 영향 |
@@ -295,22 +253,26 @@ updated: YYYY-MM-DD
 - **브라우저**: Chrome, Edge, Safari, Firefox 최신 버전
 - **웹 접근성**: WCAG 2.1 AA (KWCAG 2.2) 수준 — 대체 텍스트, 명도 대비 4.5:1, 키보드 탐색, 포커스 표시
 - **성능·SEO**: Lighthouse 성능·접근성·권장사항·SEO 각 90점 이상 목표
-- **SEO 기본**: title/description, OG 태그, sitemap.xml, robots.txt, 시맨틱 마크업
+- **SEO 기본**: title/description, OG 태그, sitemap.xml, robots.txt, 시맨틱 마크업, 검색엔진 등록(네이버 서치어드바이저 등)
 - **보안**: HTTPS, 비밀 정보 저장소 커밋 금지, 폼 입력 검증, 개인정보 수집 시 처리방침 고지
+- **콘텐츠**: 배포 전 `[TBD` 0건(또는 PM 예외 승인), 법적·필수 고지 점검 — `.claude/reference/kr-web-checklist.md`
 
-planner는 이 기준을 `REQ-N-*` 비기능 요구사항으로 구체화한다.
-qa는 이 기준을 `.claude/agents/qa.md`의 **표준 검증 도구 세트**(Lighthouse CLI · Playwright · axe-core · linkinator)로 측정한다.
-- **기술 스택**: §2 "스택 프리셋"으로 정하고, 세부 툴체인·명령은 `.claude/agents/developer.md` "스택 표준 카탈로그"·"스택 프리셋 상세"를 따른다. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
-- **실행 환경**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Node 스크립트)으로 작성하며, 사용한 OS를 보고서에 기록한다.
+planner는 이 기준을 `REQ-N-*`·`REQ-C-*` 요구사항으로 구체화하고, qa는 `.claude/agents/qa.md`의 표준 검증 도구 세트로 측정한다.
+
+### 기술·실행 환경
+- **기술 스택**: 스택 프리셋으로 정한다 — `.claude/reference/stack-presets.md`. 버전은 착수 시점의 LTS/지원 버전을 기술 설계에 고정하고 EOL을 기록한다.
+- **실행 환경**: Windows와 macOS를 모두 지원한다. 에이전트는 작업 전 OS를 확인하고, 명령은 크로스플랫폼(npm scripts·Gradle Wrapper·Composer scripts·uv 등)으로 작성하며, 사용한 OS를 보고서에 기록한다.
 
 ---
 
 ## 7. 변경 관리 (CR)
 1. PM이 변경 요청 전달 → 오케스트레이터가 `{PROJECT}/pm/requests/CR-{nnn}_{slug}.md`에 원문 기록
-2. 영향도 분석 — planner·developer가 영향 의견 제출 → pmo가 종합(영향 REQ/SCR/산출물, 회귀 단계, 일정, 리스크, 권고)
+2. 영향도 분석 — planner·developer(필요 시 designer)가 영향 의견 제출 → pmo가 종합(영향 REQ/SCR/산출물, 회귀 단계, 일정, 리스크, 권고)
 3. PM 결정 → 커밋 (`cr(CR-nnn): …`)
 4. 승인 시 영향 받는 **가장 앞 단계부터 회귀**하여 영향 부분만 개정 (버전 증가, 변경 이력에 CR ID 기록)
 5. 이후 단계는 영향 범위 중심으로 재검토·재검증, 재승인 시 태그 `G{n}-CR-{nnn}`
+
+스택 프리셋·디자인 프로필을 G2 이후 바꾸는 것도 CR이다.
 
 ---
 
@@ -331,52 +293,26 @@ qa는 이 기준을 `.claude/agents/qa.md`의 **표준 검증 도구 세트**(Li
 
 | 구분 | ① 틀 저장소 (`./`) | ② 프로젝트 저장소 (`projects/<slug>/`) |
 |---|---|---|
-| 내용 | 에이전트, 스킬, 규칙, 템플릿 | 해당 프로젝트의 모든 산출물·소스·소통 기록 |
+| 내용 | 에이전트, 스킬, 기준 문서, 템플릿 | 해당 프로젝트의 모든 산출물·소스·소통 기록 |
 | 생성 | 최초 1회 | `/kickoff` 때 `git init` |
 | 커밋 주체 | 오케스트레이터 | **오케스트레이터만** (에이전트는 커밋하지 않음 — 병렬 작업 시 잠금 충돌 방지) |
-| 커밋 시점 | 사용자 요청으로 틀을 수정한 뒤 | **변경이 생길 때마다** (아래 표) |
+| 커밋 시점 | 사용자 요청으로 틀을 수정한 뒤 (`ACTIVITY.md` 함께) | **작업 단위(에이전트 1회 호출·병렬 배치)마다**, `ACTIVITY.md` 항목과 함께 |
+| 태그 | — | `kickoff`, `G{n}`, `G{n}-CR-{nnn}`, `release-v{x.y.z}` (annotated) |
 | 원격 push | PM이 지시할 때만 | **PM이 지시할 때만** |
 
-### 프로젝트 저장소 커밋 시점 — 작업 단위마다
-산출물이 바뀌면 그때그때 커밋한다. 한 작업 단위 = **에이전트 1회 호출**(병렬 호출이면 그 배치 전체)이며, 배치가 끝난 뒤 한 번 커밋한다. 커밋하지 않은 채 다음 에이전트를 호출하지 않는다.
-
-| 작업 단위 | 커밋 메시지 | 태그 |
-|---|---|---|
-| kickoff 골격 생성 + CR-000 기록 | `chore(kickoff): 프로젝트 생성 및 고객 요청 기록` | `kickoff` |
-| 산출물 작성 | `docs({단계}): {문서} v{버전} 작성 — {팀}` | — |
-| 리뷰 반영 | `docs({단계}): {문서} v{버전} R{n} 리뷰 반영 — {팀}` | — |
-| 교차 검토 (병렬 배치 1커밋) | `review({단계}): {대상} R{n} — {검토자들}` | — |
-| 구현 | `feat(P4): {요약} — developer` | — |
-| 결함 수정 | `fix(P5): DEF-{nnn} {요약} — developer` | — |
-| 테스트 실행·결과 | `test(P5): {요약} — qa` | — |
-| 게이트 문서 작성 | `docs(G{n}): 게이트 문서 작성 — pmo` | — |
-| 게이트 PM 승인 | `gate(G{n}): {단계명} 승인` | `G{n}` (CR 회귀 후 재승인: `G{n}-CR-{nnn}`) |
-| CR 접수·분석·PM 결정 | `cr(CR-{nnn}): {요약}` | — |
-| PM 배포 승인 직후 (배포 실행 전) | `release: v{x.y.z} 배포 승인` | `release-v{x.y.z}` |
-| 배포 실행 결과 | `chore(P7): 배포 실행 결과 기록 — devops` | — |
-| 그 외 (STATUS 갱신, 티켓 처리 등) | `chore: {요약}` | — |
-
-- 커밋 메시지 본문에는 변경 요약과 관련 문서·리뷰·티켓 경로를 적는다.
-- 커밋 전에 `ACTIVITY.md`에 해당 작업 단위의 요약 항목을 추가해 같은 커밋에 포함한다 (§4 "진행 요약").
-- 에이전트 보고에 `{PROJECT}` 밖 경로가 있으면 커밋하지 말고 PM에게 알린다.
-
-- 태그는 annotated tag로 만들고 메시지에 게이트 문서 경로와 승인 일시를 적는다.
-- devops는 `release-v*` 태그 기준으로 배포하고, 롤백은 이전 릴리스 태그로 한다.
-- 커밋 전 `git status`로 `.env`·비밀 정보·대용량 파일이 포함되지 않았는지 확인한다.
-
-### 고객 인도 패키지 (P8)
-- 인도 범위(예: 소스·운영 가이드·최종 보고서만 / 전체)는 PM이 결정한다. 내부 리뷰·티켓·WORKLOG 포함 여부를 반드시 확인받는다.
-- 오케스트레이터가 `git archive`로 승인된 태그 기준 선택 경로만 묶어 `{PROJECT}/.delivery/<slug>-<tag>.zip`에 만든다 (`.delivery/`는 git 제외).
+커밋 메시지 형식, 커밋 전 점검, 진행 요약 작성법, 고객 인도 패키지는 `.claude/reference/git-ops.md`를 따른다.
+devops는 `release-v*` 태그 기준으로 배포하고, 롤백은 이전 릴리스 태그로 한다.
 
 ---
 
 ## 10. PM 명령어 (`.claude/skills/`)
 | 명령 | 용도 |
 |---|---|
-| `/kickoff <project-slug> <고객 요청>` | 프로젝트 생성(`projects/<slug>`) + git init → P1 계획 → G1 승인 요청 |
+| `/kickoff <project-slug> [--standard] <고객 요청>` | 프로젝트 생성(`projects/<slug>`) + git init → P1 계획 → G1 승인 요청 (기본 lite 모드) |
 | `/run-phase [project-slug] <P1~P8 \| next>` | 지정 단계를 표준 루프로 실행 → 게이트 승인 요청 → 커밋·태그 |
 | `/status [project-slug]` | 프로젝트 목록 또는 특정 프로젝트 현황 보고 |
 | `/change-request [project-slug] <변경 내용>` | 변경 요청 접수 → 영향도 분석 → 승인 시 회귀 |
+| `/resume-project [project-slug]` | 세션 중단 후 파일·git 상태로 재개 지점을 판정해 이어서 진행 |
 
 - `project-slug`를 생략하면: `projects/*/pm/STATUS.md` 중 프로젝트 상태가 `진행 중`인 것이 하나면 그 프로젝트, 여러 개면 PM에게 묻는다.
 - ⚠️ Claude Code 기본 명령 `/init`은 CLAUDE.md를 생성·덮어쓰므로 **사용하지 않는다.** 프로젝트 시작은 `/kickoff`.

@@ -8,8 +8,8 @@ argument-hint: "<project-slug> [--standard] <고객 요청 내용 또는 요청 
 
 인자: $ARGUMENTS
 
-당신은 **오케스트레이터**다. `CLAUDE.md`의 §0(틀·프로젝트 분리), §9(Git 운영)를 따른다.
-**이 스킬 실행 중 틀 보호 영역(`CLAUDE.md`, `README.md`, `.claude/`, `templates/` 등)은 수정하지 않는다.** 모든 쓰기는 `projects/<slug>/` 안에서만 한다.
+당신은 **오케스트레이터**다. `CLAUDE.md`의 §0(틀·프로젝트 분리), §9(Git 운영)와 `.claude/reference/git-ops.md`, 진행 모드는 `.claude/reference/modes.md`를 따른다.
+**이 스킬 실행 중 틀 보호 영역(`CLAUDE.md` §0)은 수정하지 않는다.** 모든 쓰기는 `projects/<slug>/` 안에서만 한다.
 
 ---
 

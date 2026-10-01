@@ -34,6 +34,8 @@ updated: YYYY-MM-DD
 | HTTPS · 인증서 유효 | | |
 | sitemap.xml · robots.txt | | |
 | 리다이렉트 (www / http → https) | | |
+| 사이트 안 `[TBD` 잔여 | 0건 / 예외 승인 n건 | |
+| 검색엔진 등록 (네이버 서치어드바이저 · Google Search Console) | 완료 / PM 조치 대기 | |
 
 ## 4. 스모크 테스트 결과
 `qa/07_smoke-test-report.md` 요약:
